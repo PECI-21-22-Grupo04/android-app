@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'presentation/icons.dart';
+import 'pages/homepage.dart';
+import 'pages/settings.dart';
+import 'pages/people.dart';
+import 'pages/exercises.dart';
 
 void main() {
   runApp(const MyApp());
@@ -51,24 +55,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
-  static const List<Widget> _pages = <Widget>[
-    Icon(
-      CustomIcons.home_icon,
-      size: 150,
-    ),
-    Icon(
-      CustomIcons.exercise_icon,
-      size: 150,
-    ),
-    Icon(
-      CustomIcons.people_icon,
-      size: 150,
-    ),
-    Icon(
-      CustomIcons.settings_icon,
-      size: 150,
-    ),
-  ];
+  static const List _pages = [Homepage(), Exercises(), People(), Settings()];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -82,8 +69,25 @@ class _MyHomePageState extends State<MyHomePage> {
       /* appBar: AppBar(
         title: const Text('RunX'),
       ), */
-      body: Center(
-        child: _pages.elementAt(_selectedIndex),
+      body: Stack(
+        children: [
+          Offstage(
+            offstage: _selectedIndex != 0,
+            child: _pages[0],
+          ),
+          Offstage(
+            offstage: _selectedIndex != 1,
+            child: _pages[1],
+          ),
+          Offstage(
+            offstage: _selectedIndex != 2,
+            child: _pages[2],
+          ),
+          Offstage(
+            offstage: _selectedIndex != 3,
+            child: _pages[3],
+          ),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
