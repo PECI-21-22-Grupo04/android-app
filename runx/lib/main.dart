@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:runx/pages/signin.dart';
 import 'presentation/icons.dart';
 import 'pages/homepage.dart';
 import 'pages/settings.dart';
 import 'pages/people.dart';
 import 'pages/exercises.dart';
+import 'pages/signin.dart';
 
 void main() {
   runApp(const MyApp());
@@ -55,7 +57,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
-  static const List _pages = [Homepage(), Exercises(), People(), Settings()];
+  static const List _pages = [SignIn(), Exercises(), People(), Settings()];
 
   void _onItemTapped(int index) {
     setState(() {

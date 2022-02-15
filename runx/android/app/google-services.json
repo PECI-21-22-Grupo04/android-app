@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "84913934296",
+    "project_id": "runx-be658",
+    "storage_bucket": "runx-be658.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:84913934296:android:6c1e6b0f7273dd27002cad",
+        "android_client_info": {
+          "package_name": "com.example.runx"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "84913934296-qjing9e95a2h3j6t6q035rcpsl2saail.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChd2RnvDCNH3jKCCFlhy3uMO_qdftB8BA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "84913934296-qjing9e95a2h3j6t6q035rcpsl2saail.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
