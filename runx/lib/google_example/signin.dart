@@ -48,9 +48,9 @@ class _SignInState extends State<SignIn> {
               leading: GoogleUserCircleAvatar(identity: user),
               title: Text(
                 user.displayName ?? '',
-                style: TextStyle(fontSize: 22),
+                style: const TextStyle(fontSize: 22),
               ),
-              subtitle: Text(user.email, style: TextStyle(fontSize: 22)),
+              subtitle: Text(user.email, style: const TextStyle(fontSize: 22)),
             ),
             const SizedBox(
               height: 20,
@@ -101,7 +101,7 @@ class _SignInState extends State<SignIn> {
     try {
       await _googleSignIn.signIn();
     } catch (e) {
-      print('Error signing in $e');
+      //print('Error signing in $e');
     }
   }
 }

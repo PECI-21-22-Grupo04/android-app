@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:runx/pages/signin.dart';
+import 'package:firebase_core/firebase_core.dart';
+
 import 'presentation/icons.dart';
+
 import 'pages/homepage.dart';
 import 'pages/settings.dart';
 import 'pages/people.dart';
 import 'pages/exercises.dart';
-import 'pages/signin.dart';
 
-void main() {
+import 'email_example/home.dart';
+import 'google_example/signin.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -93,25 +99,25 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        selectedIconTheme: IconThemeData(color: Colors.purple),
+        selectedIconTheme: const IconThemeData(color: Colors.purple),
         selectedItemColor: Colors.purple,
         unselectedItemColor: Colors.black,
         showUnselectedLabels: false,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(CustomIcons.home_icon),
+            icon: Icon(CustomIcons.homeicon),
             label: 'Início',
           ),
           BottomNavigationBarItem(
-            icon: Icon(CustomIcons.exercise_icon),
+            icon: Icon(CustomIcons.exerciseicon),
             label: 'Exercícios',
           ),
           BottomNavigationBarItem(
-            icon: Icon(CustomIcons.people_icon),
+            icon: Icon(CustomIcons.peopleicon),
             label: 'Pessoas',
           ),
           BottomNavigationBarItem(
-            icon: Icon(CustomIcons.settings_icon),
+            icon: Icon(CustomIcons.settingsicon),
             label: 'Definições',
           ),
           // BottomNavigationBarItem(

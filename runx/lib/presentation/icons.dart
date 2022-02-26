@@ -21,12 +21,12 @@ class CustomIcons {
   static const _kFontFam = 'icons';
   static const String? _kFontPkg = null;
 
-  static const IconData exercise_icon =
+  static const IconData exerciseicon =
       IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData settings_icon =
+  static const IconData settingsicon =
       IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData home_icon =
+  static const IconData homeicon =
       IconData(0xe803, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData people_icon =
+  static const IconData peopleicon =
       IconData(0xe804, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }
