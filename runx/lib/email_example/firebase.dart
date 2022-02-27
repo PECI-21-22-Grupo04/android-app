@@ -1,4 +1,3 @@
-// System Packages
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -13,8 +12,8 @@ class AuthenticationHelper {
         password: password,
       );
       return null;
-    } on FirebaseAuthException {
-      return "An error has occured. \nCheck your credentials and internet connection or try again later.";
+    } on FirebaseAuthException catch (e) {
+      return e.message;
     }
   }
 
@@ -22,8 +21,8 @@ class AuthenticationHelper {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
       return null;
-    } on FirebaseAuthException {
-      return "An error has occured. \nCheck your credentials and internet connection or try again later.";
+    } on FirebaseAuthException catch (e) {
+      return e.message;
     }
   }
 
@@ -41,7 +40,7 @@ class AuthenticationHelper {
 
       await FirebaseAuth.instance.signInWithCredential(credential);
     } catch (e) {
-      return "An error has occured. \nCheck your credentials and internet connection or try again later.";
+      throw Exception(e.toString());
     }
   }
 

@@ -1,9 +1,6 @@
-// System Packages
 import 'package:flutter/material.dart';
-
-// Screens
-import 'package:runx/auth_account/utils.dart';
-import 'package:runx/user_profile/homepage.dart';
+import 'package:runx/email_example/firebase.dart';
+import 'package:runx/email_example/home.dart';
 
 class Signup extends StatelessWidget {
   const Signup({Key? key}) : super(key: key);
@@ -21,20 +18,18 @@ class Signup extends StatelessWidget {
               FlutterLogo(
                 size: 55,
               ),
-              SizedBox(height: 50),
-              Text(
-                'Create Your New Account Here!',
-                style: TextStyle(fontSize: 24),
-              ),
             ],
           ),
-          const SizedBox(height: 30),
+          const SizedBox(height: 50),
+          const Text(
+            'Welcome!',
+            style: TextStyle(fontSize: 24),
+          ),
+
           const Padding(
             padding: EdgeInsets.all(8.0),
             child: SignupForm(),
           ),
-
-          const SizedBox(height: 30),
 
           Expanded(
             child: Column(
@@ -42,14 +37,14 @@ class Signup extends StatelessWidget {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    const Text('      Already Registered?  ',
+                    const Text('Already here  ?',
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 20)),
                     GestureDetector(
                       onTap: () {
                         Navigator.pop(context);
                       },
-                      child: const Text('Sign In Here',
+                      child: const Text(' Get Logged in Now!',
                           style: TextStyle(fontSize: 20, color: Colors.blue)),
                     )
                   ],
@@ -91,8 +86,7 @@ class _SignupFormState extends State<SignupForm> {
 
   String? email;
   String? password;
-  String? Fname;
-  String? Lname;
+  String? name;
   bool _obscureText = false;
 
   bool agree = false;
@@ -114,44 +108,7 @@ class _SignupFormState extends State<SignupForm> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          // First Name
-          TextFormField(
-            decoration: InputDecoration(
-              labelText: 'First Name',
-              prefixIcon: const Icon(Icons.account_circle),
-              border: border,
-            ),
-            onSaved: (val) {
-              Fname = val;
-            },
-            validator: (value) {
-              if (value!.isEmpty) {
-                return 'Please Enter Your First Name';
-              }
-              return null;
-            },
-          ),
-          space,
-          // Last Name
-          TextFormField(
-            decoration: InputDecoration(
-              labelText: 'Last Name',
-              prefixIcon: const Icon(Icons.account_circle),
-              border: border,
-            ),
-            onSaved: (val) {
-              Lname = val;
-            },
-            validator: (value) {
-              if (value!.isEmpty) {
-                return 'Please Enter Your Last Name';
-              }
-              return null;
-            },
-          ),
-          space,
-
-          // Email
+          // email
           TextFormField(
             decoration: InputDecoration(
                 prefixIcon: const Icon(Icons.email_outlined),
@@ -159,7 +116,7 @@ class _SignupFormState extends State<SignupForm> {
                 border: border),
             validator: (value) {
               if (value!.isEmpty) {
-                return 'Please Enter Your Email';
+                return 'Please enter some text';
               }
               return null;
             },
@@ -171,7 +128,7 @@ class _SignupFormState extends State<SignupForm> {
 
           space,
 
-          // Password
+          // password
           TextFormField(
             controller: pass,
             decoration: InputDecoration(
@@ -195,13 +152,13 @@ class _SignupFormState extends State<SignupForm> {
             obscureText: !_obscureText,
             validator: (value) {
               if (value!.isEmpty) {
-                return 'Please Enter Your Password';
+                return 'Please enter some text';
               }
               return null;
             },
           ),
           space,
-          // Confirm Password
+          // confirm passwords
           TextFormField(
             decoration: InputDecoration(
               labelText: 'Confirm Password',
@@ -211,19 +168,51 @@ class _SignupFormState extends State<SignupForm> {
             obscureText: true,
             validator: (value) {
               if (value != pass.text) {
-                return 'Password Does Not Match';
-              }
-              if (value!.isEmpty) {
-                return 'Please Confirm Your Password';
+                return 'password not match';
               }
               return null;
             },
           ),
           space,
+          // name
+          TextFormField(
+            decoration: InputDecoration(
+              labelText: 'Full name',
+              prefixIcon: const Icon(Icons.account_circle),
+              border: border,
+            ),
+            onSaved: (val) {
+              name = val;
+            },
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Please enter some name';
+              }
+              return null;
+            },
+          ),
 
-          const SizedBox(height: 30),
+          Row(
+            children: <Widget>[
+              Checkbox(
+                onChanged: (_) {
+                  setState(() {
+                    agree = !agree;
+                  });
+                },
+                value: agree,
+              ),
+              const Flexible(
+                child: Text(
+                    'By creating account, I agree to Terms & Conditions and Privacy Policy.'),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 10,
+          ),
 
-          // Sign-Up Button
+          // signUP button
           SizedBox(
             height: 50,
             width: double.infinity,
@@ -239,7 +228,7 @@ class _SignupFormState extends State<SignupForm> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const HomePage()));
+                              builder: (context) => const Home()));
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text(
@@ -253,11 +242,8 @@ class _SignupFormState extends State<SignupForm> {
               },
               style: ElevatedButton.styleFrom(
                   shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(25.0)))),
-              child: const Text(
-                'Sign Up',
-                style: TextStyle(fontSize: 20),
-              ),
+                      borderRadius: BorderRadius.all(Radius.circular(24.0)))),
+              child: const Text('Sign Up'),
             ),
           ),
         ],

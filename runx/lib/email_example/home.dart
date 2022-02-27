@@ -1,22 +1,15 @@
-// System Packages
 import 'package:flutter/material.dart';
+import 'package:runx/email_example/firebase.dart';
+import 'package:runx/email_example/login.dart';
 
-// Screens
-import 'package:runx/auth_account/utils.dart';
-import 'package:runx/auth_account/sign_in.dart';
-import 'package:runx/user_profile/exercises.dart';
-import 'package:runx/user_profile/people.dart';
-import 'package:runx/user_profile/settings.dart';
-import 'package:runx/presentation/icons.dart';
-
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+class Home extends StatelessWidget {
+  const Home({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: const Center(
-        child: Text('User Profile Main Page'),
+        child: Text('Welcome'),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

@@ -1,10 +1,7 @@
-// System Packages
 import 'package:flutter/material.dart';
-
-// Screens
-import 'package:runx/auth_account/utils.dart';
-import 'package:runx/auth_account/sign_up.dart';
-import 'package:runx/user_profile/homepage.dart';
+import 'package:runx/email_example/firebase.dart';
+import 'package:runx/email_example/signup.dart';
+import 'package:runx/email_example/home.dart';
 
 class Login extends StatelessWidget {
   const Login({Key? key}) : super(key: key);
@@ -16,6 +13,7 @@ class Login extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         children: <Widget>[
           const SizedBox(height: 80),
+          // logo
           Column(
             children: const [
               FlutterLogo(
@@ -28,25 +26,30 @@ class Login extends StatelessWidget {
               ),
             ],
           ),
+
           const SizedBox(
             height: 50,
           ),
+
           const Padding(
             padding: EdgeInsets.all(16.0),
             child: LoginForm(),
           ),
+
           const SizedBox(height: 20),
+
           Row(
             children: <Widget>[
-              const SizedBox(width: 15),
-              const Text('Don\'t Have An Account?  ',
+              const SizedBox(width: 30),
+              const Text('New here ? ',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
               GestureDetector(
                 onTap: () {
+                  // Navigator.pushNamed(context, '/signup');
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => const Signup()));
                 },
-                child: const Text('Register Here',
+                child: const Text('Get Registered Now!!',
                     style: TextStyle(fontSize: 20, color: Colors.blue)),
               )
             ],
@@ -93,7 +96,7 @@ class _LoginFormState extends State<LoginForm> {
             ),
             validator: (value) {
               if (value!.isEmpty) {
-                return 'Please Enter Your Email';
+                return 'Please enter some text';
               }
               return null;
             },
@@ -105,8 +108,9 @@ class _LoginFormState extends State<LoginForm> {
             height: 20,
           ),
 
-          // Password
+          // password
           TextFormField(
+            // initialValue: 'Input text',
             decoration: InputDecoration(
               labelText: 'Password',
               prefixIcon: const Icon(Icons.lock_outline),
@@ -132,7 +136,7 @@ class _LoginFormState extends State<LoginForm> {
             },
             validator: (value) {
               if (value!.isEmpty) {
-                return 'Please Enter Your Password';
+                return 'Please enter some text';
               }
               return null;
             },
@@ -141,10 +145,12 @@ class _LoginFormState extends State<LoginForm> {
           const SizedBox(height: 30),
 
           SizedBox(
-            height: 50,
+            height: 54,
             width: 184,
             child: ElevatedButton(
               onPressed: () {
+                // Respond to button press
+
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
 
@@ -155,7 +161,7 @@ class _LoginFormState extends State<LoginForm> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const HomePage()));
+                              builder: (context) => const Home()));
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text(
@@ -169,10 +175,10 @@ class _LoginFormState extends State<LoginForm> {
               },
               style: ElevatedButton.styleFrom(
                   shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(25.0)))),
+                      borderRadius: BorderRadius.all(Radius.circular(24.0)))),
               child: const Text(
-                'Sign In',
-                style: TextStyle(fontSize: 20),
+                'Login',
+                style: TextStyle(fontSize: 24),
               ),
             ),
           ),
