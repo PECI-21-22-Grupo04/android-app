@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // Screens
 import 'package:runx/auth_account/utils.dart';
 import 'package:runx/auth_account/sign_up.dart';
+import 'package:runx/page_nav.dart';
 import 'package:runx/user_profile/homepage.dart';
 
 class Login extends StatelessWidget {
@@ -155,7 +156,7 @@ class _LoginFormState extends State<LoginForm> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const HomePage()));
+                              builder: (context) => const PageNav()));
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text(

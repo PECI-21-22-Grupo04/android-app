@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 // Screens
 import 'package:runx/auth_account/sign_in.dart';
+import 'package:runx/page_nav.dart';
 import 'package:runx/user_profile/homepage.dart';
 
 Future<void> main() async {
@@ -44,7 +45,7 @@ class _InitialState extends State<Initial> {
     if (FirebaseAuth.instance.currentUser?.uid == null) {
       return const Login();
     } else {
-      return const HomePage();
+      return const PageNav();
     }
   }
 }
