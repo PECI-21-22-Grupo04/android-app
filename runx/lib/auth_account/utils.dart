@@ -1,3 +1,4 @@
+// System Packages
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -13,7 +14,13 @@ class AuthenticationHelper {
       );
       return null;
     } on FirebaseAuthException catch (e) {
-      return e.message;
+      if (e.message == "Password should be at least 6 characters") {
+        return "Password should be at least 6 characters.";
+      } else if (e.message == "The email address is badly formatted.") {
+        return "Enter a valid email.";
+      } else {
+        return "An error has occured. \nCheck your credentials and internet connection or try again later.";
+      }
     }
   }
 
@@ -21,8 +28,8 @@ class AuthenticationHelper {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
       return null;
-    } on FirebaseAuthException catch (e) {
-      return e.message;
+    } on FirebaseAuthException {
+      return "An error has occured. \nCheck your credentials and internet connection or try again later.";
     }
   }
 
@@ -40,7 +47,7 @@ class AuthenticationHelper {
 
       await FirebaseAuth.instance.signInWithCredential(credential);
     } catch (e) {
-      throw Exception(e.toString());
+      return "An error has occured. \nCheck your credentials and internet connection or try again later.";
     }
   }
 
