@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Screens
 import 'package:runx/authentication/firebase.dart';
+import 'package:runx/api.dart';
 import 'package:runx/authentication/info_form.dart';
 
 class Signup extends StatelessWidget {
@@ -218,6 +219,13 @@ class _SignupFormState extends State<SignupForm> {
                       .then((result) {
                     if (result == null) {
                       // 1) CHAMAR API PARA REGISTAR EMAIL, FNAME E LNAME NA BD
+                      /*
+                         APIHelper()
+                          .createUser(email: email, fname: fname, lname: lname)
+                          .then((result) {
+                        print(result);
+                      });
+                      */
                       // 2) IR PARA INFO FORM
 
                       Navigator.pushReplacement(
