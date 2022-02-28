@@ -4,9 +4,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 // Screens
-import 'package:runx/auth_account/sign_in.dart';
-import 'package:runx/page_nav.dart';
-import 'package:runx/user_profile/homepage.dart';
+import 'package:runx/authentication/sign_in.dart';
+import 'package:runx/user_profile/page_nav.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,7 +40,7 @@ class Initial extends StatefulWidget {
 class _InitialState extends State<Initial> {
   @override
   Widget build(BuildContext context) {
-    // Check if user is signed in
+    // Check if user is signed in and show screen accordingly
     if (FirebaseAuth.instance.currentUser?.uid == null) {
       return const Login();
     } else {

@@ -2,10 +2,9 @@
 import 'package:flutter/material.dart';
 
 // Screens
-import 'package:runx/auth_account/utils.dart';
-import 'package:runx/auth_account/sign_up.dart';
-import 'package:runx/page_nav.dart';
-import 'package:runx/user_profile/homepage.dart';
+import 'package:runx/authentication/firebase.dart';
+import 'package:runx/authentication/sign_up.dart';
+import 'package:runx/user_profile/page_nav.dart';
 
 class Login extends StatelessWidget {
   const Login({Key? key}) : super(key: key);
@@ -16,21 +15,19 @@ class Login extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(8.0),
         children: <Widget>[
-          const SizedBox(height: 80),
+          const SizedBox(height: 20),
           Column(
-            children: const [
-              FlutterLogo(
-                size: 55,
+            children: [
+              Image.asset(
+                'assets/images/logo.png',
+                height: 250,
               ),
-              SizedBox(height: 50),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 'Welcome back!',
                 style: TextStyle(fontSize: 24),
               ),
             ],
-          ),
-          const SizedBox(
-            height: 50,
           ),
           const Padding(
             padding: EdgeInsets.all(16.0),
@@ -80,9 +77,8 @@ class _LoginFormState extends State<LoginForm> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          // email
+          // Email
           TextFormField(
-            // initialValue: 'Input text',
             decoration: const InputDecoration(
               prefixIcon: Icon(Icons.email_outlined),
               labelText: 'Email',
@@ -101,11 +97,11 @@ class _LoginFormState extends State<LoginForm> {
             onSaved: (val) {
               email = val;
             },
+            keyboardType: TextInputType.emailAddress,
           ),
           const SizedBox(
             height: 20,
           ),
-
           // Password
           TextFormField(
             decoration: InputDecoration(

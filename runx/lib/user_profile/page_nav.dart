@@ -1,10 +1,12 @@
+// System Packages
 import 'package:flutter/material.dart';
-import 'presentation/icons.dart';
 
+// Screens
 import 'package:runx/user_profile/homepage.dart';
 import 'package:runx/user_profile/exercises.dart';
 import 'package:runx/user_profile/people.dart';
 import 'package:runx/user_profile/settings.dart';
+import 'package:runx/presentation/icons.dart';
 
 class PageNav extends StatefulWidget {
   const PageNav({Key? key}) : super(key: key);

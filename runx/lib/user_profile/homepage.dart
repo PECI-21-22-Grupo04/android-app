@@ -1,13 +1,10 @@
 // System Packages
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 // Screens
-import 'package:runx/auth_account/utils.dart';
-import 'package:runx/auth_account/sign_in.dart';
-import 'package:runx/user_profile/exercises.dart';
-import 'package:runx/user_profile/people.dart';
-import 'package:runx/user_profile/settings.dart';
-import 'package:runx/presentation/icons.dart';
+import 'package:runx/authentication/firebase.dart';
+import 'package:runx/authentication/sign_in.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -15,8 +12,13 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: const Center(
-        child: Text('User Profile Main Page'),
+      body: Center(
+        child: Text("UID --> " +
+            ((FirebaseAuth.instance.currentUser?.uid).toString()) +
+            "\nEMAIL --> " +
+            (FirebaseAuth.instance.currentUser?.email).toString() +
+            "\nVERIFIED? --> " +
+            (FirebaseAuth.instance.currentUser?.emailVerified).toString()),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

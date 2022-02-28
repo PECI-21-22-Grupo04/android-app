@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 
 // Screens
-import 'package:runx/auth_account/utils.dart';
-import 'package:runx/user_profile/homepage.dart';
+import 'package:runx/authentication/firebase.dart';
+import 'package:runx/authentication/info_form.dart';
 
 class Signup extends StatelessWidget {
   const Signup({Key? key}) : super(key: key);
@@ -14,28 +14,25 @@ class Signup extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: <Widget>[
-          const SizedBox(height: 80),
-          // logo
+          const SizedBox(height: 20),
           Column(
-            children: const [
-              FlutterLogo(
-                size: 55,
+            children: [
+              Image.asset(
+                'assets/images/logo.png',
+                height: 175,
               ),
-              SizedBox(height: 50),
-              Text(
-                'Create Your New Account Here!',
+              const SizedBox(height: 20),
+              const Text(
+                'Create your account here!',
                 style: TextStyle(fontSize: 24),
               ),
             ],
           ),
-          const SizedBox(height: 30),
           const Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(16.0),
             child: SignupForm(),
           ),
-
-          const SizedBox(height: 30),
-
+          const SizedBox(height: 20),
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -61,26 +58,11 @@ class Signup extends StatelessWidget {
       ),
     );
   }
-
-  Container buildLogo() {
-    return Container(
-      height: 80,
-      width: 80,
-      decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-          color: Colors.blue),
-      child: const Center(
-        child: Text(
-          "T",
-          style: TextStyle(color: Colors.white, fontSize: 60.0),
-        ),
-      ),
-    );
-  }
 }
 
 class SignupForm extends StatefulWidget {
-  const SignupForm({Key? key}) : super(key: key);
+  const SignupForm({Key? key, String? email, String? fname, String? lname})
+      : super(key: key);
 
   @override
   _SignupFormState createState() => _SignupFormState();
@@ -91,11 +73,9 @@ class _SignupFormState extends State<SignupForm> {
 
   String? email;
   String? password;
-  String? Fname;
-  String? Lname;
+  String? fname;
+  String? lname;
   bool _obscureText = false;
-
-  bool agree = false;
 
   final pass = TextEditingController();
 
@@ -116,22 +96,23 @@ class _SignupFormState extends State<SignupForm> {
         children: <Widget>[
           // First Name
           TextFormField(
-            decoration: InputDecoration(
-              labelText: 'First Name',
-              prefixIcon: const Icon(Icons.account_circle),
-              border: border,
-            ),
-            onSaved: (val) {
-              Fname = val;
-            },
-            validator: (value) {
-              if (value!.isEmpty) {
-                return 'Please Enter Your First Name';
-              }
-              return null;
-            },
-          ),
+              decoration: InputDecoration(
+                labelText: 'First Name',
+                prefixIcon: const Icon(Icons.account_circle),
+                border: border,
+              ),
+              onSaved: (val) {
+                fname = val;
+              },
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return 'Please Enter Your First Name';
+                }
+                return null;
+              },
+              keyboardType: TextInputType.name),
           space,
+
           // Last Name
           TextFormField(
             decoration: InputDecoration(
@@ -140,7 +121,7 @@ class _SignupFormState extends State<SignupForm> {
               border: border,
             ),
             onSaved: (val) {
-              Lname = val;
+              lname = val;
             },
             validator: (value) {
               if (value!.isEmpty) {
@@ -148,6 +129,7 @@ class _SignupFormState extends State<SignupForm> {
               }
               return null;
             },
+            keyboardType: TextInputType.name,
           ),
           space,
 
@@ -168,7 +150,6 @@ class _SignupFormState extends State<SignupForm> {
             },
             keyboardType: TextInputType.emailAddress,
           ),
-
           space,
 
           // Password
@@ -201,6 +182,7 @@ class _SignupFormState extends State<SignupForm> {
             },
           ),
           space,
+
           // Confirm Password
           TextFormField(
             decoration: InputDecoration(
@@ -220,7 +202,6 @@ class _SignupFormState extends State<SignupForm> {
             },
           ),
           space,
-
           const SizedBox(height: 30),
 
           // Sign-Up Button
@@ -236,10 +217,17 @@ class _SignupFormState extends State<SignupForm> {
                       .signUp(email: email!, password: password!)
                       .then((result) {
                     if (result == null) {
+                      // 1) CHAMAR API PARA REGISTAR EMAIL, FNAME E LNAME NA BD
+                      // 2) IR PARA INFO FORM
+
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const HomePage()));
+                              builder: (context) => InfoForm(
+                                    emailP: email,
+                                    fnameP: fname,
+                                    lnameP: lname,
+                                  )));
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text(
