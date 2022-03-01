@@ -145,7 +145,7 @@ class _LoginFormState extends State<LoginForm> {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
 
-                  AuthenticationHelper()
+                  FirebaseAuthenticationCaller()
                       .signIn(email: email!, password: password!)
                       .then((result) {
                     if (result == null) {

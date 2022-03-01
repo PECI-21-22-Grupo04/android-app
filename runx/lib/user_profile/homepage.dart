@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          AuthenticationHelper()
+          FirebaseAuthenticationCaller()
               .signOut()
               .then((_) => Navigator.pushReplacement(
                     context,

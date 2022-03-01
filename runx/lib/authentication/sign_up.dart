@@ -1,4 +1,5 @@
 // System Packages
+import 'dart:convert';
 import 'package:flutter/material.dart';
 
 // Screens
@@ -214,20 +215,61 @@ class _SignupFormState extends State<SignupForm> {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
 
-                  AuthenticationHelper()
+                  // 1) Save basic user information in database
+                  APICaller()
+                      .createUser(email: email, fname: fname, lname: lname)
+                      .then((result1) {
+                    print(result1);
+                    if (json.decode(result1)["code"] == 0) {
+                      // 2) Register Email/Password in Firebase Authentication
+                      FirebaseAuthenticationCaller()
+                          .signUp(email: email!, password: password!)
+                          .then((result2) {
+                        if (result2 == null) {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => InfoForm(
+                                        emailP: email,
+                                        fnameP: fname,
+                                        lnameP: lname,
+                                      )));
+                        } else {
+                          APICaller().deleteUser(email: email).then((return3) {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content: Text(
+                                "An error has occured\nCheck your connetion or try again later",
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ));
+                          });
+                        }
+                      });
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(
+                          json.decode(result1)["code"],
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                      ));
+                    }
+                  });
+                  /*
+                  // 2) Register Email/Password in Firebase Authentication
+                  FirebaseAuthenticationHelper()
                       .signUp(email: email!, password: password!)
                       .then((result) {
                     if (result == null) {
-                      // 1) CHAMAR API PARA REGISTAR EMAIL, FNAME E LNAME NA BD
-                      /*
-                         APIHelper()
+                      // 2) Call API and register user data in database
+                      APICaller()
                           .createUser(email: email, fname: fname, lname: lname)
                           .then((result) {
+                        print(email! + "\n " + fname! + "\n " + lname!);
                         print(result);
                       });
-                      */
-                      // 2) IR PARA INFO FORM
 
+                      // 3) Go to aditional info form
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
@@ -245,6 +287,7 @@ class _SignupFormState extends State<SignupForm> {
                       ));
                     }
                   });
+                  */
                 }
               },
               style: ElevatedButton.styleFrom(
