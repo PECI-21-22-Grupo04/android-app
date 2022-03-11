@@ -2,8 +2,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-// Screens
+// Logic
 import 'package:runx/authentication/firebase.dart';
+
+// Screens
 import 'package:runx/authentication/sign_in.dart';
 
 class HomePage extends StatelessWidget {

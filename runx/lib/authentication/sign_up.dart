@@ -2,9 +2,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 
-// Screens
+// Logic
 import 'package:runx/authentication/firebase.dart';
 import 'package:runx/api.dart';
+
+// Screens
 import 'package:runx/authentication/info_form.dart';
 
 class Signup extends StatelessWidget {
@@ -107,7 +109,7 @@ class _SignupFormState extends State<SignupForm> {
                 fname = val;
               },
               validator: (value) {
-                if (value!.isEmpty) {
+                if (value == null || value.isEmpty) {
                   return 'Please Enter Your First Name';
                 }
                 return null;
@@ -126,7 +128,7 @@ class _SignupFormState extends State<SignupForm> {
               lname = val;
             },
             validator: (value) {
-              if (value!.isEmpty) {
+              if (value == null || value.isEmpty) {
                 return 'Please Enter Your Last Name';
               }
               return null;
@@ -142,7 +144,7 @@ class _SignupFormState extends State<SignupForm> {
                 labelText: 'Email',
                 border: border),
             validator: (value) {
-              if (value!.isEmpty) {
+              if (value == null || value.isEmpty) {
                 return 'Please Enter Your Email';
               }
               return null;
@@ -177,7 +179,7 @@ class _SignupFormState extends State<SignupForm> {
             },
             obscureText: !_obscureText,
             validator: (value) {
-              if (value!.isEmpty) {
+              if (value == null || value.isEmpty) {
                 return 'Please Enter Your Password';
               }
               return null;
@@ -197,7 +199,7 @@ class _SignupFormState extends State<SignupForm> {
               if (value != pass.text) {
                 return 'Password Does Not Match';
               }
-              if (value!.isEmpty) {
+              if (value == null || value.isEmpty) {
                 return 'Please Confirm Your Password';
               }
               return null;
@@ -215,16 +217,17 @@ class _SignupFormState extends State<SignupForm> {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
 
-                  // 1) Save basic user information in database
+                  // STEP 1) Save basic user information in database
                   APICaller()
                       .createUser(email: email, fname: fname, lname: lname)
                       .then((result1) {
-                    print(result1);
+                    // If result code is 0, the user information was successfully saved in our database
                     if (json.decode(result1)["code"] == 0) {
-                      // 2) Register Email/Password in Firebase Authentication
+                      // STEP 2) Register Email/Password in Firebase Authentication
                       FirebaseAuthenticationCaller()
                           .signUp(email: email!, password: password!)
                           .then((result2) {
+                        // If result is null, the user credentials were successfully saved in Firebase Authentication
                         if (result2 == null) {
                           Navigator.pushReplacement(
                               context,
@@ -234,19 +237,24 @@ class _SignupFormState extends State<SignupForm> {
                                         fnameP: fname,
                                         lnameP: lname,
                                       )));
-                        } else {
+                        }
+                        // Else the user credentials werent saved in Firebase Authentication,
+                        // so the user previously created in the database is deleted, to maintain consistency
+                        else {
                           APICaller().deleteUser(email: email).then((return3) {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(
                               content: Text(
-                                "An error has occured\nCheck your connetion or try again later",
+                                "An error has occured\nCheck your connection or try again later",
                                 style: TextStyle(fontSize: 16),
                               ),
                             ));
                           });
                         }
                       });
-                    } else {
+                    }
+                    // Else, the user information wasn't saved in our database, show error message
+                    else {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text(
                           json.decode(result1)["code"],
@@ -255,39 +263,6 @@ class _SignupFormState extends State<SignupForm> {
                       ));
                     }
                   });
-                  /*
-                  // 2) Register Email/Password in Firebase Authentication
-                  FirebaseAuthenticationHelper()
-                      .signUp(email: email!, password: password!)
-                      .then((result) {
-                    if (result == null) {
-                      // 2) Call API and register user data in database
-                      APICaller()
-                          .createUser(email: email, fname: fname, lname: lname)
-                          .then((result) {
-                        print(email! + "\n " + fname! + "\n " + lname!);
-                        print(result);
-                      });
-
-                      // 3) Go to aditional info form
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => InfoForm(
-                                    emailP: email,
-                                    fnameP: fname,
-                                    lnameP: lname,
-                                  )));
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text(
-                          result,
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                      ));
-                    }
-                  });
-                  */
                 }
               },
               style: ElevatedButton.styleFrom(

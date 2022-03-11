@@ -1,8 +1,10 @@
 // System Packages
 import 'package:flutter/material.dart';
 
-// Screens
+// Logic
 import 'package:runx/authentication/firebase.dart';
+
+// Screens
 import 'package:runx/authentication/sign_up.dart';
 import 'package:runx/user_profile/page_nav.dart';
 
@@ -89,7 +91,7 @@ class _LoginFormState extends State<LoginForm> {
               ),
             ),
             validator: (value) {
-              if (value!.isEmpty) {
+              if (value == null || value.isEmpty) {
                 return 'Please Enter Your Email';
               }
               return null;
@@ -128,7 +130,7 @@ class _LoginFormState extends State<LoginForm> {
               password = val;
             },
             validator: (value) {
-              if (value!.isEmpty) {
+              if (value == null || value.isEmpty) {
                 return 'Please Enter Your Password';
               }
               return null;
@@ -144,16 +146,19 @@ class _LoginFormState extends State<LoginForm> {
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-
+                  // Call Firebase to authenticate user
                   FirebaseAuthenticationCaller()
                       .signIn(email: email!, password: password!)
                       .then((result) {
+                    // If result is null, the user is succesfully authenticated and will be redirected to home page
                     if (result == null) {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                               builder: (context) => const PageNav()));
-                    } else {
+                    }
+                    // Else show error message
+                    else {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text(
                           result,

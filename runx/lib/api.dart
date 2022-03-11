@@ -24,8 +24,7 @@ class APICaller {
   }
 
 // Delete User
-  Future<String> deleteUser(
-      {String? email, String? fname, String? lname}) async {
+  Future<String> deleteUser({String? email}) async {
     final response = await http.post(
       Uri.parse(host + port + '/deleteUser'),
       headers: <String, String>{
@@ -33,6 +32,31 @@ class APICaller {
       },
       body: (<String, String>{
         "email": email.toString(),
+      }),
+    );
+    return response.body;
+  }
+
+// Save User Information
+  Future<String> addUserInfo(
+      {String? email,
+      String? age,
+      String? height,
+      String? weight,
+      String? fitness,
+      String? pathologies}) async {
+    final response = await http.post(
+      Uri.parse(host + port + '/addUserInfo'),
+      headers: <String, String>{
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      },
+      body: (<String, String>{
+        "email": email.toString(),
+        "age": age.toString(),
+        "height": height.toString(),
+        "weight": weight.toString(),
+        "fitness": fitness.toString(),
+        "pathologies": pathologies.toString(),
       }),
     );
     return response.body;

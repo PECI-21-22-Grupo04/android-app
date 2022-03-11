@@ -1,5 +1,10 @@
 // System Packages
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+// Logic
+import 'package:runx/api.dart';
 
 // Screens
 import 'package:runx/user_profile/page_nav.dart';
@@ -74,7 +79,7 @@ class _SignupFormState extends State<SignupForm> {
   String? age;
   String? height;
   String? weight;
-  String? info;
+  String? pathologies;
 
   String fitnesslevel = 'Begginer';
 
@@ -109,6 +114,9 @@ class _SignupFormState extends State<SignupForm> {
         children: <Widget>[
           // Age
           TextFormField(
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(3),
+              ],
               decoration: InputDecoration(
                 labelText: 'Age (years)',
                 prefixIcon: const Icon(Icons.calendar_month),
@@ -118,8 +126,11 @@ class _SignupFormState extends State<SignupForm> {
                 age = val;
               },
               validator: (value) {
-                if (value!.isEmpty) {
+                if (value == null || value.isEmpty) {
                   return 'Please Enter Your Age';
+                }
+                if (int.parse(value) > 120 || int.parse(value) < 14) {
+                  return "Please Enter a Valid Age";
                 }
                 return null;
               },
@@ -128,6 +139,9 @@ class _SignupFormState extends State<SignupForm> {
 
           // Height
           TextFormField(
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(3),
+              ],
               decoration: InputDecoration(
                 labelText: 'Height (cm)',
                 prefixIcon: const Icon(Icons.man),
@@ -137,8 +151,11 @@ class _SignupFormState extends State<SignupForm> {
                 height = val;
               },
               validator: (value) {
-                if (value!.isEmpty) {
+                if (value == null || value.isEmpty) {
                   return 'Please Enter Your Height';
+                }
+                if (int.parse(value) > 250 || int.parse(value) < 100) {
+                  return "Please Enter a Valid Height";
                 }
                 return null;
               },
@@ -147,13 +164,19 @@ class _SignupFormState extends State<SignupForm> {
 
           // Weight
           TextFormField(
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(3),
+              ],
               decoration: InputDecoration(
                   labelText: 'Weight (kg)',
                   prefixIcon: const Icon(Icons.monitor_weight),
                   border: border),
               validator: (value) {
-                if (value!.isEmpty) {
+                if (value == null || value.isEmpty) {
                   return 'Please Enter Your Weight';
+                }
+                if (int.parse(value) > 200 || int.parse(value) < 25) {
+                  return "Please Enter a Valid Weight";
                 }
                 return null;
               },
@@ -165,6 +188,9 @@ class _SignupFormState extends State<SignupForm> {
 
           // Pathologies
           TextFormField(
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(250),
+              ],
               decoration: InputDecoration(
                 labelText: 'Pathologies, other info...',
                 prefixIcon: const Icon(Icons.local_hospital),
@@ -172,7 +198,7 @@ class _SignupFormState extends State<SignupForm> {
                 contentPadding: const EdgeInsets.symmetric(vertical: 50.0),
               ),
               onSaved: (val) {
-                info = val;
+                pathologies = val;
               },
               keyboardType: TextInputType.text),
           space,
@@ -211,10 +237,33 @@ class _SignupFormState extends State<SignupForm> {
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-
-                  // 1) CHAMAR API PARA REGISTAR DADOS NA BD
-                  // 2) FINALMENTE IR PARA PAGENAV
-
+                  // Save additional user information in the database
+                  APICaller()
+                      .addUserInfo(
+                          email: email,
+                          age: age,
+                          height: height,
+                          weight: weight,
+                          fitness: fitnesslevel,
+                          pathologies: pathologies)
+                      .then((result) {
+                    // If result code is 0, the data has been successfully saved in the database
+                    if (json.decode(result)["code"] == 0) {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const PageNav()));
+                    }
+                    // Else show error message
+                    else {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(
+                          json.decode(result)["code"],
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                      ));
+                    }
+                  });
                 }
               },
               style: ElevatedButton.styleFrom(
