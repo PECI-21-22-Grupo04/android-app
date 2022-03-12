@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 
 // Screens
 import 'package:runx/user_profile/homepage.dart';
-import 'package:runx/user_profile/exercises.dart';
-import 'package:runx/user_profile/people.dart';
-import 'package:runx/user_profile/settings.dart';
-import 'package:runx/presentation/icons.dart';
+import 'package:runx/exercise/exercises.dart';
+import 'package:runx/device/devices.dart';
+import 'package:runx/instructor/instructor.dart';
+import 'package:runx/user_profile/profile.dart';
 
 class PageNav extends StatefulWidget {
   const PageNav({Key? key}) : super(key: key);
@@ -18,7 +18,13 @@ class PageNav extends StatefulWidget {
 class _PageNavState extends State<PageNav> {
   int _selectedIndex = 0;
 
-  static const List _pages = [HomePage(), Exercises(), People(), Settings()];
+  static const List _pages = [
+    HomePage(),
+    Exercises(),
+    Instructor(),
+    Devices(),
+    Profile()
+  ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -29,9 +35,6 @@ class _PageNavState extends State<PageNav> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /* appBar: AppBar(
-        title: const Text('RunX'),
-      ), */
       body: Stack(
         children: [
           Offstage(
@@ -50,6 +53,10 @@ class _PageNavState extends State<PageNav> {
             offstage: _selectedIndex != 3,
             child: _pages[3],
           ),
+          Offstage(
+            offstage: _selectedIndex != 4,
+            child: _pages[4],
+          ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -60,25 +67,25 @@ class _PageNavState extends State<PageNav> {
         showUnselectedLabels: false,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(CustomIcons.homeicon),
-            label: 'Início',
+            icon: Icon(Icons.home_rounded),
+            label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(CustomIcons.exerciseicon),
-            label: 'Exercícios',
+            icon: Icon(Icons.search_rounded),
+            label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(CustomIcons.peopleicon),
-            label: 'Pessoas',
+            icon: Icon(Icons.person_add_rounded),
+            label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(CustomIcons.settingsicon),
-            label: 'Definições',
+            icon: Icon(Icons.watch),
+            label: '',
           ),
-          // BottomNavigationBarItem(
-          //   icon: Icon(Icons.chat),
-          //   label: 'Chats',
-          // ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_rounded),
+            label: '',
+          ),
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,

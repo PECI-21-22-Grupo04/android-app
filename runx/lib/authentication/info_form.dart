@@ -7,7 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:runx/api.dart';
 
 // Screens
-import 'package:runx/user_profile/page_nav.dart';
+import 'package:runx/presentation/page_nav.dart';
 
 class InfoForm extends StatelessWidget {
   final String? emailP;
@@ -31,10 +31,8 @@ class InfoForm extends StatelessWidget {
           Column(
             children: const [
               SizedBox(height: 20),
-              Text(
-                  'Additional information that may be helpful to your instructor',
-                  style: TextStyle(fontSize: 24),
-                  textAlign: TextAlign.center),
+              Text('Forneça informação adicional ao seu instrutor',
+                  style: TextStyle(fontSize: 24), textAlign: TextAlign.center),
             ],
           ),
           Padding(
@@ -48,7 +46,7 @@ class InfoForm extends StatelessWidget {
           const SizedBox(height: 30),
           const Expanded(
               child: Text(
-                  'You may alter this information later on your profile page.',
+                  'Pode alterar esta informação mais tarde no seu perfil',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                   textAlign: TextAlign.center)),
         ],
@@ -81,18 +79,17 @@ class _SignupFormState extends State<SignupForm> {
   String? weight;
   String? pathologies;
 
-  String fitnesslevel = 'Begginer';
+  String fitnesslevel = 'Principiante';
 
   var items = [
-    'Begginer',
-    'Elementary',
-    'Intermediate',
-    'Advanced',
-    'Athlete',
+    'Principiante',
+    'Elementar',
+    'Intermédio',
+    'Avançado',
+    'Atleta',
   ];
 
   final pass = TextEditingController();
-
   get fname => widget.fnameC;
   get lname => widget.lnameC;
   get email => widget.emailC;
@@ -118,7 +115,7 @@ class _SignupFormState extends State<SignupForm> {
                 LengthLimitingTextInputFormatter(3),
               ],
               decoration: InputDecoration(
-                labelText: 'Age (years)',
+                labelText: 'Idade (anos)',
                 prefixIcon: const Icon(Icons.calendar_month),
                 border: border,
               ),
@@ -127,10 +124,10 @@ class _SignupFormState extends State<SignupForm> {
               },
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please Enter Your Age';
+                  return 'Por favor introduza a sua idade';
                 }
                 if (int.parse(value) > 120 || int.parse(value) < 14) {
-                  return "Please Enter a Valid Age";
+                  return "Por favor introduza uma idade válida";
                 }
                 return null;
               },
@@ -143,7 +140,7 @@ class _SignupFormState extends State<SignupForm> {
                 LengthLimitingTextInputFormatter(3),
               ],
               decoration: InputDecoration(
-                labelText: 'Height (cm)',
+                labelText: 'Altura (cm)',
                 prefixIcon: const Icon(Icons.man),
                 border: border,
               ),
@@ -152,10 +149,10 @@ class _SignupFormState extends State<SignupForm> {
               },
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please Enter Your Height';
+                  return 'Por favor introduza a sua altura';
                 }
                 if (int.parse(value) > 250 || int.parse(value) < 100) {
-                  return "Please Enter a Valid Height";
+                  return "Por favor introduza uma altura válida";
                 }
                 return null;
               },
@@ -168,15 +165,15 @@ class _SignupFormState extends State<SignupForm> {
                 LengthLimitingTextInputFormatter(3),
               ],
               decoration: InputDecoration(
-                  labelText: 'Weight (kg)',
+                  labelText: 'Peso (kg)',
                   prefixIcon: const Icon(Icons.monitor_weight),
                   border: border),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please Enter Your Weight';
+                  return 'Por favor introduza o seu peso';
                 }
                 if (int.parse(value) > 200 || int.parse(value) < 25) {
-                  return "Please Enter a Valid Weight";
+                  return "Por favor introduza um peso válido";
                 }
                 return null;
               },
@@ -189,10 +186,10 @@ class _SignupFormState extends State<SignupForm> {
           // Pathologies
           TextFormField(
               inputFormatters: [
-                LengthLimitingTextInputFormatter(250),
+                LengthLimitingTextInputFormatter(300),
               ],
               decoration: InputDecoration(
-                labelText: 'Pathologies, other info...',
+                labelText: 'Patologias, outra informação...',
                 prefixIcon: const Icon(Icons.local_hospital),
                 border: border,
                 contentPadding: const EdgeInsets.symmetric(vertical: 50.0),
@@ -208,7 +205,7 @@ class _SignupFormState extends State<SignupForm> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text('Fitness Level', style: TextStyle(fontSize: 30)),
+              const Text('Nível de Fitness', style: TextStyle(fontSize: 30)),
               DropdownButton(
                 style: const TextStyle(fontSize: 20, color: Colors.black),
                 value: fitnesslevel,
@@ -270,7 +267,7 @@ class _SignupFormState extends State<SignupForm> {
                   shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(25.0)))),
               child: const Text(
-                'Submit Info',
+                'Submeter Informação',
                 style: TextStyle(fontSize: 20),
               ),
             ),
@@ -292,7 +289,7 @@ class _SignupFormState extends State<SignupForm> {
                   shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(25.0)))),
               child: const Text(
-                'Skip',
+                'Saltar',
                 style: TextStyle(fontSize: 20),
               ),
             ),

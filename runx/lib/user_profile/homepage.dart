@@ -14,6 +14,20 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Inicio'),
+        centerTitle: true,
+        toolbarHeight: 70,
+        leading: IconButton(
+          iconSize: 45.0,
+          icon: const Icon(Icons.menu_rounded),
+          onPressed: () {
+            //
+            // ABRIR MENU
+            //
+          },
+        ),
+      ),
       body: Center(
         child: Text("UID --> " +
             ((FirebaseAuth.instance.currentUser?.uid).toString()) +

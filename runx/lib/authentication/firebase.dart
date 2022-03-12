@@ -17,17 +17,17 @@ class FirebaseAuthenticationCaller {
       return null;
     } on FirebaseAuthException catch (e) {
       if (e.code == "network-request-failed") {
-        return "A network error has occured \nPlease check your internet connection";
+        return "Ocorreu um erro de rede. \nPor favor verifique a sua conexão à Internet";
       } else if (e.code == "email-already-in-use") {
-        return "An account already exists with this email";
+        return "Uma conta já existe com este email. \nPor favor escolha outro";
       } else if (e.code == "invalid-email") {
-        return "Invalid email \nPlease choose a valid one";
+        return "Email inválido. \nPor favor escolha outro";
       } else if (e.code == 'weak-password') {
-        return "Weak password \nPlease choose one with at least 6 characters";
+        return "Password fraca. \nPor favor escolha uma com pelo menos 6 caracteres";
       } else if (e.code == "operation-not-allowed") {
-        return "Account registering is currently unavailable \nPlease try again later";
+        return "Criação de novas contas atualmente indisponível. \nPor favor tente mais tarde";
       } else {
-        return "An error has occured. Please try again later";
+        return "Ocorreu um erro. Por favor tente mais tarde";
       }
     }
   }
@@ -40,15 +40,15 @@ class FirebaseAuthenticationCaller {
       return null;
     } on FirebaseAuthException catch (e) {
       if (e.code == "network-request-failed") {
-        return "A network error has occured \nPlease check your internet connection";
+        return "Ocorreu um erro de rede. \nPor favor verifique a sua conexão à Internet";
       } else if (e.code == "invalid-email" || e.code == "user-not-found") {
-        return "This account does not exist";
+        return "Esta conta não existe. \nPor favor faça o registo do email";
       } else if (e.code == "wrong-password") {
-        return "Incorrect password";
+        return "Password incorreta";
       } else if (e.code == "user-disabled") {
-        return "This account is currently disabled \nPlease try again later";
+        return "Esta conta está atualmente desativada. \nPor favor tente mais tarde";
       } else {
-        return "An error has occured. Please try again later";
+        return "Ocorreu um erro. Por favor tente mais tarde";
       }
     }
   }
@@ -68,7 +68,7 @@ class FirebaseAuthenticationCaller {
 
       await FirebaseAuth.instance.signInWithCredential(credential);
     } catch (e) {
-      return "An error has occured. \nCheck your credentials and internet connection or try again later.";
+      return "Ocorreu um erro. \nVerifique as suas credenciais ou tente mais tarde";
     }
     return null;
   }

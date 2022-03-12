@@ -27,7 +27,7 @@ class Signup extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               const Text(
-                'Create your account here!',
+                'Crie a sua conta aqui!',
                 style: TextStyle(fontSize: 24),
               ),
             ],
@@ -43,14 +43,14 @@ class Signup extends StatelessWidget {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    const Text('      Already Registered?  ',
+                    const Text('      Já tem conta?  ',
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 20)),
                     GestureDetector(
                       onTap: () {
                         Navigator.pop(context);
                       },
-                      child: const Text('Sign In Here',
+                      child: const Text('Entrar Aqui',
                           style: TextStyle(fontSize: 20, color: Colors.blue)),
                     )
                   ],
@@ -101,7 +101,7 @@ class _SignupFormState extends State<SignupForm> {
           // First Name
           TextFormField(
               decoration: InputDecoration(
-                labelText: 'First Name',
+                labelText: 'Primeiro Nome',
                 prefixIcon: const Icon(Icons.account_circle),
                 border: border,
               ),
@@ -110,7 +110,7 @@ class _SignupFormState extends State<SignupForm> {
               },
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please Enter Your First Name';
+                  return 'Por favor introduza o seu primeiro nome';
                 }
                 return null;
               },
@@ -120,7 +120,7 @@ class _SignupFormState extends State<SignupForm> {
           // Last Name
           TextFormField(
             decoration: InputDecoration(
-              labelText: 'Last Name',
+              labelText: 'Ultimo Nome',
               prefixIcon: const Icon(Icons.account_circle),
               border: border,
             ),
@@ -129,7 +129,7 @@ class _SignupFormState extends State<SignupForm> {
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please Enter Your Last Name';
+                return 'Por favor introduza o seu ultimo nome';
               }
               return null;
             },
@@ -145,7 +145,7 @@ class _SignupFormState extends State<SignupForm> {
                 border: border),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please Enter Your Email';
+                return 'Por favor introduza o seu email';
               }
               return null;
             },
@@ -180,7 +180,7 @@ class _SignupFormState extends State<SignupForm> {
             obscureText: !_obscureText,
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please Enter Your Password';
+                return 'Por favor introduza a sua password';
               }
               return null;
             },
@@ -190,17 +190,17 @@ class _SignupFormState extends State<SignupForm> {
           // Confirm Password
           TextFormField(
             decoration: InputDecoration(
-              labelText: 'Confirm Password',
+              labelText: 'Confirmar Password',
               prefixIcon: const Icon(Icons.lock_outline),
               border: border,
             ),
             obscureText: true,
             validator: (value) {
               if (value != pass.text) {
-                return 'Password Does Not Match';
+                return 'Passwords não correspondem';
               }
               if (value == null || value.isEmpty) {
-                return 'Please Confirm Your Password';
+                return 'Por favor confirme a sua password';
               }
               return null;
             },
@@ -245,7 +245,7 @@ class _SignupFormState extends State<SignupForm> {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(
                               content: Text(
-                                "An error has occured\nCheck your connection or try again later",
+                                "Ocorreu um erro\nVerifique a sua conexão ou tente mais tarde",
                                 style: TextStyle(fontSize: 16),
                               ),
                             ));
@@ -269,7 +269,7 @@ class _SignupFormState extends State<SignupForm> {
                   shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(25.0)))),
               child: const Text(
-                'Sign Up',
+                'Registar',
                 style: TextStyle(fontSize: 20),
               ),
             ),

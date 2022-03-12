@@ -6,7 +6,7 @@ import 'package:runx/authentication/firebase.dart';
 
 // Screens
 import 'package:runx/authentication/sign_up.dart';
-import 'package:runx/user_profile/page_nav.dart';
+import 'package:runx/presentation/page_nav.dart';
 
 class Login extends StatelessWidget {
   const Login({Key? key}) : super(key: key);
@@ -39,14 +39,14 @@ class Login extends StatelessWidget {
           Row(
             children: <Widget>[
               const SizedBox(width: 15),
-              const Text('Don\'t Have An Account?  ',
+              const Text('Não tem conta?  ',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
               GestureDetector(
                 onTap: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => const Signup()));
                 },
-                child: const Text('Register Here',
+                child: const Text('Registe-se Aqui',
                     style: TextStyle(fontSize: 20, color: Colors.blue)),
               )
             ],
@@ -92,7 +92,7 @@ class _LoginFormState extends State<LoginForm> {
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please Enter Your Email';
+                return 'Por favor introduza o seu email';
               }
               return null;
             },
@@ -131,7 +131,7 @@ class _LoginFormState extends State<LoginForm> {
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please Enter Your Password';
+                return 'Por favor introduza a sua password';
               }
               return null;
             },
@@ -139,6 +139,7 @@ class _LoginFormState extends State<LoginForm> {
 
           const SizedBox(height: 30),
 
+          // Submit Form Button
           SizedBox(
             height: 50,
             width: 184,
@@ -173,7 +174,7 @@ class _LoginFormState extends State<LoginForm> {
                   shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(25.0)))),
               child: const Text(
-                'Sign In',
+                'Entrar',
                 style: TextStyle(fontSize: 20),
               ),
             ),

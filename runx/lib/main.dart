@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 // Screens
 import 'package:runx/authentication/sign_in.dart';
-import 'package:runx/user_profile/page_nav.dart';
+import 'package:runx/presentation/page_nav.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
