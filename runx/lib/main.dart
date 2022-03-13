@@ -21,8 +21,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'RunX',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        brightness: Brightness.light,
+        /* light theme settings */
       ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        /* dark theme settings */
+      ),
+      themeMode: ThemeMode.system,
       home: const Initial(title: 'RunX'),
     );
   }

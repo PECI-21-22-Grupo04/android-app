@@ -37,6 +37,7 @@ dependencies:
   google_sign_in: ^5.2.3
   firebase_auth: ^3.3.8
   http: ^0.13.4
+  animated_theme_switcher: "^2.0.5"
 
 dev_dependencies:
   flutter_test:
