@@ -37,27 +37,32 @@ class Signup extends StatelessWidget {
             child: SignupForm(),
           ),
           const SizedBox(height: 20),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                Row(
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    const Text('      Já tem conta?  ',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20)),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text('Entrar Aqui',
-                          style: TextStyle(fontSize: 20, color: Colors.blue)),
+                    Row(
+                      children: <Widget>[
+                        const Text('      Já tem conta?  ',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20)),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text('Entrar Aqui',
+                              style:
+                                  TextStyle(fontSize: 20, color: Colors.blue)),
+                        )
+                      ],
                     )
                   ],
-                )
-              ],
-            ),
-          ),
+                ),
+              ),
+            ],
+          )
         ],
       ),
     );

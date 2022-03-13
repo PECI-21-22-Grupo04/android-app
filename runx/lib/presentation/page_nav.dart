@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 
 // Screens
 import 'package:runx/user_profile/homepage.dart';
+import 'package:runx/user_profile/profile.dart';
 import 'package:runx/exercise/exercises.dart';
 import 'package:runx/device/devices.dart';
 import 'package:runx/instructor/instructor.dart';
-import 'package:runx/user_profile/profile.dart';
 
 class PageNav extends StatefulWidget {
   const PageNav({Key? key}) : super(key: key);

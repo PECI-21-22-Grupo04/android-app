@@ -6,7 +6,7 @@ class APICaller {
   final String host = 'http://localhost:';
   final String port = '8080';
 
-// Create User
+// Create Client
   Future<String> createClient(
       {String? email, String? fname, String? lname}) async {
     final response = await http.post(
@@ -23,7 +23,7 @@ class APICaller {
     return response.body;
   }
 
-// Delete User
+// Delete Client
   Future<String> deleteClient({String? email}) async {
     final response = await http.post(
       Uri.parse(host + port + '/deleteClient'),
@@ -37,7 +37,7 @@ class APICaller {
     return response.body;
   }
 
-// Save User Information
+// Save Client Information
   Future<String> addClientInfo(
       {String? email,
       String? age,

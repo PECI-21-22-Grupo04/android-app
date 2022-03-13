@@ -1,5 +1,7 @@
 // System Packages
 import 'package:flutter/material.dart';
+
+// Screens
 import 'package:runx/presentation/side_nav.dart';
 
 class Instructor extends StatefulWidget {
@@ -16,9 +18,9 @@ class _InstructorState extends State<Instructor> {
         appBar: AppBar(
       title: const Text('Instrutor'),
       centerTitle: true,
-      toolbarHeight: 40,
+      toolbarHeight: 65,
       leading: IconButton(
-        iconSize: 25.0,
+        iconSize: 35.0,
         icon: const Icon(Icons.menu_rounded),
         onPressed: () {
           Navigator.of(context).push(

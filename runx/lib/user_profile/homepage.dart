@@ -2,11 +2,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-// Logic
-import 'package:runx/authentication/firebase.dart';
-
 // Screens
-import 'package:runx/authentication/sign_in.dart';
 import 'package:runx/presentation/side_nav.dart';
 
 class HomePage extends StatefulWidget {
@@ -24,9 +20,9 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           title: const Text('Inicio'),
           centerTitle: true,
-          toolbarHeight: 40,
+          toolbarHeight: 65,
           leading: IconButton(
-            iconSize: 25.0,
+            iconSize: 35.0,
             icon: const Icon(Icons.menu_rounded),
             onPressed: () {
               Navigator.of(context).push(
@@ -42,18 +38,6 @@ class _HomePageState extends State<HomePage> {
               (FirebaseAuth.instance.currentUser?.email).toString() +
               "\nVERIFIED? --> " +
               (FirebaseAuth.instance.currentUser?.emailVerified).toString()),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            FirebaseAuthenticationCaller()
-                .signOut()
-                .then((_) => Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (contex) => const Login()),
-                    ));
-          },
-          child: const Icon(Icons.logout),
-          tooltip: 'Logout',
         ),
       ),
     );

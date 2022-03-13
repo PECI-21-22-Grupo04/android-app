@@ -22,11 +22,11 @@ class MyApp extends StatelessWidget {
       title: 'RunX',
       theme: ThemeData(
         brightness: Brightness.light,
-        /* light theme settings */
+        /* light theme settings --> Controled by user cellphone settings*/
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
-        /* dark theme settings */
+        /* dark theme settings --> Controled by user cellphone settings*/
       ),
       themeMode: ThemeMode.system,
       home: const Initial(title: 'RunX'),

@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 
 // Logic
 import 'package:runx/authentication/firebase.dart';
-import 'package:runx/profile/editprofile.dart';
 
 // Screens
-import 'package:runx/user_profile/profile.dart';
 import 'package:runx/authentication/sign_in.dart';
 import 'package:runx/profile/userdata.dart';
 import 'package:runx/profile/user.dart';
+import 'package:runx/profile/editprofile.dart';
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
@@ -148,20 +147,20 @@ class _SettingsState extends State<Settings> {
                   onChanged: (val) {},
                 ),
                 ListTile(
-                  title: const Text(
-                    "Sair",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  onTap: () {
-                    FirebaseAuthenticationCaller()
-                        .signOut()
-                        .then((_) => Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (contex) => const Login()),
-                            ));
-                  },
-                ),
+                    title: const Text(
+                      "Sair",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    onTap: () {
+                      FirebaseAuthenticationCaller().signOut().then((value) {
+                        Navigator.pushAndRemoveUntil<void>(
+                            context,
+                            MaterialPageRoute<void>(
+                                builder: (BuildContext context) =>
+                                    const Login()),
+                            (Route<dynamic> route) => false);
+                      });
+                    }),
               ],
             ),
           ),

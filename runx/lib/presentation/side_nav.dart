@@ -1,3 +1,4 @@
+// System Packages
 import 'package:flutter/material.dart';
 
 // Logic
@@ -21,7 +22,6 @@ class _SideNavState extends State<SideNav> {
     const user = UserData.myUser;
     return Drawer(
       child: ListView(
-        // Remove padding
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
@@ -38,6 +38,8 @@ class _SideNavState extends State<SideNav> {
               ),
             ),
           ),
+
+          // Settings Button
           ListTile(
             leading: const Icon(Icons.settings),
             title: const Text('Definições'),
@@ -46,19 +48,37 @@ class _SideNavState extends State<SideNav> {
                   MaterialPageRoute(builder: (context) => const Settings()));
             },
           ),
+
+          // Payments Button
           const Divider(),
           ListTile(
-            title: const Text('Logout'),
-            leading: const Icon(Icons.exit_to_app),
-            onTap: () {
-              FirebaseAuthenticationCaller()
-                  .signOut()
-                  .then((_) => Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (contex) => const Login()),
-                      ));
-            },
-          ),
+              title: const Text('Pagamentos'),
+              leading: const Icon(Icons.payment_rounded),
+              onTap: () {/* IR PARA PAGINA DE PAGAMENTOS */}),
+
+          // Security Button
+          const Divider(),
+          ListTile(
+              title: const Text('Segurança'),
+              leading: const Icon(Icons.security_rounded),
+              onTap: () {/* IR PARA PAGINA DE SEGURANÇA */}),
+
+          // Logout Button
+          const Divider(),
+          ListTile(
+              title: const Text('Logout'),
+              leading: const Icon(Icons.exit_to_app),
+              iconColor: Colors.red,
+              textColor: Colors.red,
+              onTap: () {
+                FirebaseAuthenticationCaller().signOut().then((value) {
+                  Navigator.pushAndRemoveUntil<void>(
+                      context,
+                      MaterialPageRoute<void>(
+                          builder: (BuildContext context) => const Login()),
+                      (Route<dynamic> route) => false);
+                });
+              }),
         ],
       ),
     );

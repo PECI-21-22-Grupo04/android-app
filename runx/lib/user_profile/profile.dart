@@ -1,4 +1,7 @@
+// System Packages
 import 'package:flutter/material.dart';
+
+// Screens
 import 'package:runx/presentation/side_nav.dart';
 import 'package:runx/profile/profilewidget.dart';
 import 'package:runx/profile/user.dart';
@@ -22,9 +25,9 @@ class _ProfileState extends State<Profile> {
         appBar: AppBar(
           title: const Text('Perfil'),
           centerTitle: true,
-          toolbarHeight: 40,
+          toolbarHeight: 65,
           leading: IconButton(
-            iconSize: 25.0,
+            iconSize: 35.0,
             icon: const Icon(Icons.menu_rounded),
             onPressed: () {
               Navigator.of(context).push(
