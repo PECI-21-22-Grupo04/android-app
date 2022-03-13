@@ -61,9 +61,7 @@ class _PageNavState extends State<PageNav> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        selectedIconTheme: const IconThemeData(color: Colors.purple),
-        selectedItemColor: Colors.purple,
-        unselectedItemColor: Colors.black,
+        showSelectedLabels: false,
         showUnselectedLabels: false,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -79,7 +77,10 @@ class _PageNavState extends State<PageNav> {
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.watch),
+            icon: Icon(
+              Icons.watch,
+              size: 19,
+            ),
             label: '',
           ),
           BottomNavigationBarItem(

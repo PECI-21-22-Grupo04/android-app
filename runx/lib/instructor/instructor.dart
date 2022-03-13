@@ -1,5 +1,6 @@
 // System Packages
 import 'package:flutter/material.dart';
+import 'package:runx/presentation/side_nav.dart';
 
 class Instructor extends StatefulWidget {
   const Instructor({Key? key}) : super(key: key);
@@ -15,14 +16,14 @@ class _InstructorState extends State<Instructor> {
         appBar: AppBar(
       title: const Text('Instrutor'),
       centerTitle: true,
-      toolbarHeight: 70,
+      toolbarHeight: 40,
       leading: IconButton(
-        iconSize: 45.0,
+        iconSize: 25.0,
         icon: const Icon(Icons.menu_rounded),
         onPressed: () {
-          //
-          // ABRIR MENU
-          //
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const SideNav()),
+          );
         },
       ),
     ));

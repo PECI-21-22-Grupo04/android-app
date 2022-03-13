@@ -1,5 +1,6 @@
 // System Packages
 import 'package:flutter/material.dart';
+import 'package:runx/presentation/side_nav.dart';
 
 class Devices extends StatefulWidget {
   const Devices({Key? key}) : super(key: key);
@@ -15,14 +16,14 @@ class _DevicesState extends State<Devices> {
       appBar: AppBar(
         title: const Text('Dispositivos'),
         centerTitle: true,
-        toolbarHeight: 70,
+        toolbarHeight: 40,
         leading: IconButton(
-          iconSize: 45.0,
+          iconSize: 25.0,
           icon: const Icon(Icons.menu_rounded),
           onPressed: () {
-            //
-            // ABRIR MENU
-            //
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const SideNav()),
+            );
           },
         ),
       ),
