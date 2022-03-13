@@ -26,7 +26,7 @@ class Login extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               const Text(
-                'Welcome back!',
+                'Bem vindo de volta!',
                 style: TextStyle(fontSize: 24),
               ),
             ],

@@ -219,7 +219,7 @@ class _SignupFormState extends State<SignupForm> {
 
                   // STEP 1) Save basic user information in database
                   APICaller()
-                      .createUser(email: email, fname: fname, lname: lname)
+                      .createClient(email: email, fname: fname, lname: lname)
                       .then((result1) {
                     // If result code is 0, the user information was successfully saved in our database
                     if (json.decode(result1)["code"] == 0) {
@@ -241,12 +241,13 @@ class _SignupFormState extends State<SignupForm> {
                         // Else the user credentials werent saved in Firebase Authentication,
                         // so the user previously created in the database is deleted, to maintain consistency
                         else {
-                          APICaller().deleteUser(email: email).then((return3) {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(const SnackBar(
+                          APICaller()
+                              .deleteClient(email: email)
+                              .then((result3) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text(
-                                "Ocorreu um erro\nVerifique a sua conexão ou tente mais tarde",
-                                style: TextStyle(fontSize: 16),
+                                result2,
+                                style: const TextStyle(fontSize: 16),
                               ),
                             ));
                           });

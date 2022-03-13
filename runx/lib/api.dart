@@ -7,10 +7,10 @@ class APICaller {
   final String port = '8080';
 
 // Create User
-  Future<String> createUser(
+  Future<String> createClient(
       {String? email, String? fname, String? lname}) async {
     final response = await http.post(
-      Uri.parse(host + port + '/createUser'),
+      Uri.parse(host + port + '/createClient'),
       headers: <String, String>{
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
       },
@@ -24,9 +24,9 @@ class APICaller {
   }
 
 // Delete User
-  Future<String> deleteUser({String? email}) async {
+  Future<String> deleteClient({String? email}) async {
     final response = await http.post(
-      Uri.parse(host + port + '/deleteUser'),
+      Uri.parse(host + port + '/deleteClient'),
       headers: <String, String>{
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
       },
@@ -38,7 +38,7 @@ class APICaller {
   }
 
 // Save User Information
-  Future<String> addUserInfo(
+  Future<String> addClientInfo(
       {String? email,
       String? age,
       String? height,
@@ -46,7 +46,7 @@ class APICaller {
       String? fitness,
       String? pathologies}) async {
     final response = await http.post(
-      Uri.parse(host + port + '/addUserInfo'),
+      Uri.parse(host + port + '/addClientInfo'),
       headers: <String, String>{
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
       },

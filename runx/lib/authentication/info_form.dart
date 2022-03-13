@@ -46,7 +46,7 @@ class InfoForm extends StatelessWidget {
           const SizedBox(height: 30),
           const Expanded(
               child: Text(
-                  'Pode alterar esta informação mais tarde no seu perfil',
+                  'Poderá alterar esta informação mais tarde no seu perfil',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                   textAlign: TextAlign.center)),
         ],
@@ -126,8 +126,8 @@ class _SignupFormState extends State<SignupForm> {
                 if (value == null || value.isEmpty) {
                   return 'Por favor introduza a sua idade';
                 }
-                if (int.parse(value) > 120 || int.parse(value) < 14) {
-                  return "Por favor introduza uma idade válida";
+                if (int.parse(value) > 120 || int.parse(value) < 16) {
+                  return "Tem de ter mais de 16 anos para se registar";
                 }
                 return null;
               },
@@ -172,7 +172,7 @@ class _SignupFormState extends State<SignupForm> {
                 if (value == null || value.isEmpty) {
                   return 'Por favor introduza o seu peso';
                 }
-                if (int.parse(value) > 200 || int.parse(value) < 25) {
+                if (int.parse(value) > 200 || int.parse(value) < 30) {
                   return "Por favor introduza um peso válido";
                 }
                 return null;
@@ -236,7 +236,7 @@ class _SignupFormState extends State<SignupForm> {
                   _formKey.currentState!.save();
                   // Save additional user information in the database
                   APICaller()
-                      .addUserInfo(
+                      .addClientInfo(
                           email: email,
                           age: age,
                           height: height,
