@@ -1,11 +1,13 @@
 // System Packages
 import 'package:flutter/material.dart';
 
+// Logic
+import 'package:runx/profile/user.dart';
+import 'package:runx/profile/userdata.dart';
+
 // Screens
 import 'package:runx/profile/textfieldwidget.dart';
 import 'package:runx/profile/profilewidget.dart';
-import 'package:runx/profile/user.dart';
-import 'package:runx/profile/userdata.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({Key? key}) : super(key: key);

@@ -6,8 +6,6 @@ import 'package:runx/authentication/firebase.dart';
 
 // Screens
 import 'package:runx/authentication/sign_in.dart';
-import 'package:runx/profile/userdata.dart';
-import 'package:runx/profile/user.dart';
 import 'package:runx/profile/editprofile.dart';
 
 class Settings extends StatefulWidget {
@@ -26,8 +24,6 @@ class _SettingsState extends State<Settings> {
   );
   @override
   Widget build(BuildContext context) {
-    User user = UserData.myUser;
-
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Theme(
