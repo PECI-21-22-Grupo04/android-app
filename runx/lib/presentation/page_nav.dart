@@ -11,7 +11,7 @@ import 'package:runx/user_profile/profile.dart';
 import 'package:runx/exercise/exercises.dart';
 import 'package:runx/device/devices.dart';
 import 'package:runx/instructor/instructor.dart';
-import 'package:runx/user_profile/settings.dart';
+import 'package:runx/settings/settings.dart';
 import 'package:runx/authentication/sign_in.dart';
 
 class PageNav extends StatefulWidget {
