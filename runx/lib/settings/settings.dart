@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:runx/settings/languagescreen.dart';
 import 'package:runx/settings/themescreen.dart';
 import 'package:settings_ui/settings_ui.dart';
+import 'package:app_settings/app_settings.dart';
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
@@ -37,6 +38,13 @@ class _SettingsState extends State<Settings> {
                 ));
               },
             ),
+            SettingsTile(
+              title: const Text('Definições da aplicação'),
+              leading: const Icon(Icons.app_settings_alt_rounded),
+              onPressed: (context) {
+                AppSettings.openAppSettings();
+              },
+            ),
           ],
         ),
         SettingsSection(
@@ -49,6 +57,18 @@ class _SettingsState extends State<Settings> {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (_) => const ThemeScreen(),
                 ));
+              },
+            ),
+          ],
+        ),
+        SettingsSection(
+          title: const Text('Notificações'),
+          tiles: [
+            SettingsTile(
+              title: const Text('Notificações'),
+              leading: const Icon(Icons.notifications_rounded),
+              onPressed: (context) {
+                AppSettings.openNotificationSettings();
               },
             ),
           ],
