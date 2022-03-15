@@ -30,7 +30,7 @@ class _SettingsState extends State<Settings> {
           tiles: [
             SettingsTile(
               title: const Text('Linguagem'),
-              leading: const Icon(Icons.language),
+              leading: const Icon(Icons.language_rounded),
               onPressed: (context) {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (_) => const LanguagesScreen(),
@@ -44,7 +44,7 @@ class _SettingsState extends State<Settings> {
           tiles: [
             SettingsTile(
               title: const Text('Tema'),
-              leading: const Icon(Icons.format_paint),
+              leading: const Icon(Icons.format_paint_rounded),
               onPressed: (context) {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (_) => const ThemeScreen(),

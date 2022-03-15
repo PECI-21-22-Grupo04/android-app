@@ -116,7 +116,7 @@ class _SignupFormState extends State<SignupForm> {
               ],
               decoration: InputDecoration(
                 labelText: 'Idade (anos)',
-                prefixIcon: const Icon(Icons.calendar_month),
+                prefixIcon: const Icon(Icons.calendar_month_rounded),
                 border: border,
               ),
               onSaved: (val) {
@@ -141,7 +141,7 @@ class _SignupFormState extends State<SignupForm> {
               ],
               decoration: InputDecoration(
                 labelText: 'Altura (cm)',
-                prefixIcon: const Icon(Icons.man),
+                prefixIcon: const Icon(Icons.man_rounded),
                 border: border,
               ),
               onSaved: (val) {
@@ -166,7 +166,7 @@ class _SignupFormState extends State<SignupForm> {
               ],
               decoration: InputDecoration(
                   labelText: 'Peso (kg)',
-                  prefixIcon: const Icon(Icons.monitor_weight),
+                  prefixIcon: const Icon(Icons.monitor_weight_rounded),
                   border: border),
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -190,7 +190,7 @@ class _SignupFormState extends State<SignupForm> {
               ],
               decoration: InputDecoration(
                 labelText: 'Patologias, outra informação...',
-                prefixIcon: const Icon(Icons.local_hospital),
+                prefixIcon: const Icon(Icons.local_hospital_rounded),
                 border: border,
                 contentPadding: const EdgeInsets.symmetric(vertical: 50.0),
               ),
@@ -209,7 +209,7 @@ class _SignupFormState extends State<SignupForm> {
               DropdownButton(
                 style: const TextStyle(fontSize: 20, color: Colors.black),
                 value: fitnesslevel,
-                icon: const Icon(Icons.keyboard_arrow_down),
+                icon: const Icon(Icons.keyboard_arrow_down_rounded),
                 items: items.map((String items) {
                   return DropdownMenuItem(
                     value: items,

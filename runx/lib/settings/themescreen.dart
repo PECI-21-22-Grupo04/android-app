@@ -47,7 +47,7 @@ class _ThemeScreenState extends State<ThemeScreen> {
 
   Widget trailingWidget(int index) {
     return (themeIndex == index)
-        ? const Icon(Icons.check, color: Colors.blue)
+        ? const Icon(Icons.check_rounded, color: Colors.blue)
         : const Icon(null);
   }
 

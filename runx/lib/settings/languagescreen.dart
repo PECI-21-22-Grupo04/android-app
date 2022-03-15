@@ -40,7 +40,7 @@ class _LanguagesScreenState extends State<LanguagesScreen> {
 
   Widget trailingWidget(int index) {
     return (languageIndex == index)
-        ? const Icon(Icons.check, color: Colors.blue)
+        ? const Icon(Icons.check_rounded, color: Colors.blue)
         : const Icon(null);
   }
 
