@@ -2,9 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 
 // Screens
 import 'package:runx/authentication/sign_in.dart';
+import 'package:runx/preferences/theme_model.dart';
 import 'package:runx/presentation/page_nav.dart';
 
 Future<void> main() async {
@@ -18,18 +20,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'RunX',
-      theme: ThemeData(
-        brightness: Brightness.light,
-        /* light theme settings --> Controled by user cellphone settings*/
-      ),
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
-        /* dark theme settings --> Controled by user cellphone settings*/
-      ),
-      themeMode: ThemeMode.system,
-      home: const Initial(title: 'RunX'),
+    return ChangeNotifierProvider(
+      create: (_) => ThemeModel(),
+      child: Consumer<ThemeModel>(
+          builder: (context, ThemeModel themeNotifier, child) {
+        return MaterialApp(
+          title: 'Flutter Demo',
+          theme: themeNotifier.isDark ? ThemeData.dark() : ThemeData.light(),
+          debugShowCheckedModeBanner: false,
+          home: const Initial(title: 'RunX'),
+        );
+      }),
     );
   }
 }

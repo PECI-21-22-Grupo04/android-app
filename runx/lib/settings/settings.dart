@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:runx/settings/languagescreen.dart';
 import 'package:runx/settings/themescreen.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:app_settings/app_settings.dart';
+
+import '../preferences/theme_model.dart';
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
