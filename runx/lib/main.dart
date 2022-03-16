@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 // Screens
 import 'package:runx/authentication/sign_in.dart';
+import 'package:runx/preferences/theme_data.dart';
 import 'package:runx/preferences/theme_model.dart';
 import 'package:runx/presentation/page_nav.dart';
 
@@ -26,7 +27,9 @@ class MyApp extends StatelessWidget {
           builder: (context, ThemeModel themeNotifier, child) {
         return MaterialApp(
           title: 'Flutter Demo',
-          theme: themeNotifier.isDark ? ThemeData.dark() : ThemeData.light(),
+          theme: themeNotifier.isDark
+              ? CustomThemeDark.darkTheme
+              : CustomThemeLight.lightTheme,
           debugShowCheckedModeBanner: false,
           home: const Initial(title: 'RunX'),
         );

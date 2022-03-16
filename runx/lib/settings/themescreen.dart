@@ -18,6 +18,11 @@ class _ThemeScreenState extends State<ThemeScreen> {
   Widget build(BuildContext context) {
     return Consumer<ThemeModel>(
         builder: (context, ThemeModel themeNotifier, child) {
+      if (!themeNotifier.isDark) {
+        themeIndex = 0;
+      } else {
+        themeIndex = 1;
+      }
       return Scaffold(
         appBar: AppBar(title: const Text('Tema')),
         body: SettingsList(
@@ -25,11 +30,11 @@ class _ThemeScreenState extends State<ThemeScreen> {
             SettingsSection(tiles: [
               SettingsTile(
                 title: const Text("Claro"),
-                trailing: trailingWidget(0),
                 onPressed: (BuildContext context) {
                   changeTheme(0);
                   themeNotifier.isDark = false;
                 },
+                trailing: trailingWidget(0),
               ),
               SettingsTile(
                 title: const Text("Escuro"),
