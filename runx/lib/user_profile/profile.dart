@@ -45,7 +45,7 @@ class _ProfileState extends State<Profile> {
                               color: themeNotifier.isDark
                                   ? const Color.fromARGB(255, 43, 42, 42)
                                   : const Color.fromARGB(255, 240, 240, 240),
-                              borderRadius: BorderRadius.circular(5.0)),
+                              borderRadius: BorderRadius.circular(10.0)),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
@@ -110,7 +110,7 @@ class _ProfileState extends State<Profile> {
                                       ? const Color.fromARGB(255, 43, 42, 42)
                                       : const Color.fromARGB(
                                           255, 240, 240, 240),
-                                  borderRadius: BorderRadius.circular(5.0)),
+                                  borderRadius: BorderRadius.circular(10.0)),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
