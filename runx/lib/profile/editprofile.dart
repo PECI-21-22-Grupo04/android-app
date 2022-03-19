@@ -23,6 +23,11 @@ class _EditProfileState extends State<EditProfile> {
   Widget build(BuildContext context) {
     return Builder(
       builder: (context) => Scaffold(
+        appBar: AppBar(
+          title: const Text('Editar perfil'),
+          toolbarHeight: 55,
+          leading: Builder(builder: (context) => const BackButton()),
+        ),
         body: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 32),
           physics: const BouncingScrollPhysics(),

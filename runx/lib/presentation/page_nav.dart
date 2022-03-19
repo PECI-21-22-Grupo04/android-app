@@ -37,9 +37,9 @@ class _PageNavState extends State<PageNav> {
     setState(() {
       _selectedIndex = index;
       if (index == 0) {
-        _pageTitle = "Inicio";
+        _pageTitle = "Início";
       } else if (index == 1) {
-        _pageTitle = "Exercicios e Planos";
+        _pageTitle = "Exercícios e Planos";
       } else if (index == 2) {
         _pageTitle = "Instrutor";
       } else if (index == 3) {
@@ -57,11 +57,11 @@ class _PageNavState extends State<PageNav> {
       appBar: AppBar(
         title: Text(_pageTitle),
         centerTitle: true,
-        toolbarHeight: 65,
+        toolbarHeight: 55,
         leading: Builder(
           builder: (context) => IconButton(
             icon: const Icon(Icons.menu_rounded),
-            iconSize: 35.0,
+            iconSize: 30.0,
             onPressed: () => Scaffold.of(context).openDrawer(),
           ),
         ),
