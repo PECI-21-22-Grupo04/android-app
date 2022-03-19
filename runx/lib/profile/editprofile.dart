@@ -27,22 +27,43 @@ class _EditProfileState extends State<EditProfile> {
           padding: const EdgeInsets.symmetric(horizontal: 32),
           physics: const BouncingScrollPhysics(),
           children: [
+            const SizedBox(height: 24),
+            const Text(
+              "Imagem de Perfil",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
             ProfileWidget(
-              imagePath: user.imagePath,
+              imagePath: user.profilepic,
+              isEdit: true,
+              onClicked: () async {},
+            ),
+            const SizedBox(height: 24),
+            const Text(
+              "Imagem de Capa",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+            ProfileWidget(
+              imagePath: user.coverimg,
               isEdit: true,
               onClicked: () async {},
             ),
             const SizedBox(height: 24),
             TextFieldWidget(
-              label: 'First Name',
+              label: 'Primeiro Nome',
               text: user.fname,
               onChanged: (fname) {},
             ),
             const SizedBox(height: 24),
             TextFieldWidget(
-              label: 'Last Name',
+              label: 'Último Nome',
               text: user.lname,
               onChanged: (lname) {},
+            ),
+            const SizedBox(height: 24),
+            TextFieldWidget(
+              label: 'Cidade',
+              text: user.location,
+              onChanged: (location) {},
             ),
             const SizedBox(height: 24),
             TextFieldWidget(
@@ -52,7 +73,7 @@ class _EditProfileState extends State<EditProfile> {
             ),
             const SizedBox(height: 24),
             TextFieldWidget(
-              label: 'About',
+              label: 'Sobre',
               text: user.about,
               maxLines: 5,
               onChanged: (about) {},

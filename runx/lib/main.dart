@@ -26,7 +26,6 @@ class MyApp extends StatelessWidget {
       child: Consumer<ThemeModel>(
           builder: (context, ThemeModel themeNotifier, child) {
         return MaterialApp(
-          title: 'Flutter Demo',
           theme: themeNotifier.isDark
               ? CustomThemeDark.darkTheme
               : CustomThemeLight.lightTheme,

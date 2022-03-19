@@ -1,5 +1,4 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:provider/provider.dart';
 
 class ThemePreferences {
   static const PREF_KEY = "pref_key";

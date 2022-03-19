@@ -1,11 +1,11 @@
 // System Packages
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 // Screens
-import 'package:runx/profile/profilewidget.dart';
-import 'package:runx/profile/user.dart';
 import 'package:runx/profile/userdata.dart';
 import 'package:runx/profile/editprofile.dart';
+import 'package:runx/preferences/theme_model.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -19,59 +19,152 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     const user = UserData.myUser;
 
-    return Builder(
-      builder: (context) => Scaffold(
-        body: ListView(
-          physics: const BouncingScrollPhysics(),
-          children: [
-            const SizedBox(height: 24),
-            ProfileWidget(
-              imagePath: user.imagePath,
-              onClicked: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const EditProfile()),
-                );
-              },
-            ),
-            const SizedBox(height: 24),
-            buildName(user),
-            const SizedBox(height: 48),
-            buildAbout(user),
-          ],
+    return Consumer(builder: (context, ThemeModel themeNotifier, child) {
+      return Scaffold(
+        body: SingleChildScrollView(
+          child: Stack(
+            children: <Widget>[
+              SizedBox(
+                height: 250,
+                width: double.infinity,
+                child: PNetworkImage(
+                  user.coverimg,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.fromLTRB(16.0, 200.0, 16.0, 16.0),
+                child: Column(
+                  children: <Widget>[
+                    Stack(
+                      children: <Widget>[
+                        Container(
+                          padding: const EdgeInsets.all(16.0),
+                          margin: const EdgeInsets.only(top: 16.0),
+                          decoration: BoxDecoration(
+                              color: themeNotifier.isDark
+                                  ? const Color.fromARGB(255, 43, 42, 42)
+                                  : const Color.fromARGB(255, 240, 240, 240),
+                              borderRadius: BorderRadius.circular(5.0)),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                margin:
+                                    const EdgeInsets.only(left: 96.0, top: 6.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      user.fname + " " + user.lname,
+                                      style:
+                                          Theme.of(context).textTheme.headline6,
+                                    ),
+                                    ListTile(
+                                      contentPadding: const EdgeInsets.all(0),
+                                      title: Text(user.location),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        // profile pic
+                        Container(
+                          height: 80,
+                          width: 80,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              image: DecorationImage(
+                                  image: NetworkImage(user.profilepic),
+                                  fit: BoxFit.cover)),
+                          margin: const EdgeInsets.only(left: 16.0, top: 34.0),
+                        ),
+                        //edit button
+                        Positioned(
+                          bottom: 1,
+                          right: 1,
+                          child: IconButton(
+                            icon: const Icon(Icons.edit_rounded),
+                            tooltip: 'Alterar Perfil',
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                    builder: (context) => const EditProfile()),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: <Widget>[
+                        Stack(
+                          children: <Widget>[
+                            Container(
+                              padding: const EdgeInsets.all(16.0),
+                              margin: const EdgeInsets.only(top: 16.0),
+                              decoration: BoxDecoration(
+                                  color: themeNotifier.isDark
+                                      ? const Color.fromARGB(255, 43, 42, 42)
+                                      : const Color.fromARGB(
+                                          255, 240, 240, 240),
+                                  borderRadius: BorderRadius.circular(5.0)),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  const ListTile(
+                                    title: Text("Informação"),
+                                  ),
+                                  const Divider(),
+                                  ListTile(
+                                    title: const Text("Email"),
+                                    subtitle: Text(user.email),
+                                    leading: const Icon(Icons.email_rounded),
+                                  ),
+                                  ListTile(
+                                    title: const Text("Sobre"),
+                                    subtitle: Text(user.about),
+                                    leading: const Icon(Icons.person_rounded),
+                                  ),
+                                  const SizedBox(height: 10.0),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              AppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+              )
+            ],
+          ),
         ),
-      ),
+      );
+    });
+  }
+}
+
+class PNetworkImage extends StatelessWidget {
+  final String? image;
+  final BoxFit? fit;
+  final double? width, height;
+  const PNetworkImage(this.image, {Key? key, this.fit, this.height, this.width})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Image.network(
+      image!,
+      fit: fit,
+      width: width,
+      height: height,
     );
   }
-
-  Widget buildName(User user) => Column(
-        children: [
-          Text(
-            user.fname + " " + user.lname,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            user.email,
-            style: const TextStyle(color: Colors.grey),
-          )
-        ],
-      );
-
-  Widget buildAbout(User user) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 48),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Text(
-              'About',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              user.about,
-              style: const TextStyle(fontSize: 16, height: 1.4),
-            ),
-          ],
-        ),
-      );
 }

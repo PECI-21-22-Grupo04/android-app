@@ -78,7 +78,7 @@ class _PageNavState extends State<PageNav> {
                     currentAccountPicture: CircleAvatar(
                       child: ClipOval(
                         child: Image.network(
-                          user.imagePath,
+                          user.profilepic,
                           fit: BoxFit.cover,
                           width: 90,
                           height: 90,
