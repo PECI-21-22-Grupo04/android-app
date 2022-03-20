@@ -192,7 +192,7 @@ class _PageNavState extends State<PageNav> {
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: themeNotifier.isDark ? primaryDark : secondaryLight,
+          backgroundColor: themeNotifier.isDark ? primaryDark : primaryLight,
           type: BottomNavigationBarType.fixed,
           showSelectedLabels: false,
           showUnselectedLabels: false,

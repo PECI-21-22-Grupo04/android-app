@@ -133,9 +133,12 @@ class _ProfileState extends State<Profile> {
                                     ),
                                     subtitle: Text(
                                       user.email,
-                                      style: const TextStyle(
-                                          color: Color.fromARGB(
-                                              255, 214, 210, 210)),
+                                      style: TextStyle(
+                                          color: themeNotifier.isDark
+                                              ? const Color.fromARGB(
+                                                  255, 214, 210, 210)
+                                              : const Color.fromARGB(
+                                                  255, 107, 107, 107)),
                                     ),
                                     leading: const Icon(Icons.email_rounded),
                                   ),
@@ -148,9 +151,12 @@ class _ProfileState extends State<Profile> {
                                     ),
                                     subtitle: Text(
                                       user.about,
-                                      style: const TextStyle(
-                                          color: Color.fromARGB(
-                                              255, 214, 210, 210)),
+                                      style: TextStyle(
+                                          color: themeNotifier.isDark
+                                              ? const Color.fromARGB(
+                                                  255, 214, 210, 210)
+                                              : const Color.fromARGB(
+                                                  255, 107, 107, 107)),
                                     ),
                                     leading: const Icon(Icons.person_rounded),
                                   ),
