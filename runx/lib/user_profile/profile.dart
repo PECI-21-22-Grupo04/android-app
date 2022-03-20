@@ -1,6 +1,7 @@
 // System Packages
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:runx/preferences/colors.dart';
 
 // Screens
 import 'package:runx/profile/userdata.dart';
@@ -21,6 +22,7 @@ class _ProfileState extends State<Profile> {
 
     return Consumer(builder: (context, ThemeModel themeNotifier, child) {
       return Scaffold(
+        backgroundColor: themeNotifier.isDark ? secondaryDark : secondaryLight,
         body: SingleChildScrollView(
           child: Stack(
             children: <Widget>[
@@ -43,8 +45,8 @@ class _ProfileState extends State<Profile> {
                           margin: const EdgeInsets.only(top: 16.0),
                           decoration: BoxDecoration(
                               color: themeNotifier.isDark
-                                  ? const Color.fromARGB(255, 43, 42, 42)
-                                  : const Color.fromARGB(255, 240, 240, 240),
+                                  ? primaryDark
+                                  : primaryLight,
                               borderRadius: BorderRadius.circular(10.0)),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,25 +109,49 @@ class _ProfileState extends State<Profile> {
                               margin: const EdgeInsets.only(top: 16.0),
                               decoration: BoxDecoration(
                                   color: themeNotifier.isDark
-                                      ? const Color.fromARGB(255, 43, 42, 42)
-                                      : const Color.fromARGB(
-                                          255, 240, 240, 240),
+                                      ? primaryDark
+                                      : primaryLight,
                                   borderRadius: BorderRadius.circular(10.0)),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   const ListTile(
-                                    title: Text("Informação"),
+                                    title: Text(
+                                      "Informação",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                   ),
                                   const Divider(),
                                   ListTile(
-                                    title: const Text("Email"),
-                                    subtitle: Text(user.email),
+                                    title: const Text(
+                                      "Email",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    subtitle: Text(
+                                      user.email,
+                                      style: const TextStyle(
+                                          color: Color.fromARGB(
+                                              255, 214, 210, 210)),
+                                    ),
                                     leading: const Icon(Icons.email_rounded),
                                   ),
                                   ListTile(
-                                    title: const Text("Sobre"),
-                                    subtitle: Text(user.about),
+                                    title: const Text(
+                                      "Sobre",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    subtitle: Text(
+                                      user.about,
+                                      style: const TextStyle(
+                                          color: Color.fromARGB(
+                                              255, 214, 210, 210)),
+                                    ),
                                     leading: const Icon(Icons.person_rounded),
                                   ),
                                   const SizedBox(height: 10.0),

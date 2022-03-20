@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:runx/preferences/colors.dart';
 
 class CustomThemeLight {
   static ThemeData get lightTheme {
     return ThemeData(
         brightness: Brightness.light,
-        primarySwatch:
-            buildMaterialColor(const Color.fromARGB(255, 101, 50, 218)),
+        primarySwatch: buildMaterialColor(colorLight),
         textTheme: const TextTheme(
           headline6: TextStyle(
               fontSize: 20.0, fontWeight: FontWeight.bold), // page title
@@ -19,8 +19,9 @@ class CustomThemeLight {
 
 class CustomThemeDark {
   static ThemeData get darkTheme {
-    return ThemeData(
-        brightness: Brightness.dark,
+    return ThemeData.dark().copyWith(
+        colorScheme:
+            const ColorScheme.dark().copyWith(primary: Colors.tealAccent),
         textTheme: const TextTheme(
           headline6: TextStyle(
               fontSize: 20.0, fontWeight: FontWeight.bold), // page title

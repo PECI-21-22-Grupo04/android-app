@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:runx/preferences/colors.dart';
 
 import '../preferences/theme_model.dart';
 
@@ -60,6 +61,9 @@ class _ExercisesState extends State<Exercises> {
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ThemeModel themeNotifier, child) {
       return Scaffold(
+        backgroundColor: themeNotifier.isDark
+            ? const Color.fromARGB(255, 24, 24, 24)
+            : const Color.fromARGB(255, 240, 240, 240),
         body: SingleChildScrollView(
           child: Stack(
             children: <Widget>[
@@ -68,6 +72,7 @@ class _ExercisesState extends State<Exercises> {
                 height: MediaQuery.of(context).size.height,
                 width: double.infinity,
                 child: ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
                     itemCount: ExercisesLists.length,
                     itemBuilder: (BuildContext context, int index) {
                       return buildList(context, index);
@@ -85,9 +90,7 @@ class _ExercisesState extends State<Exercises> {
       return Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(25),
-          color: themeNotifier.isDark
-              ? const Color.fromARGB(255, 43, 42, 42)
-              : const Color.fromARGB(255, 240, 240, 240),
+          color: themeNotifier.isDark ? primaryDark : primaryLight,
         ),
         width: double.infinity,
         margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -113,9 +116,8 @@ class _ExercisesState extends State<Exercises> {
                   Text(
                     ExercisesLists[index]['name'],
                     style: TextStyle(
-                        color: !themeNotifier.isDark
-                            ? const Color.fromARGB(255, 43, 42, 42)
-                            : const Color.fromARGB(255, 240, 240, 240),
+                        color:
+                            !themeNotifier.isDark ? primaryDark : primaryLight,
                         fontWeight: FontWeight.bold,
                         fontSize: 18),
                   ),
@@ -127,7 +129,7 @@ class _ExercisesState extends State<Exercises> {
                       Icon(
                         Icons.person_rounded,
                         color: themeNotifier.isDark
-                            ? const Color.fromARGB(255, 130, 233, 222)
+                            ? const Color.fromRGBO(100, 255, 218, 1)
                             : const Color.fromARGB(255, 101, 50, 218),
                         size: 20,
                       ),
@@ -137,8 +139,8 @@ class _ExercisesState extends State<Exercises> {
                       Text(ExercisesLists[index]['instructor'],
                           style: TextStyle(
                               color: !themeNotifier.isDark
-                                  ? const Color.fromARGB(255, 43, 42, 42)
-                                  : const Color.fromARGB(255, 240, 240, 240),
+                                  ? primaryDark
+                                  : primaryLight,
                               fontSize: 13,
                               letterSpacing: .3)),
                     ],
@@ -151,7 +153,7 @@ class _ExercisesState extends State<Exercises> {
                       Icon(
                         Icons.sports_gymnastics_rounded,
                         color: themeNotifier.isDark
-                            ? const Color.fromARGB(255, 130, 233, 222)
+                            ? const Color.fromRGBO(100, 255, 218, 1)
                             : const Color.fromARGB(255, 101, 50, 218),
                         size: 20,
                       ),
@@ -161,8 +163,8 @@ class _ExercisesState extends State<Exercises> {
                       Text(ExercisesLists[index]['type'],
                           style: TextStyle(
                               color: !themeNotifier.isDark
-                                  ? const Color.fromARGB(255, 43, 42, 42)
-                                  : const Color.fromARGB(255, 240, 240, 240),
+                                  ? primaryDark
+                                  : primaryLight,
                               fontSize: 13,
                               letterSpacing: .3)),
                     ],
