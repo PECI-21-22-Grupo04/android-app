@@ -6,6 +6,26 @@ class FirebaseAuthenticationCaller {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   get user => _auth.currentUser;
 
+    // Check if email is registered in firebase
+  Future<String> doesUserExist({required String email}) async {
+    try {
+      var result = await _auth.fetchSignInMethodsForEmail(email);
+      if (result.isEmpty == false) {
+        return "Uma conta já existe com este email";
+      } else {
+        return "False";
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == "network-request-failed") {
+        return "Ocorreu um erro de rede. \nPor favor verifique a sua conexão à Internet";
+      } else if (e.code == "invalid-email") {
+        return "Por favor introduza um email válido";
+      } else {
+        return "Ocorreu um erro. Por favor tente mais tarde";
+      }
+    }
+  }
+
   // SIGN UP with email/password account
   Future<String?> signUp(
       {required String email, required String password}) async {
@@ -19,9 +39,9 @@ class FirebaseAuthenticationCaller {
       if (e.code == "network-request-failed") {
         return "Ocorreu um erro de rede. \nPor favor verifique a sua conexão à Internet";
       } else if (e.code == "email-already-in-use") {
-        return "Uma conta já existe com este email. \nPor favor escolha outro";
+        return "Uma conta já existe com este email";
       } else if (e.code == "invalid-email") {
-        return "Email inválido. \nPor favor escolha outro";
+        return "Por favor introduza um email válido";
       } else if (e.code == 'weak-password') {
         return "Password fraca. \nPor favor escolha uma com pelo menos 6 caracteres";
       } else if (e.code == "operation-not-allowed") {
@@ -41,9 +61,11 @@ class FirebaseAuthenticationCaller {
     } on FirebaseAuthException catch (e) {
       if (e.code == "network-request-failed") {
         return "Ocorreu um erro de rede. \nPor favor verifique a sua conexão à Internet";
-      } else if (e.code == "invalid-email" || e.code == "user-not-found") {
-        return "Esta conta não existe. \nPor favor faça o registo do email";
-      } else if (e.code == "wrong-password") {
+      } else if (e.code == "user-not-found") {
+        return "Não existe conta registada com este email";
+      }else if (e.code == "invalid-email"){
+        return "Por favor introduza um email válido";
+      }else if (e.code == "wrong-password") {
         return "Password incorreta";
       } else if (e.code == "user-disabled") {
         return "Esta conta está atualmente desativada. \nPor favor tente mais tarde";

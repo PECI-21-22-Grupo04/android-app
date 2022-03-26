@@ -6,6 +6,25 @@ class APICaller {
   final String host = 'http://localhost:';
   final String port = '8080';
 
+// Select Client
+  Future<String> selectClient({String? email}) async {
+    try {
+      final response = await http.post(
+      Uri.parse(host + port + '/selectClient'),
+      headers: <String, String>{
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      },
+      body: (<String, String>{
+        "email": email.toString(),
+      }),
+    );
+    return response.body;
+    
+    } on Exception {
+       return "ERROR";
+    }
+  }
+
 // Create Client
   Future<String> createClient(
       {String? email, String? fname, String? lname}) async {

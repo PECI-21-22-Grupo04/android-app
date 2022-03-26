@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 // Screens
 import 'package:runx/authentication/sign_in.dart';
@@ -26,6 +27,8 @@ class MyApp extends StatelessWidget {
       child: Consumer<ThemeModel>(
           builder: (context, ThemeModel themeNotifier, child) {
         return MaterialApp(
+          localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
+          supportedLocales: const [Locale('pt'), Locale('en')],
           theme: themeNotifier.isDark
               ? CustomThemeDark.darkTheme
               : CustomThemeLight.lightTheme,

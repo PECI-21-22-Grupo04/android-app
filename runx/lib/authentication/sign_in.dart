@@ -37,17 +37,18 @@ class Login extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               const SizedBox(width: 15),
               const Text('Não tem conta?  ',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
               GestureDetector(
                 onTap: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => const Signup()));
                 },
-                child: const Text('Registe-se Aqui',
-                    style: TextStyle(fontSize: 20, color: Colors.blue)),
+                child: const Text('Registar',
+                    style: TextStyle(fontSize: 18, color: Colors.blue)),
               )
             ],
           ),
@@ -82,14 +83,7 @@ class _LoginFormState extends State<LoginForm> {
           // Email
           TextFormField(
             decoration: const InputDecoration(
-              prefixIcon: Icon(Icons.email_outlined),
-              labelText: 'Email',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(100.0),
-                ),
-              ),
-            ),
+                labelText: 'Email', icon: Icon(Icons.email_outlined)),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Por favor introduza o seu email';
@@ -104,16 +98,12 @@ class _LoginFormState extends State<LoginForm> {
           const SizedBox(
             height: 20,
           ),
+
           // Password
           TextFormField(
             decoration: InputDecoration(
               labelText: 'Password',
-              prefixIcon: const Icon(Icons.lock_outline),
-              border: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(100.0),
-                ),
-              ),
+              icon: const Icon(Icons.lock_outline),
               suffixIcon: GestureDetector(
                 onTap: () {
                   setState(() {

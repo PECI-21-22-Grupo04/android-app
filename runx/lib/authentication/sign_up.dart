@@ -3,11 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 // Logic
-import 'package:runx/authentication/firebase.dart';
 import 'package:runx/api.dart';
+import 'package:runx/authentication/firebase.dart';
 
 // Screens
-import 'package:runx/authentication/info_form.dart';
+import 'package:runx/authentication/sign_in.dart';
+import 'package:runx/authentication/legal_info.dart';
 
 class Signup extends StatelessWidget {
   const Signup({Key? key}) : super(key: key);
@@ -38,31 +39,21 @@ class Signup extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           Row(
-            children: [
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        const Text('      Já tem conta?  ',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20)),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: const Text('Entrar Aqui',
-                              style:
-                                  TextStyle(fontSize: 20, color: Colors.blue)),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              ),
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const SizedBox(width: 15),
+              const Text('Já tem conta?  ',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const Login()));
+                },
+                child: const Text('Autenticar',
+                    style: TextStyle(fontSize: 18, color: Colors.blue)),
+              )
             ],
-          )
+          ),
         ],
       ),
     );
@@ -90,12 +81,6 @@ class _SignupFormState extends State<SignupForm> {
 
   @override
   Widget build(BuildContext context) {
-    var border = const OutlineInputBorder(
-      borderRadius: BorderRadius.all(
-        Radius.circular(100.0),
-      ),
-    );
-
     var space = const SizedBox(height: 10);
 
     return Form(
@@ -105,10 +90,9 @@ class _SignupFormState extends State<SignupForm> {
         children: <Widget>[
           // First Name
           TextFormField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Primeiro Nome',
-                prefixIcon: const Icon(Icons.account_circle),
-                border: border,
+                icon: Icon(Icons.account_circle),
               ),
               onSaved: (val) {
                 fname = val;
@@ -124,10 +108,9 @@ class _SignupFormState extends State<SignupForm> {
 
           // Last Name
           TextFormField(
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: 'Ultimo Nome',
-              prefixIcon: const Icon(Icons.account_circle),
-              border: border,
+              icon: Icon(Icons.account_circle),
             ),
             onSaved: (val) {
               lname = val;
@@ -140,14 +123,15 @@ class _SignupFormState extends State<SignupForm> {
             },
             keyboardType: TextInputType.name,
           ),
+
           space,
 
           // Email
           TextFormField(
-            decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.email_outlined),
-                labelText: 'Email',
-                border: border),
+            decoration: const InputDecoration(
+              labelText: 'Email',
+              icon: Icon(Icons.email_outlined),
+            ),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Por favor introduza o seu email';
@@ -166,8 +150,7 @@ class _SignupFormState extends State<SignupForm> {
             controller: pass,
             decoration: InputDecoration(
               labelText: 'Password',
-              prefixIcon: const Icon(Icons.lock_outline),
-              border: border,
+              icon: const Icon(Icons.lock_outline),
               suffixIcon: GestureDetector(
                 onTap: () {
                   setState(() {
@@ -194,10 +177,9 @@ class _SignupFormState extends State<SignupForm> {
 
           // Confirm Password
           TextFormField(
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: 'Confirmar Password',
-              prefixIcon: const Icon(Icons.lock_outline),
-              border: border,
+              icon: Icon(Icons.lock_outline),
             ),
             obscureText: true,
             validator: (value) {
@@ -206,6 +188,13 @@ class _SignupFormState extends State<SignupForm> {
               }
               if (value == null || value.isEmpty) {
                 return 'Por favor confirme a sua password';
+              }
+              if (value.length < 6) {
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text(
+                      ("Password fraca \nPor favor escolha uma com pelo menos 6 caracteres"),
+                      style: TextStyle(fontSize: 16)),
+                ));
               }
               return null;
             },
@@ -222,51 +211,45 @@ class _SignupFormState extends State<SignupForm> {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
 
-                  // STEP 1) Save basic user information in database
-                  APICaller()
-                      .createClient(email: email, fname: fname, lname: lname)
-                      .then((result1) {
-                    // If result code is 0, the user information was successfully saved in our database
-                    if (json.decode(result1)["code"] == 0) {
-                      // STEP 2) Register Email/Password in Firebase Authentication
+                  // STEP 1) Check if user exists in database
+                  APICaller().selectClient(email: email).then((result1) {
+                    if (result1 != "ERROR" &&
+                        json.decode(result1)["code"] == 2) {
+                      // STEP 2) Check if user exists in firebase
                       FirebaseAuthenticationCaller()
-                          .signUp(email: email!, password: password!)
+                          .doesUserExist(email: email!)
                           .then((result2) {
-                        // If result is null, the user credentials were successfully saved in Firebase Authentication
-                        if (result2 == null) {
+                        if (result2 == "False") {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => InfoForm(
+                                  builder: (context) => LegalInfo(
                                         emailP: email,
                                         fnameP: fname,
                                         lnameP: lname,
+                                        passwP: password,
                                       )));
-                        }
-                        // Else the user credentials werent saved in Firebase Authentication,
-                        // so the user previously created in the database is deleted, to maintain consistency
-                        else {
-                          APICaller()
-                              .deleteClient(email: email)
-                              .then((result3) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text(
-                                result2,
-                                style: const TextStyle(fontSize: 16),
-                              ),
-                            ));
-                          });
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text((result2),
+                                style: const TextStyle(fontSize: 16)),
+                          ));
                         }
                       });
-                    }
-                    // Else, the user information wasn't saved in our database, show error message
-                    else {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text(
-                          json.decode(result1)["code"],
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                      ));
+                    } else {
+                      if (result1 == "ERROR") {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          content: Text(
+                              ("Ocorreu um erro. Verifique a sua conexão ou tente mais tarde"),
+                              style: TextStyle(fontSize: 16)),
+                        ));
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text((json.decode(result1)["msg"]),
+                              style: const TextStyle(fontSize: 16)),
+                        ));
+                      }
                     }
                   });
                 }
@@ -275,7 +258,7 @@ class _SignupFormState extends State<SignupForm> {
                   shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(25.0)))),
               child: const Text(
-                'Registar',
+                'Continuar',
                 style: TextStyle(fontSize: 20),
               ),
             ),

@@ -41,6 +41,10 @@ dependencies:
   app_settings: ^4.1.1
   shared_preferences: ^2.0.13
   provider: ^6.0.2
+  flutter_localizations: 
+    sdk: flutter
+    version: ^0.0.0
+  country_picker: ^2.0.12
 
 dev_dependencies:
   flutter_test:

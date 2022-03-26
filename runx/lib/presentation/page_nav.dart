@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 // Logic
 import 'package:runx/authentication/firebase.dart';
 import 'package:runx/preferences/colors.dart';
+import 'package:runx/preferences/theme_model.dart';
 import 'package:runx/profile/userdata.dart';
 
 // Screens
@@ -15,8 +16,6 @@ import 'package:runx/device/devices.dart';
 import 'package:runx/instructor/instructor.dart';
 import 'package:runx/settings/settings.dart';
 import 'package:runx/authentication/sign_in.dart';
-
-import '../preferences/theme_model.dart';
 
 class PageNav extends StatefulWidget {
   const PageNav({Key? key}) : super(key: key);
