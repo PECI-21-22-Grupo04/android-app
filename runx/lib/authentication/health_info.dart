@@ -9,12 +9,12 @@ import 'package:runx/api.dart';
 // Screens
 import 'package:runx/presentation/page_nav.dart';
 
-class InfoForm extends StatelessWidget {
+class HealthInfoForm extends StatelessWidget {
   final String? emailP;
   final String? fnameP;
   final String? lnameP;
 
-  const InfoForm(
+  const HealthInfoForm(
       {Key? key,
       required this.emailP,
       required this.fnameP,

@@ -1,4 +1,5 @@
 // System Packages
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:country_picker/country_picker.dart';
@@ -8,7 +9,7 @@ import 'package:runx/authentication/firebase.dart';
 import 'package:runx/api.dart';
 
 // Screens
-import 'package:runx/presentation/page_nav.dart';
+import 'package:runx/authentication/health_info.dart';
 
 class LegalInfo extends StatelessWidget {
   final String? emailP;
@@ -79,7 +80,7 @@ class _SignupFormState extends State<SignupForm> {
   late String birthdateC;
   late String streetC;
   late String postCodeC;
-  late String districtC;
+  late String cityC;
   String countryC = "";
   List<String> listOfSexes = ['Masculino', 'Feminino', 'Outro'];
 
@@ -224,7 +225,7 @@ class _SignupFormState extends State<SignupForm> {
                   }
                   return null;
                 },
-                onSaved: (value) => districtC = value!,
+                onSaved: (value) => cityC = value!,
               ),
             ),
           ]),
@@ -288,10 +289,64 @@ class _SignupFormState extends State<SignupForm> {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
 
-                  // FINALIZE REGISTER HERE
-                  // FINALIZE REGISTER HERE
-                  // FINALIZE REGISTER HERE
-
+                  // 1) Save user information in database
+                  APICaller()
+                      .createClient(
+                          email: email,
+                          fname: fname,
+                          lname: lname,
+                          birthdate: birthdateC,
+                          sex: sexC,
+                          street: streetC,
+                          postCode: postCodeC,
+                          city: cityC,
+                          country: countryC)
+                      .then((result1) {
+                    if (result1 != "ERROR" &&
+                        json.decode(result1)["code"] == 0) {
+                      // 2) Register Email/Password in Firebase Authentication
+                      FirebaseAuthenticationCaller()
+                          .signUp(email: email!, password: pass!)
+                          .then((result2) {
+                        if (result2 == null) {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HealthInfoForm(
+                                        emailP: email,
+                                        fnameP: fname,
+                                        lnameP: lname,
+                                      )));
+                        } else {
+                          APICaller()
+                              .deleteClient(email: email)
+                              .then((return3) {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              content: Text(
+                                "Ocorreu um erro \nVerifique a sua conexão ou tente mais tarde",
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ));
+                          });
+                        }
+                      });
+                    } else {
+                      if (result1 == "ERROR") {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          content: Text(
+                              ("Ocorreu um erro \nVerifique a sua conexão ou tente mais tarde"),
+                              style: TextStyle(fontSize: 16)),
+                        ));
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text((json.decode(result1)["msg"]),
+                              style: const TextStyle(fontSize: 16)),
+                        ));
+                      }
+                    }
+                  });
                 }
               },
               style: ElevatedButton.styleFrom(

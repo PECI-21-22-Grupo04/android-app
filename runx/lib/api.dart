@@ -6,54 +6,75 @@ class APICaller {
   final String host = 'http://localhost:';
   final String port = '8080';
 
-// Select Client
+  // Select Client
   Future<String> selectClient({String? email}) async {
     try {
       final response = await http.post(
-      Uri.parse(host + port + '/selectClient'),
-      headers: <String, String>{
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-      },
-      body: (<String, String>{
-        "email": email.toString(),
-      }),
-    );
-    return response.body;
-    
+        Uri.parse(host + port + '/selectClient'),
+        headers: <String, String>{
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        },
+        body: (<String, String>{
+          "email": email.toString(),
+        }),
+      );
+      return response.body;
     } on Exception {
-       return "ERROR";
+      return "ERROR";
     }
   }
 
-// Create Client
+  // Create Client
   Future<String> createClient(
-      {String? email, String? fname, String? lname}) async {
-    final response = await http.post(
-      Uri.parse(host + port + '/createClient'),
-      headers: <String, String>{
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-      },
-      body: (<String, String>{
-        "email": email.toString(),
-        "fname": fname.toString(),
-        "lname": lname.toString(),
-      }),
-    );
-    return response.body;
+      {String? email,
+      String? fname,
+      String? lname,
+      String? birthdate,
+      String? sex,
+      String? street,
+      String? postCode,
+      String? city,
+      String? country}) async {
+    try {
+      final response = await http.post(
+        Uri.parse(host + port + '/createClient'),
+        headers: <String, String>{
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        },
+        body: (<String, String>{
+          "email": email.toString(),
+          "fname": fname.toString(),
+          "lname": lname.toString(),
+          "birthdate": birthdate.toString(),
+          "sex": sex.toString(),
+          "street": street.toString(),
+          "postCode": postCode.toString(),
+          "city": city.toString(),
+          "country": country.toString(),
+        }),
+      );
+      return response.body;
+    } on Exception {
+      return "ERROR";
+    }
   }
 
-// Delete Client
+  // Delete Client
   Future<String> deleteClient({String? email}) async {
-    final response = await http.post(
-      Uri.parse(host + port + '/deleteClient'),
-      headers: <String, String>{
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-      },
-      body: (<String, String>{
-        "email": email.toString(),
-      }),
-    );
-    return response.body;
+    try {
+      final response = await http.post(
+        Uri.parse(host + port + '/deleteClient'),
+        headers: <String, String>{
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        },
+        body: (<String, String>{
+          "email": email.toString(),
+        }),
+      );
+      return response.body;
+    } on Exception {
+      return "ERROR";
+    }
   }
 
 // Save Client Information
