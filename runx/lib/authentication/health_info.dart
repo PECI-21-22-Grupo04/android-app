@@ -31,7 +31,7 @@ class HealthInfoForm extends StatelessWidget {
           Column(
             children: const [
               SizedBox(height: 20),
-              Text('Forneça informação adicional ao seu instrutor',
+              Text('Informação fisica adicional',
                   style: TextStyle(fontSize: 24), textAlign: TextAlign.center),
             ],
           ),
@@ -74,34 +74,19 @@ class SignupForm extends StatefulWidget {
 class _SignupFormState extends State<SignupForm> {
   final _formKey = GlobalKey<FormState>();
 
-  String? age;
-  String? height;
-  String? weight;
-  String? pathologies;
+  String? heightC;
+  String? weightC;
+  String? pathologiesC;
+  late String fitnesslevelC;
 
-  String fitnesslevel = 'Principiante';
+  List<String> listOfLevels = ['Elementar', 'Intermédio', 'Avançado'];
 
-  var items = [
-    'Principiante',
-    'Elementar',
-    'Intermédio',
-    'Avançado',
-    'Atleta',
-  ];
-
-  final pass = TextEditingController();
   get fname => widget.fnameC;
   get lname => widget.lnameC;
   get email => widget.emailC;
 
   @override
   Widget build(BuildContext context) {
-    var border = const OutlineInputBorder(
-      borderRadius: BorderRadius.all(
-        Radius.circular(100.0),
-      ),
-    );
-
     var space = const SizedBox(height: 10);
 
     return Form(
@@ -109,50 +94,25 @@ class _SignupFormState extends State<SignupForm> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          // Age
-          TextFormField(
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(3),
-              ],
-              decoration: InputDecoration(
-                labelText: 'Idade (anos)',
-                prefixIcon: const Icon(Icons.calendar_month_rounded),
-                border: border,
-              ),
-              onSaved: (val) {
-                age = val;
-              },
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Por favor introduza a sua idade';
-                }
-                if (int.parse(value) > 120 || int.parse(value) < 16) {
-                  return "Tem de ter mais de 16 anos para se registar";
-                }
-                return null;
-              },
-              keyboardType: TextInputType.number),
-          space,
-
           // Height
           TextFormField(
               inputFormatters: [
                 LengthLimitingTextInputFormatter(3),
+                FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
               ],
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Altura (cm)',
-                prefixIcon: const Icon(Icons.man_rounded),
-                border: border,
+                icon: Icon(Icons.man_rounded),
               ),
               onSaved: (val) {
-                height = val;
+                heightC = val;
               },
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Por favor introduza a sua altura';
                 }
-                if (int.parse(value) > 250 || int.parse(value) < 100) {
-                  return "Por favor introduza uma altura válida";
+                if (int.parse(value) > 250 || int.parse(value) < 120) {
+                  return "Por favor introduza uma altura válida (120cm a 250cm)";
                 }
                 return null;
               },
@@ -163,68 +123,72 @@ class _SignupFormState extends State<SignupForm> {
           TextFormField(
               inputFormatters: [
                 LengthLimitingTextInputFormatter(3),
+                FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
               ],
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                   labelText: 'Peso (kg)',
-                  prefixIcon: const Icon(Icons.monitor_weight_rounded),
-                  border: border),
+                  icon: Icon(Icons.monitor_weight_rounded)),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Por favor introduza o seu peso';
                 }
-                if (int.parse(value) > 200 || int.parse(value) < 30) {
-                  return "Por favor introduza um peso válido";
+                if (int.parse(value) > 200 || int.parse(value) < 25) {
+                  return "Por favor introduza um peso válido (25kg a 200kg)";
                 }
                 return null;
               },
               onSaved: (val) {
-                weight = val;
+                weightC = val;
               },
               keyboardType: TextInputType.number),
           space,
 
-          // Pathologies
-          TextFormField(
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(300),
-              ],
-              decoration: InputDecoration(
-                labelText: 'Patologias, outra informação...',
-                prefixIcon: const Icon(Icons.local_hospital_rounded),
-                border: border,
-                contentPadding: const EdgeInsets.symmetric(vertical: 50.0),
-              ),
-              onSaved: (val) {
-                pathologies = val;
-              },
-              keyboardType: TextInputType.text),
-          space,
+          // Fitness Level
+          DropdownButtonFormField(
+            decoration: const InputDecoration(
+              labelText: 'Nível de Fitness',
+              icon: Icon(Icons.show_chart_rounded),
+              hintText: "Escolha uma opção",
+            ),
+            isExpanded: true,
+            onChanged: (value) {
+              setState(() {
+                fitnesslevelC = value.toString();
+              });
+            },
+            onSaved: (value) {
+              setState(() {
+                fitnesslevelC = value.toString();
+              });
+            },
+            validator: (String? value) {
+              if (value == null || value.isEmpty) {
+                return 'Por favor introduza o seu nivel de fitness';
+              }
+              return null;
+            },
+            items: listOfLevels.map((String fitnesslevelC) {
+              return DropdownMenuItem(
+                  value: fitnesslevelC, child: Text(fitnesslevelC));
+            }).toList(),
+          ),
           space,
 
-          // Fitness Level
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('Nível de Fitness', style: TextStyle(fontSize: 30)),
-              DropdownButton(
-                style: const TextStyle(fontSize: 20, color: Colors.black),
-                value: fitnesslevel,
-                icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                items: items.map((String items) {
-                  return DropdownMenuItem(
-                    value: items,
-                    child: Text(items),
-                  );
-                }).toList(),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    fitnesslevel = newValue!;
-                  });
-                },
-              ),
-            ],
+          // Pathologies
+          TextFormField(
+            decoration: const InputDecoration(
+                labelText: 'Patologias',
+                icon: Icon(Icons.local_hospital_rounded),
+                hintText: "Patologias, outra informação"),
+            onSaved: (value) => pathologiesC = value!,
+            keyboardType: TextInputType.multiline,
+            maxLines: null,
+            maxLength: 250,
           ),
-          const SizedBox(height: 30),
+          space,
+          space,
+          space,
+          space,
 
           // Submit Information Button
           SizedBox(
@@ -234,31 +198,45 @@ class _SignupFormState extends State<SignupForm> {
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
+                  int formulaVal1 = (int.parse(weightC!));
+                  double formulaVal2 = ((int.parse(heightC!) / 100) *
+                      (int.parse(heightC!) / 100));
+
                   // Save additional user information in the database
                   APICaller()
                       .addClientInfo(
                           email: email,
-                          age: age,
-                          height: height,
-                          weight: weight,
-                          fitness: fitnesslevel,
-                          pathologies: pathologies)
+                          height: heightC,
+                          weight: weightC,
+                          fitness: fitnesslevelC,
+                          bmi: (formulaVal1 / formulaVal2)
+                              .toString(), // BMI formula is weight(kg)/height(m)^2
+                          pathologies: pathologiesC)
                       .then((result) {
                     // If result code is 0, the data has been successfully saved in the database
-                    if (json.decode(result)["code"] == 0) {
-                      Navigator.pushReplacement(
+                    if (result != "ERROR" && json.decode(result)["code"] == 0) {
+                      Navigator.pushAndRemoveUntil<void>(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => const PageNav()));
+                          MaterialPageRoute<void>(
+                              builder: (BuildContext context) =>
+                                  const PageNav()),
+                          (Route<dynamic> route) => false);
                     }
                     // Else show error message
                     else {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text(
-                          json.decode(result)["code"],
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                      ));
+                      if (result == "ERROR") {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          content: Text(
+                              ("Ocorreu um erro \nVerifique a sua conexão ou tente mais tarde"),
+                              style: TextStyle(fontSize: 16)),
+                        ));
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text((json.decode(result)["code"]),
+                              style: const TextStyle(fontSize: 16)),
+                        ));
+                      }
                     }
                   });
                 }

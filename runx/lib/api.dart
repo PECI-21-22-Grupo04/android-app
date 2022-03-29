@@ -80,25 +80,29 @@ class APICaller {
 // Save Client Information
   Future<String> addClientInfo(
       {String? email,
-      String? age,
       String? height,
       String? weight,
       String? fitness,
+      String? bmi,
       String? pathologies}) async {
-    final response = await http.post(
-      Uri.parse(host + port + '/addClientInfo'),
-      headers: <String, String>{
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-      },
-      body: (<String, String>{
-        "email": email.toString(),
-        "age": age.toString(),
-        "height": height.toString(),
-        "weight": weight.toString(),
-        "fitness": fitness.toString(),
-        "pathologies": pathologies.toString(),
-      }),
-    );
-    return response.body;
+    try {
+      final response = await http.post(
+        Uri.parse(host + port + '/addClientInfo'),
+        headers: <String, String>{
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        },
+        body: (<String, String>{
+          "email": email.toString(),
+          "height": height.toString(),
+          "weight": weight.toString(),
+          "fitness": fitness.toString(),
+          "bmi": bmi.toString(),
+          "pathologies": pathologies.toString(),
+        }),
+      );
+      return response.body;
+    } on Exception {
+      return "ERROR";
+    }
   }
 }
