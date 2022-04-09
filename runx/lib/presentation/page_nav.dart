@@ -11,7 +11,7 @@ import 'package:runx/profile/userdata.dart';
 // Screens
 import 'package:runx/user_profile/homepage.dart';
 import 'package:runx/user_profile/profile.dart';
-import 'package:runx/exercise/exercises.dart';
+import 'package:runx/exercise/library.dart';
 import 'package:runx/device/devices.dart';
 import 'package:runx/instructor/instructor.dart';
 import 'package:runx/settings/settings.dart';
@@ -30,7 +30,7 @@ class _PageNavState extends State<PageNav> {
 
   static const List _pages = [
     HomePage(),
-    Exercises(),
+    Library(),
     Instructor(),
     Devices(),
     Profile()

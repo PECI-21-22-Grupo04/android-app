@@ -5,29 +5,29 @@ import 'package:runx/assets/assets.dart';
 
 import '../preferences/theme_model.dart';
 
-class Exercises extends StatefulWidget {
-  const Exercises({Key? key}) : super(key: key);
+class Plans extends StatefulWidget {
+  const Plans({Key? key}) : super(key: key);
 
   @override
-  State<Exercises> createState() => _ExercisesState();
+  State<Plans> createState() => _PlansState();
 }
 
-class _ExercisesState extends State<Exercises> {
-  final List<Map> ExercisesLists = [
+class _PlansState extends State<Plans> {
+  final List<Map> PlansLists = [
     {
-      "name": "Exercício 1",
+      "name": "Plano 1",
       "instructor": "Instrutor 1",
       "type": "Tipo 1",
       "image": placeholder1
     },
     {
-      "name": "Exercício 2",
+      "name": "Plano 2",
       "instructor": "Instrutor 1",
       "type": "Tipo 1",
       "image": placeholder1
     },
     {
-      "name": "Exercício 3",
+      "name": "Plano 3",
       "instructor": "Instrutor 3",
       "type": "Tipo 3",
       "image": placeholder1
@@ -40,7 +40,7 @@ class _ExercisesState extends State<Exercises> {
       return Builder(
         builder: (context) => Scaffold(
           appBar: AppBar(
-            title: const Text('Biblioteca de Exercícios'),
+            title: const Text('Biblioteca de Planos'),
             toolbarHeight: 55,
             leading: Builder(builder: (context) => const BackButton()),
           ),
@@ -56,7 +56,7 @@ class _ExercisesState extends State<Exercises> {
                   width: double.infinity,
                   child: ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: ExercisesLists.length,
+                      itemCount: PlansLists.length,
                       itemBuilder: (BuildContext context, int index) {
                         return buildList(context, index);
                       }),
@@ -89,7 +89,7 @@ class _ExercisesState extends State<Exercises> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50),
                 image: DecorationImage(
-                    image: NetworkImage(ExercisesLists[index]['image']),
+                    image: NetworkImage(PlansLists[index]['image']),
                     fit: BoxFit.fill),
               ),
             ),
@@ -98,7 +98,7 @@ class _ExercisesState extends State<Exercises> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    ExercisesLists[index]['name'],
+                    PlansLists[index]['name'],
                     style: TextStyle(
                         color:
                             !themeNotifier.isDark ? primaryDark : primaryLight,
@@ -120,7 +120,7 @@ class _ExercisesState extends State<Exercises> {
                       const SizedBox(
                         width: 5,
                       ),
-                      Text(ExercisesLists[index]['instructor'],
+                      Text(PlansLists[index]['instructor'],
                           style: TextStyle(
                               color: !themeNotifier.isDark
                                   ? primaryDark
@@ -144,7 +144,7 @@ class _ExercisesState extends State<Exercises> {
                       const SizedBox(
                         width: 5,
                       ),
-                      Text(ExercisesLists[index]['type'],
+                      Text(PlansLists[index]['type'],
                           style: TextStyle(
                               color: !themeNotifier.isDark
                                   ? primaryDark
