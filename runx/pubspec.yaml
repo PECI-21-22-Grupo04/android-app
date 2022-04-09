@@ -45,6 +45,12 @@ dependencies:
     sdk: flutter
     version: ^0.0.0
   country_picker: ^2.0.12
+  flutter_chat_ui: ^1.5.5
+  file_picker: ^4.5.1
+  flutter_chat_types: ^3.3.2
+  image_picker: ^0.8.5
+  mime: ^1.0.1
+  open_file: ^3.2.1
 
 dev_dependencies:
   flutter_test:
