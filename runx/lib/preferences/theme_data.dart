@@ -5,7 +5,7 @@ class CustomThemeLight {
   static ThemeData get lightTheme {
     return ThemeData(
         brightness: Brightness.light,
-        primarySwatch: buildMaterialColor(colorLight),
+        primarySwatch: buildMaterialColor(themeColorLight),
         textTheme: const TextTheme(
           headline6: TextStyle(
               fontSize: 20.0, fontWeight: FontWeight.bold), // page title

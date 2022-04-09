@@ -18,7 +18,7 @@ class _InstructorState extends State<Instructor> {
     return Consumer(builder: (context, ThemeModel themeNotifier, child) {
       return Scaffold(
           backgroundColor:
-              themeNotifier.isDark ? secondaryDark : secondaryLight);
+              themeNotifier.isDark ? themeSecondaryDark : themeSecondaryLight);
     });
   }
 }

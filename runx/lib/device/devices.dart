@@ -19,7 +19,7 @@ class _DevicesState extends State<Devices> {
       return Scaffold(
           body: buildGraphs(context),
           backgroundColor:
-              themeNotifier.isDark ? secondaryDark : secondaryLight);
+              themeNotifier.isDark ? themeSecondaryDark : themeSecondaryLight);
     });
   }
 }

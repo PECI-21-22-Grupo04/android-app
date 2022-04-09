@@ -19,8 +19,9 @@ class _HomePageState extends State<HomePage> {
     return Consumer(builder: (context, ThemeModel themeNotifier, child) {
       return Builder(
           builder: (context) => Scaffold(
-                backgroundColor:
-                    themeNotifier.isDark ? secondaryDark : secondaryLight,
+                backgroundColor: themeNotifier.isDark
+                    ? themeSecondaryDark
+                    : themeSecondaryLight,
                 body: Center(
                   child: Text("UID --> " +
                       ((FirebaseAuth.instance.currentUser?.uid).toString()) +

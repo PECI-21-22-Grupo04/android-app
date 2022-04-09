@@ -44,9 +44,8 @@ class _ExercisesState extends State<Exercises> {
             toolbarHeight: 55,
             leading: Builder(builder: (context) => const BackButton()),
           ),
-          backgroundColor: themeNotifier.isDark
-              ? const Color.fromARGB(255, 24, 24, 24)
-              : const Color.fromARGB(255, 240, 240, 240),
+          backgroundColor:
+              themeNotifier.isDark ? themeSecondaryDark : themeSecondaryLight,
           body: SingleChildScrollView(
             child: Stack(
               children: <Widget>[
@@ -74,7 +73,7 @@ class _ExercisesState extends State<Exercises> {
       return Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(25),
-          color: themeNotifier.isDark ? primaryDark : primaryLight,
+          color: themeNotifier.isDark ? themePrimaryDark : themePrimaryLight,
         ),
         width: double.infinity,
         margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -100,8 +99,9 @@ class _ExercisesState extends State<Exercises> {
                   Text(
                     ExercisesLists[index]['name'],
                     style: TextStyle(
-                        color:
-                            !themeNotifier.isDark ? primaryDark : primaryLight,
+                        color: !themeNotifier.isDark
+                            ? themePrimaryDark
+                            : themePrimaryLight,
                         fontWeight: FontWeight.bold,
                         fontSize: 18),
                   ),
@@ -123,8 +123,8 @@ class _ExercisesState extends State<Exercises> {
                       Text(ExercisesLists[index]['instructor'],
                           style: TextStyle(
                               color: !themeNotifier.isDark
-                                  ? primaryDark
-                                  : primaryLight,
+                                  ? themePrimaryDark
+                                  : themePrimaryLight,
                               fontSize: 13,
                               letterSpacing: .3)),
                     ],
@@ -147,8 +147,8 @@ class _ExercisesState extends State<Exercises> {
                       Text(ExercisesLists[index]['type'],
                           style: TextStyle(
                               color: !themeNotifier.isDark
-                                  ? primaryDark
-                                  : primaryLight,
+                                  ? themePrimaryDark
+                                  : themePrimaryLight,
                               fontSize: 13,
                               letterSpacing: .3)),
                     ],

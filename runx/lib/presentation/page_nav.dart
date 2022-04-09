@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 // Logic
 import 'package:runx/authentication/firebase.dart';
+import 'package:runx/instructor/chat.dart';
 import 'package:runx/preferences/colors.dart';
 import 'package:runx/preferences/theme_model.dart';
 import 'package:runx/profile/userdata.dart';
@@ -31,7 +32,7 @@ class _PageNavState extends State<PageNav> {
   static const List _pages = [
     HomePage(),
     Library(),
-    Instructor(),
+    ChatPage(),
     Devices(),
     Profile()
   ];
@@ -72,7 +73,7 @@ class _PageNavState extends State<PageNav> {
         ),
         drawer: Drawer(
           backgroundColor:
-              themeNotifier.isDark ? secondaryDark : secondaryLight,
+              themeNotifier.isDark ? themeSecondaryDark : themeSecondaryLight,
           child: Column(
             children: <Widget>[
               Expanded(
@@ -80,7 +81,9 @@ class _PageNavState extends State<PageNav> {
                   children: <Widget>[
                     UserAccountsDrawerHeader(
                       decoration: BoxDecoration(
-                        color: themeNotifier.isDark ? primaryDark : colorLight,
+                        color: themeNotifier.isDark
+                            ? themePrimaryDark
+                            : themeColorLight,
                       ),
                       accountName: Text(user.fname + " " + user.lname),
                       accountEmail: Text(user.email),
@@ -191,7 +194,8 @@ class _PageNavState extends State<PageNav> {
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: themeNotifier.isDark ? primaryDark : primaryLight,
+          backgroundColor:
+              themeNotifier.isDark ? themePrimaryDark : themePrimaryLight,
           type: BottomNavigationBarType.fixed,
           showSelectedLabels: false,
           showUnselectedLabels: false,

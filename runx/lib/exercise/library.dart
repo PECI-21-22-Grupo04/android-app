@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:runx/assets/assets.dart';
 import 'package:runx/exercise/exercises.dart';
 import 'package:runx/exercise/plans.dart';
+import '../preferences/colors.dart';
 import '../preferences/theme_model.dart';
 
 class Library extends StatefulWidget {
@@ -17,6 +18,8 @@ class _LibraryState extends State<Library> {
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ThemeModel themeNotifier, child) {
       return Scaffold(
+        backgroundColor:
+            themeNotifier.isDark ? themeSecondaryDark : themeSecondaryLight,
         body: SafeArea(
           child: Container(
             padding: const EdgeInsets.all(20.0),

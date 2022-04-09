@@ -22,7 +22,8 @@ class _ProfileState extends State<Profile> {
 
     return Consumer(builder: (context, ThemeModel themeNotifier, child) {
       return Scaffold(
-        backgroundColor: themeNotifier.isDark ? secondaryDark : secondaryLight,
+        backgroundColor:
+            themeNotifier.isDark ? themeSecondaryDark : themeSecondaryLight,
         body: SingleChildScrollView(
           child: Stack(
             children: <Widget>[
@@ -45,8 +46,8 @@ class _ProfileState extends State<Profile> {
                           margin: const EdgeInsets.only(top: 16.0),
                           decoration: BoxDecoration(
                               color: themeNotifier.isDark
-                                  ? primaryDark
-                                  : primaryLight,
+                                  ? themePrimaryDark
+                                  : themePrimaryLight,
                               borderRadius: BorderRadius.circular(10.0)),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -109,8 +110,8 @@ class _ProfileState extends State<Profile> {
                               margin: const EdgeInsets.only(top: 16.0),
                               decoration: BoxDecoration(
                                   color: themeNotifier.isDark
-                                      ? primaryDark
-                                      : primaryLight,
+                                      ? themePrimaryDark
+                                      : themePrimaryLight,
                                   borderRadius: BorderRadius.circular(10.0)),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,

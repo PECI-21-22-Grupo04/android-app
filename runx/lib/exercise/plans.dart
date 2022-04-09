@@ -74,7 +74,7 @@ class _PlansState extends State<Plans> {
       return Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(25),
-          color: themeNotifier.isDark ? primaryDark : primaryLight,
+          color: themeNotifier.isDark ? themePrimaryDark : themePrimaryLight,
         ),
         width: double.infinity,
         margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -100,8 +100,9 @@ class _PlansState extends State<Plans> {
                   Text(
                     PlansLists[index]['name'],
                     style: TextStyle(
-                        color:
-                            !themeNotifier.isDark ? primaryDark : primaryLight,
+                        color: !themeNotifier.isDark
+                            ? themePrimaryDark
+                            : themePrimaryLight,
                         fontWeight: FontWeight.bold,
                         fontSize: 18),
                   ),
@@ -123,8 +124,8 @@ class _PlansState extends State<Plans> {
                       Text(PlansLists[index]['instructor'],
                           style: TextStyle(
                               color: !themeNotifier.isDark
-                                  ? primaryDark
-                                  : primaryLight,
+                                  ? themePrimaryDark
+                                  : themePrimaryLight,
                               fontSize: 13,
                               letterSpacing: .3)),
                     ],
@@ -147,8 +148,8 @@ class _PlansState extends State<Plans> {
                       Text(PlansLists[index]['type'],
                           style: TextStyle(
                               color: !themeNotifier.isDark
-                                  ? primaryDark
-                                  : primaryLight,
+                                  ? themePrimaryDark
+                                  : themePrimaryLight,
                               fontSize: 13,
                               letterSpacing: .3)),
                     ],
