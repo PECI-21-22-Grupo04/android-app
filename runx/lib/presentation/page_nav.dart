@@ -16,7 +16,7 @@ import 'package:runx/exercise/library.dart';
 import 'package:runx/device/devices.dart';
 import 'package:runx/instructor/instructor.dart';
 import 'package:runx/settings/settings.dart';
-import 'package:runx/authentication/sign_in.dart';
+import 'package:runx/authentication/login.dart';
 
 class PageNav extends StatefulWidget {
   const PageNav({Key? key}) : super(key: key);

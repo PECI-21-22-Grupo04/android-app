@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 // Screens
-import 'package:runx/authentication/sign_in.dart';
+import 'package:runx/authentication/login.dart';
 import 'package:runx/preferences/theme_data.dart';
 import 'package:runx/preferences/theme_model.dart';
 import 'package:runx/presentation/page_nav.dart';
