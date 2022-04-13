@@ -21,7 +21,7 @@ class CustomThemeDark {
   static ThemeData get darkTheme {
     return ThemeData.dark().copyWith(
         colorScheme:
-            const ColorScheme.dark().copyWith(primary: Colors.tealAccent),
+            const ColorScheme.dark().copyWith(secondary: themeColorLight),
         textTheme: const TextTheme(
           headline6: TextStyle(
               fontSize: 20.0, fontWeight: FontWeight.bold), // page title
