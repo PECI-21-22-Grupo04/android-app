@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 // Logic
 import 'package:runx/authentication/firebase.dart';
+import 'package:runx/exercise/video_play.dart';
 import 'package:runx/instructor/chat.dart';
 import 'package:runx/preferences/colors.dart';
 import 'package:runx/preferences/theme_model.dart';
@@ -32,7 +33,10 @@ class _PageNavState extends State<PageNav> {
   static const List _pages = [
     HomePage(),
     Library(),
-    ChatPage(),
+    VideoPlayNetwork(
+      video:
+          'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
+    ),
     Devices(),
     Profile()
   ];
