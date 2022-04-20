@@ -121,11 +121,9 @@ class _ExercisesState extends State<Exercises> {
                         ),
                         Row(
                           children: <Widget>[
-                            Icon(
+                            const Icon(
                               Icons.person_rounded,
-                              color: themeNotifier.isDark
-                                  ? const Color.fromRGBO(100, 255, 218, 1)
-                                  : const Color.fromARGB(255, 101, 50, 218),
+                              color: themeColorLight,
                               size: 20,
                             ),
                             const SizedBox(
@@ -145,11 +143,9 @@ class _ExercisesState extends State<Exercises> {
                         ),
                         Row(
                           children: <Widget>[
-                            Icon(
+                            const Icon(
                               Icons.sports_gymnastics_rounded,
-                              color: themeNotifier.isDark
-                                  ? const Color.fromRGBO(100, 255, 218, 1)
-                                  : const Color.fromARGB(255, 101, 50, 218),
+                              color: themeColorLight,
                               size: 20,
                             ),
                             const SizedBox(

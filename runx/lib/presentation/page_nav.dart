@@ -1,9 +1,11 @@
 // System Packages
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:provider/provider.dart';
 
 // Logic
 import 'package:runx/authentication/firebase.dart';
+import 'package:runx/exercise/exercises_list.dart';
 import 'package:runx/exercise/video_play.dart';
 import 'package:runx/instructor/chat.dart';
 import 'package:runx/preferences/colors.dart';

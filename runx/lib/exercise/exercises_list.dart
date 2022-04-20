@@ -7,31 +7,31 @@ import 'package:runx/assets/assets.dart';
 
 import '../preferences/theme_model.dart';
 
-class Plans extends StatefulWidget {
-  const Plans({Key? key}) : super(key: key);
+class ExerciseList extends StatefulWidget {
+  const ExerciseList({Key? key}) : super(key: key);
 
   @override
-  State<Plans> createState() => _PlansState();
+  State<ExerciseList> createState() => _ExerciseListState();
 }
 
-class _PlansState extends State<Plans> {
-  final List<Map> PlansLists = [
+class _ExerciseListState extends State<ExerciseList> {
+  final List<Map> ExercisesList = [
     {
-      "name": "Plano 1",
-      "instructor": "Instrutor 1",
-      "type": "Tipo 1",
+      "name": "Exercício 1",
+      "type": "Type A",
+      "reps": "3x12",
       "image": placeholder1
     },
     {
-      "name": "Plano 2",
-      "instructor": "Instrutor 1",
-      "type": "Tipo 1",
+      "name": "Exercício 2",
+      "type": "Type A",
+      "reps": "3x12",
       "image": placeholder1
     },
     {
-      "name": "Plano 3",
-      "instructor": "Instrutor 3",
-      "type": "Tipo 3",
+      "name": "Exercício 3",
+      "type": "Type B",
+      "reps": "3x12",
       "image": placeholder1
     },
   ];
@@ -42,7 +42,7 @@ class _PlansState extends State<Plans> {
       return Builder(
         builder: (context) => Scaffold(
           appBar: AppBar(
-            title: const Text('Biblioteca de Planos'),
+            title: const Text('Plano A'),
             toolbarHeight: 55,
             leading: Builder(builder: (context) => const BackButton()),
           ),
@@ -58,7 +58,7 @@ class _PlansState extends State<Plans> {
                   width: double.infinity,
                   child: ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: PlansLists.length,
+                      itemCount: ExercisesList.length,
                       itemBuilder: (BuildContext context, int index) {
                         return buildList(context, index);
                       }),
@@ -76,7 +76,7 @@ class _PlansState extends State<Plans> {
       return InkWell(
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(
-              builder: (_) => const ExerciseList(),
+              builder: (_) => const VideoPage(),
             ));
           },
           child: Container(
@@ -98,7 +98,7 @@ class _PlansState extends State<Plans> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(50),
                     image: DecorationImage(
-                        image: NetworkImage(PlansLists[index]['image']),
+                        image: NetworkImage(ExercisesList[index]['image']),
                         fit: BoxFit.fill),
                   ),
                 ),
@@ -107,7 +107,7 @@ class _PlansState extends State<Plans> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        PlansLists[index]['name'],
+                        ExercisesList[index]['name'],
                         style: TextStyle(
                             color: !themeNotifier.isDark
                                 ? themePrimaryDark
@@ -120,15 +120,10 @@ class _PlansState extends State<Plans> {
                       ),
                       Row(
                         children: <Widget>[
-                          const Icon(
-                            Icons.person_rounded,
-                            color: themeColorLight,
-                            size: 20,
-                          ),
                           const SizedBox(
                             width: 5,
                           ),
-                          Text(PlansLists[index]['instructor'],
+                          Text(ExercisesList[index]['type'],
                               style: TextStyle(
                                   color: !themeNotifier.isDark
                                       ? themePrimaryDark
@@ -142,15 +137,10 @@ class _PlansState extends State<Plans> {
                       ),
                       Row(
                         children: <Widget>[
-                          const Icon(
-                            Icons.sports_gymnastics_rounded,
-                            color: themeColorLight,
-                            size: 20,
-                          ),
                           const SizedBox(
                             width: 5,
                           ),
-                          Text(PlansLists[index]['type'],
+                          Text(ExercisesList[index]['reps'],
                               style: TextStyle(
                                   color: !themeNotifier.isDark
                                       ? themePrimaryDark
