@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:runx/exercise/video_page.dart';
+import 'package:runx/exercise/video_play.dart';
 import 'package:runx/preferences/colors.dart';
 import 'package:runx/assets/assets.dart';
+import 'package:runx/settings/settings.dart';
 
 import '../preferences/theme_model.dart';
 
@@ -70,95 +73,102 @@ class _ExercisesState extends State<Exercises> {
 
   Widget buildList(BuildContext context, int index) {
     return Consumer(builder: (context, ThemeModel themeNotifier, child) {
-      return Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(25),
-          color: themeNotifier.isDark ? themePrimaryDark : themePrimaryLight,
-        ),
-        width: double.infinity,
-        margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              width: 50,
-              height: 50,
-              margin: const EdgeInsets.only(right: 15),
+      return InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const VideoPage()),
+            );
+          },
+          child: Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
-                image: DecorationImage(
-                    image: NetworkImage(ExercisesLists[index]['image']),
-                    fit: BoxFit.fill),
+                borderRadius: BorderRadius.circular(25),
+                color:
+                    themeNotifier.isDark ? themePrimaryDark : themePrimaryLight,
               ),
-            ),
-            Expanded(
-              child: Column(
+              width: double.infinity,
+              margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    ExercisesLists[index]['name'],
-                    style: TextStyle(
-                        color: !themeNotifier.isDark
-                            ? themePrimaryDark
-                            : themePrimaryLight,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18),
+                  Container(
+                    width: 50,
+                    height: 50,
+                    margin: const EdgeInsets.only(right: 15),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      image: DecorationImage(
+                          image: NetworkImage(ExercisesLists[index]['image']),
+                          fit: BoxFit.fill),
+                    ),
                   ),
-                  const SizedBox(
-                    height: 6,
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.person_rounded,
-                        color: themeNotifier.isDark
-                            ? const Color.fromRGBO(100, 255, 218, 1)
-                            : const Color.fromARGB(255, 101, 50, 218),
-                        size: 20,
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      Text(ExercisesLists[index]['instructor'],
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          ExercisesLists[index]['name'],
                           style: TextStyle(
                               color: !themeNotifier.isDark
                                   ? themePrimaryDark
                                   : themePrimaryLight,
-                              fontSize: 13,
-                              letterSpacing: .3)),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 6,
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.sports_gymnastics_rounded,
-                        color: themeNotifier.isDark
-                            ? const Color.fromRGBO(100, 255, 218, 1)
-                            : const Color.fromARGB(255, 101, 50, 218),
-                        size: 20,
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      Text(ExercisesLists[index]['type'],
-                          style: TextStyle(
-                              color: !themeNotifier.isDark
-                                  ? themePrimaryDark
-                                  : themePrimaryLight,
-                              fontSize: 13,
-                              letterSpacing: .3)),
-                    ],
-                  ),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18),
+                        ),
+                        const SizedBox(
+                          height: 6,
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Icon(
+                              Icons.person_rounded,
+                              color: themeNotifier.isDark
+                                  ? const Color.fromRGBO(100, 255, 218, 1)
+                                  : const Color.fromARGB(255, 101, 50, 218),
+                              size: 20,
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            Text(ExercisesLists[index]['instructor'],
+                                style: TextStyle(
+                                    color: !themeNotifier.isDark
+                                        ? themePrimaryDark
+                                        : themePrimaryLight,
+                                    fontSize: 13,
+                                    letterSpacing: .3)),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 6,
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Icon(
+                              Icons.sports_gymnastics_rounded,
+                              color: themeNotifier.isDark
+                                  ? const Color.fromRGBO(100, 255, 218, 1)
+                                  : const Color.fromARGB(255, 101, 50, 218),
+                              size: 20,
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            Text(ExercisesLists[index]['type'],
+                                style: TextStyle(
+                                    color: !themeNotifier.isDark
+                                        ? themePrimaryDark
+                                        : themePrimaryLight,
+                                    fontSize: 13,
+                                    letterSpacing: .3)),
+                          ],
+                        ),
+                      ],
+                    ),
+                  )
                 ],
-              ),
-            )
-          ],
-        ),
-      );
+              )));
     });
   }
 }
