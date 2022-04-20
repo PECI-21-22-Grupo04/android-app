@@ -33,10 +33,7 @@ class _PageNavState extends State<PageNav> {
   static const List _pages = [
     HomePage(),
     Library(),
-    VideoPlayNetwork(
-      video:
-          'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
-    ),
+    ChatPage(),
     Devices(),
     Profile()
   ];
