@@ -36,7 +36,14 @@ uploadPic() async {
     Reference ref =
         firebaseStorage.ref(_firebaseAuth.currentUser?.uid).child(file.path);
 
-    ref.putFile(image).whenComplete(() async {
+    ref
+        .putFile(
+            image,
+            SettableMetadata(customMetadata: {
+              'uploaded_by': _firebaseAuth.currentUser!.uid.toString(),
+              'date': DateTime.now().toString(),
+            }))
+        .whenComplete(() async {
       print("Pic Uploaded Successfully!");
 
       String url = (await ref.getDownloadURL()).toString();
