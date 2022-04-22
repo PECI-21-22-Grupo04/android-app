@@ -27,7 +27,7 @@ class _LibraryState extends State<Library> {
                 child: Column(
                   children: <Widget>[
                     const SizedBox(
-                      height: 50,
+                      height: 20,
                     ),
                     InkWell(
                       onTap: () {

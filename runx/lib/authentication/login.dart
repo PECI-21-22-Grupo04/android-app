@@ -6,7 +6,7 @@ import 'package:runx/authentication/firebase.dart';
 
 // Screens
 import 'package:runx/authentication/sign_up.dart';
-import 'package:runx/presentation/page_nav.dart';
+import 'package:runx/presentation/bottom_nav.dart';
 
 class Login extends StatelessWidget {
   const Login({Key? key}) : super(key: key);
@@ -146,7 +146,7 @@ class _LoginFormState extends State<LoginForm> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const PageNav()));
+                              builder: (context) => const BottomNav()));
                     }
                     // Else show error message
                     else {

@@ -7,7 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:runx/api.dart';
 
 // Screens
-import 'package:runx/presentation/page_nav.dart';
+import 'package:runx/presentation/bottom_nav.dart';
 
 class HealthInfoForm extends StatelessWidget {
   final String? emailP;
@@ -219,7 +219,7 @@ class _SignupFormState extends State<SignupForm> {
                           context,
                           MaterialPageRoute<void>(
                               builder: (BuildContext context) =>
-                                  const PageNav()),
+                                  const BottomNav()),
                           (Route<dynamic> route) => false);
                     }
                     // Else show error message
@@ -260,7 +260,7 @@ class _SignupFormState extends State<SignupForm> {
             child: ElevatedButton(
               onPressed: () {
                 Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => const PageNav()));
+                    MaterialPageRoute(builder: (context) => const BottomNav()));
               },
               style: ElevatedButton.styleFrom(
                   primary: Colors.grey,

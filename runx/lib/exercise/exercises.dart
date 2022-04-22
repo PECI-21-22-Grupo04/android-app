@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:runx/exercise/video_page.dart';
-import 'package:runx/exercise/video_play.dart';
 import 'package:runx/preferences/colors.dart';
 import 'package:runx/assets/assets.dart';
-import 'package:runx/settings/settings.dart';
-
 import '../preferences/theme_model.dart';
 
 class Exercises extends StatefulWidget {

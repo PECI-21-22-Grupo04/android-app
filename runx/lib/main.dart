@@ -9,7 +9,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:runx/authentication/login.dart';
 import 'package:runx/preferences/theme_data.dart';
 import 'package:runx/preferences/theme_model.dart';
-import 'package:runx/presentation/page_nav.dart';
+import 'package:runx/presentation/bottom_nav.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -56,7 +56,7 @@ class _InitialState extends State<Initial> {
     if (FirebaseAuth.instance.currentUser?.uid == null) {
       return const Login();
     } else {
-      return const PageNav();
+      return const BottomNav();
     }
   }
 }

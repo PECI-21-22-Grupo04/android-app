@@ -2,11 +2,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:runx/preferences/colors.dart';
+import 'package:runx/presentation/side_drawer.dart';
 
 // Screens
 import 'package:runx/profile/userdata.dart';
 import 'package:runx/profile/editprofile.dart';
 import 'package:runx/preferences/theme_model.dart';
+
+import '../profile/user.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -18,7 +21,7 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
-    const user = UserData.myUser;
+    User user = UserData.myUser;
 
     return Consumer(builder: (context, ThemeModel themeNotifier, child) {
       return Scaffold(
@@ -172,10 +175,6 @@ class _ProfileState extends State<Profile> {
                   ],
                 ),
               ),
-              AppBar(
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-              )
             ],
           ),
         ),
