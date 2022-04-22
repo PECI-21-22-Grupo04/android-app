@@ -14,7 +14,7 @@ class SideDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    User user = UserData.myUser;
+    UserCon user = UserData.myUser;
     return Consumer(builder: (context, ThemeModel themeNotifier, child) {
       return SizedBox(
         width: MediaQuery.of(context).size.width * 0.85, //20.0,

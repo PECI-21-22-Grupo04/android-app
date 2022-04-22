@@ -1,6 +1,4 @@
 // System Packages
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:runx/preferences/colors.dart';
 
@@ -12,6 +10,8 @@ import 'package:runx/profile/userdata.dart';
 import 'package:runx/profile/textfieldwidget.dart';
 import 'package:runx/profile/profilewidget.dart';
 
+import 'package:runx/utils/upload_pic.dart';
+
 class EditProfile extends StatefulWidget {
   const EditProfile({Key? key}) : super(key: key);
 
@@ -20,7 +20,7 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
-  User user = UserData.myUser;
+  UserCon user = UserData.myUser;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,9 @@ class _EditProfileState extends State<EditProfile> {
             ProfileWidget(
               imagePath: user.profilepic,
               isEdit: true,
-              onClicked: () async {},
+              onClicked: () async {
+                uploadPic();
+              },
             ),
             const SizedBox(height: 24),
             const Text(
@@ -53,7 +55,9 @@ class _EditProfileState extends State<EditProfile> {
             ProfileWidget(
               imagePath: user.coverimg,
               isEdit: true,
-              onClicked: () async {},
+              onClicked: () async {
+                uploadPic();
+              },
             ),
             const SizedBox(height: 24),
             TextFieldWidget(

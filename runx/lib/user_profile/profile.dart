@@ -21,7 +21,7 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
-    User user = UserData.myUser;
+    UserCon user = UserData.myUser;
 
     return Consumer(builder: (context, ThemeModel themeNotifier, child) {
       return Scaffold(

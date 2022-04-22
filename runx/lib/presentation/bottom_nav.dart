@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 // Logic
 import 'package:runx/instructor/chat.dart';
+import 'package:runx/instructor/instructor.dart';
 import 'package:runx/preferences/colors.dart';
 import 'package:runx/preferences/theme_model.dart';
 import 'package:runx/presentation/side_drawer.dart';
