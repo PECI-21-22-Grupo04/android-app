@@ -23,6 +23,7 @@ class BottomNav extends StatefulWidget {
 
 class _BottomNavState extends State<BottomNav> {
   int _selectedIndex = 0;
+  String _pageTitle = "";
 
   static const List _pages = [
     HomePage(),
@@ -35,6 +36,17 @@ class _BottomNavState extends State<BottomNav> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      if (index == 0) {
+        _pageTitle = "Início";
+      } else if (index == 1) {
+        _pageTitle = "Exercícios e Planos";
+      } else if (index == 2) {
+        _pageTitle = "Instrutor";
+      } else if (index == 3) {
+        _pageTitle = "Dispositivos";
+      } else {
+        _pageTitle = "Perfil";
+      }
     });
   }
 
@@ -44,7 +56,7 @@ class _BottomNavState extends State<BottomNav> {
       return Scaffold(
         drawer: const SideDrawer(),
         appBar: AppBar(
-          title: const Text('Perfil'),
+          title: Text(_pageTitle),
           centerTitle: true,
           toolbarHeight: 55,
           leading: Builder(
