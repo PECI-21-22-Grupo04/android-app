@@ -1,11 +1,11 @@
 class User {
-  final String profilepic;
-  final String coverimg;
+  String profilepic;
+  String coverimg;
   String fname;
-  final String lname;
-  final String email;
-  final String about;
-  final String location;
+  String lname;
+  String email;
+  String about;
+  String location;
 
   User({
     this.profilepic =

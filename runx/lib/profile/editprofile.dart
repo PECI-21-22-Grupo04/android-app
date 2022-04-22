@@ -1,4 +1,6 @@
 // System Packages
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:runx/preferences/colors.dart';
 
@@ -9,9 +11,6 @@ import 'package:runx/profile/userdata.dart';
 // Screens
 import 'package:runx/profile/textfieldwidget.dart';
 import 'package:runx/profile/profilewidget.dart';
-import 'package:runx/user_profile/profile.dart';
-
-import '../settings/settings.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({Key? key}) : super(key: key);

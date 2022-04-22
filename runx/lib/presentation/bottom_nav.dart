@@ -23,7 +23,7 @@ class BottomNav extends StatefulWidget {
 
 class _BottomNavState extends State<BottomNav> {
   int _selectedIndex = 0;
-  String _pageTitle = "";
+  String _pageTitle = "Início";
 
   static const List _pages = [
     HomePage(),
@@ -54,7 +54,6 @@ class _BottomNavState extends State<BottomNav> {
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ThemeModel themeNotifier, child) {
       return Scaffold(
-        drawer: const SideDrawer(),
         appBar: AppBar(
           title: Text(_pageTitle),
           centerTitle: true,
@@ -67,6 +66,7 @@ class _BottomNavState extends State<BottomNav> {
             ),
           ),
         ),
+        drawer: const SideDrawer(),
         body: Stack(
           children: [
             Offstage(
