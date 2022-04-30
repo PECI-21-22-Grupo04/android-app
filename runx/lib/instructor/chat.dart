@@ -1,3 +1,4 @@
+// System Packages
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:file_picker/file_picker.dart';
@@ -11,8 +12,9 @@ import 'package:open_file/open_file.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
-import '../preferences/colors.dart';
-import '../preferences/theme_model.dart';
+// Logic
+import 'package:runx/preferences/colors.dart';
+import 'package:runx/preferences/theme_model.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({Key? key}) : super(key: key);

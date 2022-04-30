@@ -7,8 +7,8 @@ import 'package:runx/api.dart';
 import 'package:runx/authentication/firebase.dart';
 
 // Screens
-import 'package:runx/authentication/login.dart';
-import 'package:runx/authentication/legal_info.dart';
+import 'package:runx/authentication/screens/login.dart';
+import 'package:runx/authentication/screens/legal_info.dart';
 
 class Signup extends StatelessWidget {
   const Signup({Key? key}) : super(key: key);

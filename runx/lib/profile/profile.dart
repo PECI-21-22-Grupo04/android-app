@@ -1,15 +1,16 @@
 // System Packages
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
+import 'package:runx/caching/hive_helper.dart';
+
+// Logic
+import 'package:runx/preferences/theme_model.dart';
 import 'package:runx/preferences/colors.dart';
-import 'package:runx/presentation/side_drawer.dart';
 
 // Screens
-import 'package:runx/profile/userdata.dart';
-import 'package:runx/profile/editprofile.dart';
-import 'package:runx/preferences/theme_model.dart';
-
-import '../profile/user.dart';
+import 'package:runx/profile/screens/editprofile.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -21,7 +22,9 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
-    UserCon user = UserData.myUser;
+    HiveHelper().openBox("UserProfile");
+    Box userInfo = Hive.box("UserProfile");
+    String? userEmail = FirebaseAuth.instance.currentUser!.email;
 
     return Consumer(builder: (context, ThemeModel themeNotifier, child) {
       return Scaffold(
@@ -33,8 +36,9 @@ class _ProfileState extends State<Profile> {
               SizedBox(
                 height: 250,
                 width: double.infinity,
-                child: PNetworkImage(
-                  user.coverimg,
+                child: Image.asset(
+                  'assets/images/background_icon.png',
+                  height: 60.0,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -62,13 +66,15 @@ class _ProfileState extends State<Profile> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      user.fname + " " + user.lname,
+                                      userInfo.get(userEmail).getFirstName() +
+                                          " " +
+                                          userInfo.get(userEmail).getLastName(),
                                       style:
                                           Theme.of(context).textTheme.headline6,
                                     ),
                                     ListTile(
                                       contentPadding: const EdgeInsets.all(0),
-                                      title: Text(user.location),
+                                      title: Text(userEmail!),
                                     ),
                                   ],
                                 ),
@@ -76,18 +82,19 @@ class _ProfileState extends State<Profile> {
                             ],
                           ),
                         ),
-                        // profile pic
+                        // Profile Picture
                         Container(
                           height: 80,
                           width: 80,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10.0),
-                              image: DecorationImage(
-                                  image: NetworkImage(user.profilepic),
+                              image: const DecorationImage(
+                                  image: AssetImage(
+                                      "assets/images/profile_icon.png"),
                                   fit: BoxFit.cover)),
                           margin: const EdgeInsets.only(left: 16.0, top: 34.0),
                         ),
-                        //edit button
+                        // Edit Button
                         Positioned(
                           bottom: 1,
                           right: 1,
@@ -130,22 +137,87 @@ class _ProfileState extends State<Profile> {
                                   const Divider(),
                                   ListTile(
                                     title: const Text(
-                                      "Email",
+                                      "Género",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                     subtitle: Text(
-                                      user.email,
-                                      style: TextStyle(
-                                          color: themeNotifier.isDark
-                                              ? const Color.fromARGB(
-                                                  255, 214, 210, 210)
-                                              : const Color.fromARGB(
-                                                  255, 107, 107, 107)),
+                                      userInfo.get(userEmail).getSex(),
                                     ),
-                                    leading: const Icon(Icons.email_rounded),
+                                    leading: const Icon(
+                                        Icons.account_circle_rounded),
                                   ),
+                                  ListTile(
+                                    title: const Text(
+                                      "Data de Nascimento",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    subtitle: Text(
+                                      userInfo.get(userEmail).getBirthdate(),
+                                    ),
+                                    leading: const Icon(
+                                        Icons.calendar_today_outlined),
+                                  ),
+                                  ListTile(
+                                    title: const Text(
+                                      "Endereço",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    subtitle: Text(
+                                      userInfo.get(userEmail).getStreet(),
+                                    ),
+                                    leading: const Icon(Icons.house_rounded),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                          child: ListTile(
+                                        title: const Text(
+                                          "Código Postal",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        subtitle: Text(
+                                          userInfo.get(userEmail).getPostCode(),
+                                        ),
+                                        leading: const Icon(
+                                            Icons.location_on_rounded),
+                                      )),
+                                      Expanded(
+                                          child: ListTile(
+                                        title: const Text(
+                                          "Cidade",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        subtitle: Text(
+                                          userInfo.get(userEmail).getCity(),
+                                        ),
+                                        leading: const Icon(
+                                            Icons.location_city_rounded),
+                                      ))
+                                    ],
+                                  ),
+                                  ListTile(
+                                    title: const Text(
+                                      "País",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    subtitle: Text(
+                                      userInfo.get(userEmail).getCountry(),
+                                    ),
+                                    leading: const Icon(Icons.flag_rounded),
+                                  ),
+                                  const SizedBox(height: 10.0),
                                   ListTile(
                                     title: const Text(
                                       "Sobre",
@@ -154,17 +226,11 @@ class _ProfileState extends State<Profile> {
                                       ),
                                     ),
                                     subtitle: Text(
-                                      user.about,
-                                      style: TextStyle(
-                                          color: themeNotifier.isDark
-                                              ? const Color.fromARGB(
-                                                  255, 214, 210, 210)
-                                              : const Color.fromARGB(
-                                                  255, 107, 107, 107)),
+                                      userInfo.get(userEmail).getPathologies(),
                                     ),
-                                    leading: const Icon(Icons.person_rounded),
+                                    leading:
+                                        const Icon(Icons.question_mark_rounded),
                                   ),
-                                  const SizedBox(height: 10.0),
                                 ],
                               ),
                             ),
@@ -180,23 +246,5 @@ class _ProfileState extends State<Profile> {
         ),
       );
     });
-  }
-}
-
-class PNetworkImage extends StatelessWidget {
-  final String? image;
-  final BoxFit? fit;
-  final double? width, height;
-  const PNetworkImage(this.image, {Key? key, this.fit, this.height, this.width})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Image.network(
-      image!,
-      fit: fit,
-      width: width,
-      height: height,
-    );
   }
 }

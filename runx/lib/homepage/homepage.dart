@@ -2,9 +2,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:runx/preferences/colors.dart';
 
-import '../preferences/theme_model.dart';
+// Logic
+import 'package:runx/preferences/colors.dart';
+import 'package:runx/preferences/theme_model.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);

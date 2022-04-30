@@ -3,15 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 // Logic
-import 'package:runx/instructor/chat.dart';
-import 'package:runx/instructor/instructor.dart';
 import 'package:runx/preferences/colors.dart';
 import 'package:runx/preferences/theme_model.dart';
-import 'package:runx/presentation/side_drawer.dart';
 
 // Screens
-import 'package:runx/user_profile/homepage.dart';
-import 'package:runx/user_profile/profile.dart';
+import 'package:runx/presentation/side_drawer.dart';
+import 'package:runx/instructor/chat.dart';
+import 'package:runx/homepage/homepage.dart';
+import 'package:runx/profile/profile.dart';
 import 'package:runx/exercise/library.dart';
 import 'package:runx/device/devices.dart';
 

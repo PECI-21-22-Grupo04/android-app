@@ -1,23 +1,31 @@
+// System Packages
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 
-import '../authentication/firebase.dart';
-import '../authentication/login.dart';
-import '../preferences/colors.dart';
-import '../preferences/theme_model.dart';
-import '../profile/user.dart';
-import '../profile/userdata.dart';
-import '../settings/settings.dart';
+// Logic
+import 'package:runx/preferences/theme_model.dart';
+import 'package:runx/preferences/colors.dart';
+import 'package:runx/authentication/firebase.dart';
+import 'package:runx/caching/hive_helper.dart';
+
+// Screens
+import 'package:runx/authentication/screens/login.dart';
+import 'package:runx/settings/settings.dart';
 
 class SideDrawer extends StatelessWidget {
   const SideDrawer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    UserCon user = UserData.myUser;
+    HiveHelper().openBox("UserProfile");
+    Box userInfo = Hive.box("UserProfile");
+    String? userEmail = FirebaseAuth.instance.currentUser!.email;
+
     return Consumer(builder: (context, ThemeModel themeNotifier, child) {
       return SizedBox(
-        width: MediaQuery.of(context).size.width * 0.85, //20.0,
+        width: MediaQuery.of(context).size.width * 0.85,
         child: Drawer(
           child: Column(
             children: <Widget>[
@@ -30,15 +38,15 @@ class SideDrawer extends StatelessWidget {
                             ? themePrimaryDark
                             : themeColorLight,
                       ),
-                      accountName: Text(user.fname + " " + user.lname),
-                      accountEmail: Text(user.email),
-                      currentAccountPicture: CircleAvatar(
+                      accountName: Text(userInfo.get(userEmail).getFirstName() +
+                          " " +
+                          userInfo.get(userEmail).getLastName()),
+                      accountEmail: Text(userInfo.get(userEmail).getEmail()),
+                      currentAccountPicture: const CircleAvatar(
                         child: ClipOval(
-                          child: Image.network(
-                            user.profilepic,
-                            fit: BoxFit.cover,
-                            width: 90,
-                            height: 90,
+                          child: ImageIcon(
+                            AssetImage("assets/images/profile_icon.png"),
+                            size: 50,
                           ),
                         ),
                       ),

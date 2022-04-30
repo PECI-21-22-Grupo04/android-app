@@ -1,9 +1,10 @@
 // System Packages
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:runx/preferences/colors.dart';
 
-import '../preferences/theme_model.dart';
+// Logic
+import 'package:runx/preferences/colors.dart';
+import 'package:runx/preferences/theme_model.dart';
 
 class Instructor extends StatefulWidget {
   const Instructor({Key? key}) : super(key: key);

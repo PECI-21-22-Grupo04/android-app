@@ -1,5 +1,8 @@
+// System Packages
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
+
+// Logic
 import 'package:video_player/video_player.dart';
 
 class ChewieListItem extends StatefulWidget {

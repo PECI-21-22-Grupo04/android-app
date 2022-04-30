@@ -1,11 +1,13 @@
+// System Packages
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:runx/exercise/exercises_list.dart';
-import 'package:runx/exercise/video_page.dart';
-import 'package:runx/preferences/colors.dart';
-import 'package:runx/assets/assets.dart';
 
-import '../preferences/theme_model.dart';
+// Logic
+import 'package:runx/preferences/colors.dart';
+import 'package:runx/preferences/theme_model.dart';
+
+// Screens
+import 'package:runx/exercise/exercises_list.dart';
 
 class Plans extends StatefulWidget {
   const Plans({Key? key}) : super(key: key);
@@ -15,24 +17,21 @@ class Plans extends StatefulWidget {
 }
 
 class _PlansState extends State<Plans> {
-  final List<Map> PlansLists = [
+  final List<Map> planList = [
     {
       "name": "Plano 1",
       "instructor": "Instrutor 1",
       "type": "Tipo 1",
-      "image": placeholder1
     },
     {
       "name": "Plano 2",
       "instructor": "Instrutor 1",
       "type": "Tipo 1",
-      "image": placeholder1
     },
     {
       "name": "Plano 3",
       "instructor": "Instrutor 3",
       "type": "Tipo 3",
-      "image": placeholder1
     },
   ];
 
@@ -58,7 +57,7 @@ class _PlansState extends State<Plans> {
                   width: double.infinity,
                   child: ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: PlansLists.length,
+                      itemCount: planList.length,
                       itemBuilder: (BuildContext context, int index) {
                         return buildList(context, index);
                       }),
@@ -97,9 +96,9 @@ class _PlansState extends State<Plans> {
                   margin: const EdgeInsets.only(right: 15),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(50),
-                    image: DecorationImage(
-                        image: NetworkImage(PlansLists[index]['image']),
-                        fit: BoxFit.fill),
+                    image: const DecorationImage(
+                        image: AssetImage("assets/images/program_icon.png"),
+                        fit: BoxFit.cover),
                   ),
                 ),
                 Expanded(
@@ -107,7 +106,7 @@ class _PlansState extends State<Plans> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        PlansLists[index]['name'],
+                        planList[index]['name'],
                         style: TextStyle(
                             color: !themeNotifier.isDark
                                 ? themePrimaryDark
@@ -128,7 +127,7 @@ class _PlansState extends State<Plans> {
                           const SizedBox(
                             width: 5,
                           ),
-                          Text(PlansLists[index]['instructor'],
+                          Text(planList[index]['instructor'],
                               style: TextStyle(
                                   color: !themeNotifier.isDark
                                       ? themePrimaryDark
@@ -150,7 +149,7 @@ class _PlansState extends State<Plans> {
                           const SizedBox(
                             width: 5,
                           ),
-                          Text(PlansLists[index]['type'],
+                          Text(planList[index]['type'],
                               style: TextStyle(
                                   color: !themeNotifier.isDark
                                       ? themePrimaryDark

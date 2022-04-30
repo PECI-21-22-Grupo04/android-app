@@ -1,9 +1,11 @@
+// System Packages
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+// Logic
 import 'package:runx/exercise/video_page.dart';
 import 'package:runx/preferences/colors.dart';
-import 'package:runx/assets/assets.dart';
-import '../preferences/theme_model.dart';
+import 'package:runx/preferences/theme_model.dart';
 
 class Exercises extends StatefulWidget {
   const Exercises({Key? key}) : super(key: key);
@@ -13,24 +15,21 @@ class Exercises extends StatefulWidget {
 }
 
 class _ExercisesState extends State<Exercises> {
-  final List<Map> ExercisesLists = [
+  final List<Map> exerciseList = [
     {
       "name": "Exercício 1",
       "instructor": "Instrutor 1",
       "type": "Tipo 1",
-      "image": placeholder1
     },
     {
       "name": "Exercício 2",
       "instructor": "Instrutor 1",
       "type": "Tipo 1",
-      "image": placeholder1
     },
     {
       "name": "Exercício 3",
       "instructor": "Instrutor 3",
       "type": "Tipo 3",
-      "image": placeholder1
     },
   ];
 
@@ -55,7 +54,7 @@ class _ExercisesState extends State<Exercises> {
                   width: double.infinity,
                   child: ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: ExercisesLists.length,
+                      itemCount: exerciseList.length,
                       itemBuilder: (BuildContext context, int index) {
                         return buildList(context, index);
                       }),
@@ -95,9 +94,9 @@ class _ExercisesState extends State<Exercises> {
                     margin: const EdgeInsets.only(right: 15),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(50),
-                      image: DecorationImage(
-                          image: NetworkImage(ExercisesLists[index]['image']),
-                          fit: BoxFit.fill),
+                      image: const DecorationImage(
+                          image: AssetImage("assets/images/exercise_icon.png"),
+                          fit: BoxFit.cover),
                     ),
                   ),
                   Expanded(
@@ -105,7 +104,7 @@ class _ExercisesState extends State<Exercises> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          ExercisesLists[index]['name'],
+                          exerciseList[index]['name'],
                           style: TextStyle(
                               color: !themeNotifier.isDark
                                   ? themePrimaryDark
@@ -126,7 +125,7 @@ class _ExercisesState extends State<Exercises> {
                             const SizedBox(
                               width: 5,
                             ),
-                            Text(ExercisesLists[index]['instructor'],
+                            Text(exerciseList[index]['instructor'],
                                 style: TextStyle(
                                     color: !themeNotifier.isDark
                                         ? themePrimaryDark
@@ -148,7 +147,7 @@ class _ExercisesState extends State<Exercises> {
                             const SizedBox(
                               width: 5,
                             ),
-                            Text(ExercisesLists[index]['type'],
+                            Text(exerciseList[index]['type'],
                                 style: TextStyle(
                                     color: !themeNotifier.isDark
                                         ? themePrimaryDark

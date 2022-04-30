@@ -1,4 +1,7 @@
+// System Packages
 import 'package:flutter/material.dart';
+
+// Screens
 import 'package:runx/preferences/colors.dart';
 
 class CustomThemeLight {

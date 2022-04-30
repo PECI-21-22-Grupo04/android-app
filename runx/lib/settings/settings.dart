@@ -1,10 +1,14 @@
+// System Packages
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:runx/settings/languagescreen.dart';
-import 'package:settings_ui/settings_ui.dart';
 import 'package:app_settings/app_settings.dart';
+import 'package:settings_ui/settings_ui.dart';
 
-import '../preferences/theme_model.dart';
+// Logic
+import 'package:runx/preferences/theme_model.dart';
+
+// Screen
+import 'package:runx/settings/languagescreen.dart';
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);

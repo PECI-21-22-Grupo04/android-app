@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 
 // Logic
 import 'package:runx/authentication/firebase.dart';
+import 'package:runx/api.dart';
+import 'package:runx/caching/hive_helper.dart';
 
 // Screens
-import 'package:runx/authentication/sign_up.dart';
+import 'package:runx/authentication/screens/sign_up.dart';
+import 'package:runx/caching/services/class_creator.dart';
 import 'package:runx/presentation/bottom_nav.dart';
 
 class Login extends StatelessWidget {
@@ -143,6 +146,15 @@ class _LoginFormState extends State<LoginForm> {
                       .then((result) {
                     // If result is null, the user is succesfully authenticated and will be redirected to home page
                     if (result == null) {
+                      APICaller().selectClient(email: email).then((userInfo) {
+                        // Save data in Hive or update if it already exists
+                        HiveHelper().addToBox(
+                          ClassCreator()
+                              .createUserProfile("UserProfile", userInfo),
+                          "UserProfile",
+                          email,
+                        );
+                      });
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(

@@ -1,10 +1,14 @@
+// System Packages
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:runx/assets/assets.dart';
+
+// Logic
+import 'package:runx/preferences/colors.dart';
+import 'package:runx/preferences/theme_model.dart';
+
+// Screens
 import 'package:runx/exercise/exercises.dart';
 import 'package:runx/exercise/plans.dart';
-import '../preferences/colors.dart';
-import '../preferences/theme_model.dart';
 
 class Library extends StatefulWidget {
   const Library({Key? key}) : super(key: key);
@@ -41,7 +45,8 @@ class _LibraryState extends State<Library> {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             image: const DecorationImage(
-                                image: NetworkImage(exerciseLib),
+                                image: AssetImage(
+                                    "assets/images/exercise_library_icon.png"),
                                 fit: BoxFit.cover)),
                         child: Container(
                           decoration: BoxDecoration(
@@ -82,7 +87,8 @@ class _LibraryState extends State<Library> {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             image: const DecorationImage(
-                                image: NetworkImage(planLib),
+                                image: AssetImage(
+                                    "assets/images/program_library_icon.png"),
                                 fit: BoxFit.cover)),
                         child: Container(
                           decoration: BoxDecoration(

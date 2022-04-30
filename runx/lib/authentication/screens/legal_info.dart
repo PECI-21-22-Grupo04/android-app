@@ -7,9 +7,11 @@ import 'package:country_picker/country_picker.dart';
 // Logic
 import 'package:runx/authentication/firebase.dart';
 import 'package:runx/api.dart';
+import 'package:runx/caching/services/class_creator.dart';
 
 // Screens
-import 'package:runx/authentication/health_info.dart';
+import 'package:runx/authentication/screens/health_info.dart';
+import 'package:runx/caching/hive_helper.dart';
 
 class LegalInfo extends StatelessWidget {
   final String? emailP;
@@ -102,7 +104,7 @@ class _SignupFormState extends State<SignupForm> {
           // Sex
           DropdownButtonFormField(
             decoration: const InputDecoration(
-              labelText: 'Sexo',
+              labelText: 'Género',
               icon: Icon(Icons.account_circle_rounded),
               hintText: "Escolha uma opção",
             ),
@@ -309,6 +311,17 @@ class _SignupFormState extends State<SignupForm> {
                           .signUp(email: email!, password: pass!)
                           .then((result2) {
                         if (result2 == null) {
+                          APICaller()
+                              .selectClient(email: email)
+                              .then((userInfo) {
+                            // Save data in Hive for caching
+                            HiveHelper().addToBox(
+                              ClassCreator()
+                                  .createUserProfile("UserProfile", userInfo),
+                              "UserProfile",
+                              email,
+                            );
+                          });
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(

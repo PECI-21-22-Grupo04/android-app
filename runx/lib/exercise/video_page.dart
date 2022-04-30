@@ -1,8 +1,10 @@
 // System Packages
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+// Logic
 import 'package:runx/exercise/video_play.dart';
-import '../preferences/theme_model.dart';
+import 'package:runx/preferences/theme_model.dart';
 
 class VideoPage extends StatefulWidget {
   const VideoPage({Key? key}) : super(key: key);
