@@ -17,19 +17,22 @@ class Exercises extends StatefulWidget {
 class _ExercisesState extends State<Exercises> {
   final List<Map> exerciseList = [
     {
-      "name": "Exercício 1",
+      "name": "Exercício 5",
       "instructor": "Instrutor 1",
       "type": "Tipo 1",
+      "image": "assets/images/exercise_icon.png",
     },
     {
       "name": "Exercício 2",
       "instructor": "Instrutor 1",
       "type": "Tipo 1",
+      "image": "assets/images/exercise_icon.png",
     },
     {
       "name": "Exercício 3",
       "instructor": "Instrutor 3",
       "type": "Tipo 3",
+      "image": "assets/images/exercise_icon.png",
     },
   ];
 
@@ -94,9 +97,9 @@ class _ExercisesState extends State<Exercises> {
                     margin: const EdgeInsets.only(right: 15),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(50),
-                      image: const DecorationImage(
-                          image: AssetImage("assets/images/exercise_icon.png"),
-                          fit: BoxFit.cover),
+                      image: DecorationImage(
+                          image: AssetImage(exerciseList[index]['image']),
+                          fit: BoxFit.fill),
                     ),
                   ),
                   Expanded(

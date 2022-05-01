@@ -20,16 +20,19 @@ class _ExerciseListState extends State<ExerciseList> {
       "name": "Exercício 1",
       "type": "Type A",
       "reps": "3x12",
+      "image": "assets/images/exercise_icon.png",
     },
     {
       "name": "Exercício 2",
       "type": "Type A",
       "reps": "3x12",
+      "image": "assets/images/exercise_icon.png",
     },
     {
       "name": "Exercício 3",
       "type": "Type B",
       "reps": "3x12",
+      "image": "assets/images/exercise_icon.png",
     },
   ];
 
@@ -94,9 +97,9 @@ class _ExerciseListState extends State<ExerciseList> {
                   margin: const EdgeInsets.only(right: 15),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(50),
-                    image: const DecorationImage(
-                        image: AssetImage("assets/images/exercise_icon.png"),
-                        fit: BoxFit.cover),
+                    image: DecorationImage(
+                        image: AssetImage(exerciseList[index]['image']),
+                        fit: BoxFit.fill),
                   ),
                 ),
                 Expanded(

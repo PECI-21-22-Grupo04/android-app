@@ -8,7 +8,7 @@ import 'package:runx/preferences/theme_model.dart';
 
 // Screens
 import 'package:runx/presentation/side_drawer.dart';
-import 'package:runx/instructor/chat.dart';
+import 'package:runx/instructor/instructor_list.dart';
 import 'package:runx/homepage/homepage.dart';
 import 'package:runx/profile/profile.dart';
 import 'package:runx/exercise/library.dart';
@@ -28,7 +28,7 @@ class _BottomNavState extends State<BottomNav> {
   static const List _pages = [
     HomePage(),
     Library(),
-    ChatPage(),
+    InstructorList(),
     Devices(),
     Profile()
   ];
