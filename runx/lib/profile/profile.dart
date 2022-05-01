@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
-import 'package:runx/caching/hive_helper.dart';
 
 // Logic
 import 'package:runx/preferences/theme_model.dart';
@@ -22,7 +21,6 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
-    HiveHelper().openBox("UserProfile");
     Box userInfo = Hive.box("UserProfile");
     String? userEmail = FirebaseAuth.instance.currentUser!.email;
 
@@ -126,10 +124,13 @@ class _ProfileState extends State<Profile> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  const ListTile(
+                                  ListTile(
                                     title: Text(
-                                      "Informação",
-                                      style: TextStyle(
+                                      "Membro desde " +
+                                          userInfo
+                                              .get(userEmail)
+                                              .getRegisterDate(),
+                                      style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -218,19 +219,6 @@ class _ProfileState extends State<Profile> {
                                     leading: const Icon(Icons.flag_rounded),
                                   ),
                                   const SizedBox(height: 10.0),
-                                  ListTile(
-                                    title: const Text(
-                                      "Sobre",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    subtitle: Text(
-                                      userInfo.get(userEmail).getPathologies(),
-                                    ),
-                                    leading:
-                                        const Icon(Icons.question_mark_rounded),
-                                  ),
                                 ],
                               ),
                             ),

@@ -1,8 +1,11 @@
 // System Packages
+import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
+import 'package:runx/api.dart';
+import 'package:runx/caching/models/payment.dart';
 
 // Logic
 import 'package:runx/preferences/theme_model.dart';
@@ -13,6 +16,7 @@ import 'package:runx/caching/hive_helper.dart';
 // Screens
 import 'package:runx/authentication/screens/login.dart';
 import 'package:runx/settings/settings.dart';
+import 'package:runx/paymentHistory/payment_history.dart';
 
 class SideDrawer extends StatelessWidget {
   const SideDrawer({Key? key}) : super(key: key);
@@ -64,7 +68,30 @@ class SideDrawer extends StatelessWidget {
                     ListTile(
                         title: const Text('Pagamentos'),
                         leading: const Icon(Icons.payment_rounded),
-                        onTap: () {/* IR PARA PAGINA DE PAGAMENTOS */}),
+                        onTap: () {
+                          // 1º - Fetch data from DB,
+                          APICaller()
+                              .selectClientPaymentHistory(email: userEmail)
+                              .then((paymentsMade) {
+                            if (json.decode(paymentsMade)["code"] == 0 &&
+                                json.decode(paymentsMade)["data"] != null) {
+                              // 2º - Convert json received to objects
+                              List<Payment> itemsList = List<Payment>.from(json
+                                  .decode(paymentsMade)["data"][0]
+                                  .map((i) => Payment.fromJson(i)));
+                              // 3º - Save in Hive for caching
+                              for (Payment p in List.from(itemsList)) {
+                                HiveHelper()
+                                    .addToBox(p, "PaymentHistory", p.paymentID);
+                              }
+                            }
+                          });
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const PaymentHistory()),
+                          );
+                        }),
 
                     // Security Button
                     const Divider(),

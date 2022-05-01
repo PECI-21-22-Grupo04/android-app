@@ -105,4 +105,20 @@ class APICaller {
       return "ERROR";
     }
   }
+
+  // Select Client payment history
+  Future<String> selectClientPaymentHistory({String? email}) async {
+    try {
+      final response = await http.post(
+        Uri.parse(host + port + '/selectClientPaymentHistory'),
+        headers: <String, String>{
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        },
+        body: (<String, String>{"email": email.toString()}),
+      );
+      return response.body;
+    } on Exception {
+      return "ERROR";
+    }
+  }
 }

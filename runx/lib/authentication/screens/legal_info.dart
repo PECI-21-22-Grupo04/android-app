@@ -7,7 +7,7 @@ import 'package:country_picker/country_picker.dart';
 // Logic
 import 'package:runx/authentication/firebase.dart';
 import 'package:runx/api.dart';
-import 'package:runx/caching/services/class_creator.dart';
+import 'package:runx/caching/models/user_profile.dart';
 
 // Screens
 import 'package:runx/authentication/screens/health_info.dart';
@@ -316,8 +316,7 @@ class _SignupFormState extends State<SignupForm> {
                               .then((userInfo) {
                             // Save data in Hive for caching
                             HiveHelper().addToBox(
-                              ClassCreator()
-                                  .createUserProfile("UserProfile", userInfo),
+                              UserProfile.fromJson(json.decode(userInfo)),
                               "UserProfile",
                               email,
                             );

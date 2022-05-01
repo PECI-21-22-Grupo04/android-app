@@ -1,38 +1,38 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_profile.dart';
+part of 'instructor_profile.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class UserProfileAdapter extends TypeAdapter<UserProfile> {
+class InstructorProfileAdapter extends TypeAdapter<InstructorProfile> {
   @override
-  final int typeId = 0;
+  final int typeId = 1;
 
   @override
-  UserProfile read(BinaryReader reader) {
+  InstructorProfile read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return UserProfile(
+    return InstructorProfile(
       email: fields[0] as String,
       firstName: fields[1] as String,
       lastName: fields[2] as String,
       birthdate: fields[3] as String,
       sex: fields[4] as String,
-      street: fields[5] as String,
-      postCode: fields[6] as String,
-      city: fields[7] as String,
-      country: fields[8] as String,
-      registerDate: fields[9] as String,
-      pathologies: fields[10] as String,
+      country: fields[5] as String,
+      registerDate: fields[6] as String,
+      maxClients: fields[7] as String,
+      currentClients: fields[8] as String,
+      averageRating: fields[9] as String,
+      reviews: (fields[10] as List).cast<String>(),
     );
   }
 
   @override
-  void write(BinaryWriter writer, UserProfile obj) {
+  void write(BinaryWriter writer, InstructorProfile obj) {
     writer
       ..writeByte(11)
       ..writeByte(0)
@@ -46,17 +46,17 @@ class UserProfileAdapter extends TypeAdapter<UserProfile> {
       ..writeByte(4)
       ..write(obj.sex)
       ..writeByte(5)
-      ..write(obj.street)
-      ..writeByte(6)
-      ..write(obj.postCode)
-      ..writeByte(7)
-      ..write(obj.city)
-      ..writeByte(8)
       ..write(obj.country)
-      ..writeByte(9)
+      ..writeByte(6)
       ..write(obj.registerDate)
+      ..writeByte(7)
+      ..write(obj.maxClients)
+      ..writeByte(8)
+      ..write(obj.currentClients)
+      ..writeByte(9)
+      ..write(obj.averageRating)
       ..writeByte(10)
-      ..write(obj.pathologies);
+      ..write(obj.reviews);
   }
 
   @override
@@ -65,7 +65,7 @@ class UserProfileAdapter extends TypeAdapter<UserProfile> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is UserProfileAdapter &&
+      other is InstructorProfileAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

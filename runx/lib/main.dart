@@ -20,7 +20,7 @@ Future<void> main() async {
   await Firebase.initializeApp();
   await Hive.initFlutter();
   HiveHelper().registerAdapters();
-  HiveHelper().openBoxes();
+  await HiveHelper().openBoxes();
   runApp(const MyApp());
 }
 

@@ -122,13 +122,6 @@ class _EditProfileState extends State<EditProfile> {
               onChanged: (about) {},
             ),
             const SizedBox(height: 20),
-            TextFieldWidget(
-              label: 'Sobre',
-              text: userInfo.get(userEmail).getPathologies(),
-              maxLines: 10,
-              onChanged: (about) {},
-            ),
-            const SizedBox(height: 20),
             IconButton(
               icon: const Icon(
                 Icons.check_rounded,

@@ -1,6 +1,7 @@
 // System Packages
 import 'package:hive/hive.dart';
 
+// Generate Hive Model Adapter
 part 'user_profile.g.dart';
 
 @HiveType(typeId: 0)
@@ -33,6 +34,9 @@ class UserProfile extends HiveObject {
   final String country;
 
   @HiveField(9)
+  final String registerDate;
+
+  @HiveField(10)
   late String pathologies;
 
   UserProfile(
@@ -45,7 +49,23 @@ class UserProfile extends HiveObject {
       required this.postCode,
       required this.city,
       required this.country,
+      required this.registerDate,
       required this.pathologies});
+
+  factory UserProfile.fromJson(Map<String, dynamic> parsedJson) {
+    return UserProfile(
+        email: parsedJson["mailC"],
+        firstName: parsedJson["firstNameC"],
+        lastName: parsedJson["lastNameC"],
+        birthdate: parsedJson["birthdateC"].toString().split("T")[0],
+        sex: parsedJson["sexC"],
+        street: parsedJson["streetC"],
+        postCode: parsedJson["postCodeC"],
+        city: parsedJson["cityC"],
+        country: parsedJson["countryC"],
+        registerDate: parsedJson["registerDateC"],
+        pathologies: parsedJson["pathologiesC"]);
+  }
 
   String getEmail() {
     return email;
@@ -60,8 +80,8 @@ class UserProfile extends HiveObject {
   }
 
   String getBirthdate() {
-    List<String> vals = birthdate.split("-");
-    return vals[2] + "/" + vals[1] + "/" + vals[0];
+    List<String> parsedDate = birthdate.split("-");
+    return parsedDate[2] + "/" + parsedDate[1] + "/" + parsedDate[0];
   }
 
   String getSex() {
@@ -82,6 +102,11 @@ class UserProfile extends HiveObject {
 
   String getCountry() {
     return country;
+  }
+
+  String getRegisterDate() {
+    List<String> parsedDate = registerDate.split("-");
+    return parsedDate[2] + "/" + parsedDate[1] + "/" + parsedDate[0];
   }
 
   String getPathologies() {
