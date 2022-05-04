@@ -1,6 +1,8 @@
 // System Packages
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:provider/provider.dart';
+import 'package:runx/instructor/chat.dart';
 
 // Logic
 import 'package:runx/preferences/colors.dart';
@@ -28,7 +30,7 @@ class _BottomNavState extends State<BottomNav> {
   static const List _pages = [
     HomePage(),
     Library(),
-    InstructorList(),
+    ChatPage(),
     Devices(),
     Profile()
   ];
