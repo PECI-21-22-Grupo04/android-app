@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:runx/paymentHistory/screens/checkout.dart';
 import 'package:runx/preferences/colors.dart';
 import 'package:runx/preferences/theme_model.dart';
-import 'popup.dart';
-import 'popup_content.dart';
 
 class Test extends StatefulWidget {
   const Test({Key? key}) : super(key: key);
@@ -38,28 +35,6 @@ class _TestState extends State<Test> {
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
-  }
-
-  showPopup(BuildContext context, Widget widget, {BuildContext? popupContext}) {
-    Navigator.push(
-        context,
-        PopupLayout(
-          child: PopupContent(
-            content: Scaffold(
-              backgroundColor: Colors.transparent,
-              body: Center(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(30.0),
-                  child: SizedBox(
-                    height: 300,
-                    width: 400,
-                    child: widget,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ));
   }
 
   openAlertBox() {
