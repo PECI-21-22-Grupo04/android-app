@@ -9,6 +9,7 @@ import 'package:runx/caching/models/instructor_profile.dart';
 // Logic
 import 'package:runx/api.dart';
 import 'package:runx/caching/hive_helper.dart';
+import 'package:runx/popup/testpopup.dart';
 import 'package:runx/preferences/colors.dart';
 import 'package:runx/preferences/theme_model.dart';
 
@@ -34,7 +35,7 @@ class _BottomNavState extends State<BottomNav> {
   static const List _pages = [
     HomePage(),
     Library(),
-    InstructorList(),
+    Test(),
     Devices(),
     Profile()
   ];
