@@ -27,9 +27,9 @@ class _TransactionPageState extends State<TransactionPage> {
   Widget buildContent(List<Payment> payments) {
     if (payments.isEmpty) {
       return const Center(
-        child: Text(
-          'Sem pagamentos efetuados!',
-          style: TextStyle(fontSize: 24),
+        child: Center(
+          child: Text('Não conseguimos encontrar pagamentos efetuados!',
+              textAlign: TextAlign.center, style: TextStyle(fontSize: 24)),
         ),
       );
     }

@@ -28,16 +28,16 @@ class InstructorProfile extends HiveObject {
   final String registerDate;
 
   @HiveField(7)
-  late String maxClients;
+  final String maxClients;
 
   @HiveField(8)
-  late String currentClients;
+  final String currentClients;
 
   @HiveField(9)
-  late String averageRating;
+  final String averageRating;
 
   @HiveField(10)
-  late List<String> reviews;
+  final List<String> reviews;
 
   InstructorProfile(
       {required this.email,
@@ -53,17 +53,30 @@ class InstructorProfile extends HiveObject {
       required this.reviews});
 
   factory InstructorProfile.fromJson(Map<String, dynamic> parsedJson) {
+    String currC;
+    String avgR;
+    if (parsedJson["currentClients"] != null) {
+      currC = parsedJson["currentClients"].toString();
+    } else {
+      currC = "0";
+    }
+    if (parsedJson["averageRating"] != null) {
+      avgR = parsedJson["averageRating"].toString();
+    } else {
+      avgR = "Sem ratings!";
+    }
+
     return InstructorProfile(
-        email: parsedJson["mailI"],
-        firstName: parsedJson["firstNameI"],
-        lastName: parsedJson["lastNameI"],
-        birthdate: parsedJson["birthdateI"].toString().split("T")[0],
-        sex: parsedJson["sexI"],
-        country: parsedJson["countryI"],
-        registerDate: parsedJson["registerDateI"].toString().split("T")[0],
-        maxClients: parsedJson["maxClientsI"],
-        currentClients: parsedJson["currentClientsI"],
-        averageRating: parsedJson["averageRatingI"],
+        email: parsedJson["mail"],
+        firstName: parsedJson["firstName"],
+        lastName: parsedJson["lastName"],
+        birthdate: parsedJson["birthDate"].toString().split("T")[0],
+        sex: parsedJson["sex"],
+        country: parsedJson["country"],
+        registerDate: parsedJson["registerDate"].toString().split("T")[0],
+        maxClients: parsedJson["maxClients"].toString(),
+        currentClients: currC,
+        averageRating: avgR,
         reviews: []);
   }
 

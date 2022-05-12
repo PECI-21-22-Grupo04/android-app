@@ -1,16 +1,20 @@
 // System Packages
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:provider/provider.dart';
-import 'package:runx/instructor/chat.dart';
+
+// Models
+import 'package:runx/caching/models/instructor_profile.dart';
 
 // Logic
+import 'package:runx/api.dart';
+import 'package:runx/caching/hive_helper.dart';
 import 'package:runx/preferences/colors.dart';
 import 'package:runx/preferences/theme_model.dart';
 
 // Screens
 import 'package:runx/presentation/side_drawer.dart';
-import 'package:runx/instructor/instructor_list.dart';
+import 'package:runx/instructor/available_instructors.dart';
 import 'package:runx/homepage/homepage.dart';
 import 'package:runx/profile/profile.dart';
 import 'package:runx/exercise/library.dart';
@@ -30,7 +34,7 @@ class _BottomNavState extends State<BottomNav> {
   static const List _pages = [
     HomePage(),
     Library(),
-    ChatPage(),
+    InstructorList(),
     Devices(),
     Profile()
   ];
@@ -43,6 +47,21 @@ class _BottomNavState extends State<BottomNav> {
       } else if (index == 1) {
         _pageTitle = "Exercícios e Planos";
       } else if (index == 2) {
+        // 1º - Fetch data from DB
+        APICaller().selectAvailableInstructors().then((availInstructors) {
+          if (json.decode(availInstructors)["code"] == 0 &&
+              json.decode(availInstructors)["data"] != null) {
+            // 2º - Convert json received to objects
+            List<InstructorProfile> itemsList = List<InstructorProfile>.from(
+                json
+                    .decode(availInstructors)["data"][0]
+                    .map((i) => InstructorProfile.fromJson(i)));
+            // 3º - Save in Hive for caching
+            for (InstructorProfile ip in List.from(itemsList)) {
+              HiveHelper().addToBox(ip, "InstructorProfile", ip.email);
+            }
+          }
+        });
         _pageTitle = "Instrutor";
       } else if (index == 3) {
         _pageTitle = "Dispositivos";

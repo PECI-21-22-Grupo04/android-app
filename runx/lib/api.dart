@@ -121,4 +121,19 @@ class APICaller {
       return "ERROR";
     }
   }
+
+  // Select Available Instructors
+  Future<String> selectAvailableInstructors() async {
+    try {
+      final response = await http.post(
+        Uri.parse(host + port + '/selectAvailableInstructors'),
+        headers: <String, String>{
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        },
+      );
+      return response.body;
+    } on Exception {
+      return "ERROR";
+    }
+  }
 }
