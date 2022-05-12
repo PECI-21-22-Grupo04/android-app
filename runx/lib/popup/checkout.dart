@@ -41,6 +41,8 @@ class _TestState extends State<Test> {
     return showDialog(
         context: context,
         builder: (context) {
+          pressAttention1 = false;
+          pressAttention2 = false;
           return StatefulBuilder(builder: (context, setState) {
             return Consumer(
                 builder: (context, ThemeModel themeNotifier, child) {
@@ -95,20 +97,32 @@ class _TestState extends State<Test> {
                                             setState(
                                                 () => pressAttention2 = false);
                                           },
-                                          child: const ListTile(
+                                          child: ListTile(
                                             subtitle: Text(
                                               "Mensal",
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
-                                                  fontWeight:
-                                                      FontWeight.normal),
+                                                  fontWeight: FontWeight.normal,
+                                                  color: themeNotifier.isDark
+                                                      ? (pressAttention1
+                                                          ? Colors.white
+                                                          : Colors.white)
+                                                      : (pressAttention1
+                                                          ? Colors.white
+                                                          : Colors.black)),
                                             ),
                                             title: Text(
                                               "9,99€",
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                              ),
+                                                  fontWeight: FontWeight.bold,
+                                                  color: themeNotifier.isDark
+                                                      ? (pressAttention1
+                                                          ? Colors.white
+                                                          : Colors.white)
+                                                      : (pressAttention1
+                                                          ? Colors.white
+                                                          : Colors.black)),
                                             ),
                                           ),
                                         ))),
@@ -128,30 +142,42 @@ class _TestState extends State<Test> {
                                               BorderRadius.circular(20.0),
                                         ),
                                         child: InkWell(
-                                          onTap: () {
-                                            print("tapped");
-                                            setState(
-                                                () => pressAttention1 = false);
-                                            setState(
-                                                () => pressAttention2 = true);
-                                          },
-                                          child: const ListTile(
-                                            subtitle: Text(
-                                              "Anual",
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  fontWeight:
-                                                      FontWeight.normal),
-                                            ),
-                                            title: Text(
-                                              "99,99€",
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
+                                            onTap: () {
+                                              print("tapped");
+                                              setState(() =>
+                                                  pressAttention1 = false);
+                                              setState(
+                                                  () => pressAttention2 = true);
+                                            },
+                                            child: ListTile(
+                                              subtitle: Text(
+                                                "Mensal",
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    color: themeNotifier.isDark
+                                                        ? (pressAttention2
+                                                            ? Colors.white
+                                                            : Colors.white)
+                                                        : (pressAttention2
+                                                            ? Colors.white
+                                                            : Colors.black)),
                                               ),
-                                            ),
-                                          ),
-                                        ))),
+                                              title: Text(
+                                                "9,99€",
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: themeNotifier.isDark
+                                                        ? (pressAttention2
+                                                            ? Colors.white
+                                                            : Colors.white)
+                                                        : (pressAttention2
+                                                            ? Colors.white
+                                                            : Colors.black)),
+                                              ),
+                                            )))),
                               ],
                             ),
                             const SizedBox(height: 10.0),
