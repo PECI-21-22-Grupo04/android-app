@@ -151,7 +151,7 @@ class _TestState extends State<Test> {
                                             },
                                             child: ListTile(
                                               subtitle: Text(
-                                                "Mensal",
+                                                "Anual",
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                     fontWeight:
@@ -165,7 +165,7 @@ class _TestState extends State<Test> {
                                                             : Colors.black)),
                                               ),
                                               title: Text(
-                                                "9,99€",
+                                                "99,99€",
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.bold,
