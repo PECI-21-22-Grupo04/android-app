@@ -71,12 +71,13 @@ class VideoPlayAsset extends StatelessWidget {
   Widget build(
     BuildContext context,
   ) {
-    return ChewieListItem(
+    return Scaffold(
+        body: ChewieListItem(
       videoPlayerController: VideoPlayerController.asset(
         video,
       ),
       looping: true,
-    );
+    ));
   }
 }
 
@@ -89,11 +90,12 @@ class VideoPlayNetwork extends StatelessWidget {
   Widget build(
     BuildContext context,
   ) {
-    return ChewieListItem(
+    return Scaffold(
+        body: ChewieListItem(
       videoPlayerController: VideoPlayerController.network(
         video,
       ),
       looping: true,
-    );
+    ));
   }
 }

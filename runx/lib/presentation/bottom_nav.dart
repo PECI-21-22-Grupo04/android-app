@@ -35,7 +35,7 @@ class _BottomNavState extends State<BottomNav> {
   static const List _pages = [
     HomePage(),
     Library(),
-    Test(),
+    Checkout(),
     Devices(),
     Profile()
   ];

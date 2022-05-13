@@ -1,11 +1,10 @@
-// System Packages
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-
-// Logic
-import 'package:runx/exercise/video_page.dart';
+import 'package:runx/exercise/video_play.dart';
 import 'package:runx/preferences/colors.dart';
-import 'package:runx/preferences/theme_model.dart';
+
+import '../preferences/theme_model.dart';
 
 class ExerciseList extends StatefulWidget {
   const ExerciseList({Key? key}) : super(key: key);
@@ -15,145 +14,188 @@ class ExerciseList extends StatefulWidget {
 }
 
 class _ExerciseListState extends State<ExerciseList> {
-  final List<Map> exerciseList = [
-    {
-      "name": "Exercício 1",
-      "type": "Type A",
-      "reps": "3x12",
-      "image": "assets/images/exercise_icon.png",
-    },
-    {
-      "name": "Exercício 2",
-      "type": "Type A",
-      "reps": "3x12",
-      "image": "assets/images/exercise_icon.png",
-    },
-    {
-      "name": "Exercício 3",
-      "type": "Type B",
-      "reps": "3x12",
-      "image": "assets/images/exercise_icon.png",
-    },
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Plano 1"),
+        elevation: 2,
+        actions: <Widget>[
+          Container(
+            padding: const EdgeInsets.all(10),
+            //child: const Icon(Icons.filter_list),
+          )
+        ],
+      ),
+      body: Lists(),
+    );
+  }
+}
+
+class Item {
+  final String? name;
+  final String? type;
+  final String? reps;
+
+  final String? image;
+
+  Item({this.name, this.type, this.reps, this.image});
+}
+
+class Lists extends StatelessWidget {
+  final List<Item> _data = [
+    Item(
+        name: 'Exercício 1',
+        type: "Type A",
+        reps: "3x12",
+        image:
+            "https://images.pexels.com/photos/672142/pexels-photo-672142.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"),
+    Item(
+        name: 'Exercício 1',
+        type: "Type A",
+        reps: "3x12",
+        image:
+            "https://images.pexels.com/photos/672142/pexels-photo-672142.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"),
+    Item(
+        name: 'Exercício 1',
+        type: "Type A",
+        reps: "3x12",
+        image:
+            "https://images.pexels.com/photos/672142/pexels-photo-672142.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"),
+    Item(
+        name: 'Exercício 1',
+        type: "Type A",
+        reps: "3x12",
+        image:
+            "https://images.pexels.com/photos/672142/pexels-photo-672142.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"),
+    Item(
+        name: 'Exercício 1',
+        type: "Type A",
+        reps: "3x12",
+        image:
+            "https://images.pexels.com/photos/672142/pexels-photo-672142.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"),
+    Item(
+        name: 'Exercício 1',
+        type: "Type A",
+        reps: "3x12",
+        image:
+            "https://images.pexels.com/photos/672142/pexels-photo-672142.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"),
+    Item(
+        name: 'Exercício 1',
+        type: "Type A",
+        reps: "3x12",
+        image:
+            "https://images.pexels.com/photos/672142/pexels-photo-672142.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"),
   ];
+
+  Lists({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ThemeModel themeNotifier, child) {
-      return Builder(
-        builder: (context) => Scaffold(
-          appBar: AppBar(
-            title: const Text('Plano A'),
-            toolbarHeight: 55,
-            leading: Builder(builder: (context) => const BackButton()),
-          ),
-          backgroundColor: themeNotifier.isDark
-              ? const Color.fromARGB(255, 24, 24, 24)
-              : const Color.fromARGB(255, 240, 240, 240),
-          body: SingleChildScrollView(
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  padding: const EdgeInsets.only(top: 15),
-                  height: MediaQuery.of(context).size.height,
-                  width: double.infinity,
-                  child: ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: exerciseList.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return buildList(context, index);
-                      }),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    });
-  }
-
-  Widget buildList(BuildContext context, int index) {
-    return Consumer(builder: (context, ThemeModel themeNotifier, child) {
-      return InkWell(
-          onTap: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (_) => const VideoPage(),
-            ));
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(25),
-              color:
-                  themeNotifier.isDark ? themePrimaryDark : themePrimaryLight,
-            ),
-            width: double.infinity,
-            margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  width: 50,
-                  height: 50,
-                  margin: const EdgeInsets.only(right: 15),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    image: DecorationImage(
-                        image: AssetImage(exerciseList[index]['image']),
-                        fit: BoxFit.fill),
-                  ),
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        exerciseList[index]['name'],
-                        style: TextStyle(
-                            color: !themeNotifier.isDark
-                                ? themePrimaryDark
-                                : themePrimaryLight,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18),
+      return Container(
+          color:
+              themeNotifier.isDark ? themeSecondaryDark : themeSecondaryLight,
+          child: ListView.builder(
+            padding: const EdgeInsets.all(10.0),
+            itemCount: _data.length,
+            itemBuilder: (BuildContext context, int index) {
+              Item item = _data[index];
+              return GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => const VideoPlayAsset(
+                        video: 'assets/videos/sample.mp4',
                       ),
-                      const SizedBox(
-                        height: 6,
-                      ),
-                      Row(
-                        children: <Widget>[
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Text(exerciseList[index]['type'],
-                              style: TextStyle(
-                                  color: !themeNotifier.isDark
-                                      ? themePrimaryDark
-                                      : themePrimaryLight,
-                                  fontSize: 13,
-                                  letterSpacing: .3)),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 6,
-                      ),
-                      Row(
-                        children: <Widget>[
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Text(exerciseList[index]['reps'],
-                              style: TextStyle(
-                                  color: !themeNotifier.isDark
-                                      ? themePrimaryDark
-                                      : themePrimaryLight,
-                                  fontSize: 13,
-                                  letterSpacing: .3)),
-                        ],
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
+                    ));
+                  },
+                  child: Card(
+                    color: themeNotifier.isDark
+                        ? const Color.fromARGB(255, 24, 24, 24)
+                        : Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    elevation: 1,
+                    child: Row(
+                      children: <Widget>[
+                        ClipRRect(
+                            borderRadius: BorderRadius.circular(20.0),
+                            child: Container(
+                              height: 125,
+                              width: 110,
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: NetworkImage(item.image!),
+                                      fit: BoxFit.cover)),
+                            )),
+                        Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    item.name!,
+                                    style: const TextStyle(
+                                        color: themeColorLight,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18),
+                                  ),
+                                  const SizedBox(
+                                    height: 6,
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      const Icon(
+                                        Icons.info_outline_rounded,
+                                        color: themeColorLight,
+                                        size: 20,
+                                      ),
+                                      const SizedBox(
+                                        width: 8,
+                                      ),
+                                      Text(item.type!,
+                                          style: TextStyle(
+                                              color: !themeNotifier.isDark
+                                                  ? themePrimaryDark
+                                                  : themePrimaryLight,
+                                              fontSize: 13,
+                                              letterSpacing: .3)),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 6,
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      const SizedBox(
+                                        width: 1,
+                                      ),
+                                      const Icon(
+                                        FontAwesomeIcons.repeat,
+                                        color: themeColorLight,
+                                        size: 18,
+                                      ),
+                                      const SizedBox(
+                                        width: 9,
+                                      ),
+                                      Text(item.reps!,
+                                          style: TextStyle(
+                                              color: !themeNotifier.isDark
+                                                  ? themePrimaryDark
+                                                  : themePrimaryLight,
+                                              fontSize: 13,
+                                              letterSpacing: .3)),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ))
+                      ],
+                    ),
+                  ));
+            },
           ));
     });
   }

@@ -4,14 +4,14 @@ import 'package:provider/provider.dart';
 import 'package:runx/preferences/colors.dart';
 import 'package:runx/preferences/theme_model.dart';
 
-class Test extends StatefulWidget {
-  const Test({Key? key}) : super(key: key);
+class Checkout extends StatefulWidget {
+  const Checkout({Key? key}) : super(key: key);
 
   @override
-  State<Test> createState() => _TestState();
+  State<Checkout> createState() => _CheckoutState();
 }
 
-class _TestState extends State<Test> {
+class _CheckoutState extends State<Checkout> {
   bool pressAttention1 = false;
   bool pressAttention2 = false;
   @override
