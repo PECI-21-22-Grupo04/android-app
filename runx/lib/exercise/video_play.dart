@@ -72,12 +72,13 @@ class VideoPlayAsset extends StatelessWidget {
     BuildContext context,
   ) {
     return Scaffold(
+        backgroundColor: Colors.transparent,
         body: ChewieListItem(
-      videoPlayerController: VideoPlayerController.asset(
-        video,
-      ),
-      looping: true,
-    ));
+          videoPlayerController: VideoPlayerController.asset(
+            video,
+          ),
+          looping: true,
+        ));
   }
 }
 
@@ -91,11 +92,12 @@ class VideoPlayNetwork extends StatelessWidget {
     BuildContext context,
   ) {
     return Scaffold(
+        backgroundColor: Colors.transparent,
         body: ChewieListItem(
-      videoPlayerController: VideoPlayerController.network(
-        video,
-      ),
-      looping: true,
-    ));
+          videoPlayerController: VideoPlayerController.network(
+            video,
+          ),
+          looping: true,
+        ));
   }
 }

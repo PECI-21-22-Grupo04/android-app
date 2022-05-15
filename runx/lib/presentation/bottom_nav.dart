@@ -10,6 +10,7 @@ import 'package:runx/caching/models/instructor_profile.dart';
 import 'package:runx/api.dart';
 import 'package:runx/caching/hive_helper.dart';
 import 'package:runx/popup/checkout.dart';
+import 'package:runx/popup/video_popup.dart';
 import 'package:runx/preferences/colors.dart';
 import 'package:runx/preferences/theme_model.dart';
 
@@ -35,7 +36,7 @@ class _BottomNavState extends State<BottomNav> {
   static const List _pages = [
     HomePage(),
     Library(),
-    Checkout(),
+    VideoPopup(),
     Devices(),
     Profile()
   ];
