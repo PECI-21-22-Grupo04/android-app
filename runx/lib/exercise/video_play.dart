@@ -48,9 +48,11 @@ class _ChewieListItemState extends State<ChewieListItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Chewie(
-      controller: _chewieController,
-    );
+    return Container(
+        decoration: const BoxDecoration(color: Colors.black),
+        child: Chewie(
+          controller: _chewieController,
+        ));
   }
 
   @override
@@ -72,7 +74,7 @@ class VideoPlayAsset extends StatelessWidget {
     BuildContext context,
   ) {
     return Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.black,
         body: ChewieListItem(
           videoPlayerController: VideoPlayerController.asset(
             video,

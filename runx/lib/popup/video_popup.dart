@@ -52,17 +52,28 @@ class _VideoPopupState extends State<VideoPopup> {
                   insetPadding: EdgeInsets.zero,
                   elevation: 0,
                   backgroundColor: Colors.transparent,
-                  child: Stack(
-                    alignment: Alignment.center,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      Container(
-                        child: const VideoPlayAsset(
-                            video: 'assets/videos/sample.mp4'),
-                        height: height,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: Colors.transparent),
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.topRight,
+                          child: const VideoPlayAsset(
+                              video: 'assets/videos/sample.mp4'),
+                          height: height,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Colors.transparent),
+                        ),
                       ),
+                      Container(
+                          width: 400,
+                          height: 400,
+                          color: themeNotifier.isDark
+                              ? themeSecondaryDark
+                              : themeSecondaryLight)
                     ],
                   ));
             });
