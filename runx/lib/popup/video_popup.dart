@@ -13,8 +13,6 @@ class VideoPopup extends StatefulWidget {
 }
 
 class _VideoPopupState extends State<VideoPopup> {
-  bool pressAttention1 = false;
-  bool pressAttention2 = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,9 +40,6 @@ class _VideoPopupState extends State<VideoPopup> {
     return showDialog(
         context: context,
         builder: (context) {
-          double height = MediaQuery.of(context).size.height / 2;
-          pressAttention1 = false;
-          pressAttention2 = false;
           return StatefulBuilder(builder: (context, setState) {
             return Consumer(
                 builder: (context, ThemeModel themeNotifier, child) {
@@ -57,20 +52,12 @@ class _VideoPopupState extends State<VideoPopup> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      Expanded(
-                        child: Container(
-                          alignment: Alignment.topRight,
-                          child: const VideoPlayAsset(
-                              video: 'assets/videos/sample.mp4'),
-                          height: height,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              color: Colors.transparent),
-                        ),
+                      const Expanded(
+                        child:
+                            VideoPlayAsset(video: 'assets/videos/sample.mp4'),
                       ),
                       Container(
-                          width: 400,
-                          height: 400,
+                          height: MediaQuery.of(context).size.height / 2 - 20,
                           color: themeNotifier.isDark
                               ? themeSecondaryDark
                               : themeSecondaryLight)
