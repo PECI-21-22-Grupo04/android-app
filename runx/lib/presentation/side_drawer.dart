@@ -4,10 +4,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
-import 'package:runx/api.dart';
+
+// Models
 import 'package:runx/caching/models/payment.dart';
 
 // Logic
+import 'package:runx/api.dart';
 import 'package:runx/preferences/theme_model.dart';
 import 'package:runx/preferences/colors.dart';
 import 'package:runx/authentication/firebase.dart';
@@ -16,7 +18,7 @@ import 'package:runx/caching/hive_helper.dart';
 // Screens
 import 'package:runx/authentication/screens/login.dart';
 import 'package:runx/settings/settings.dart';
-import 'package:runx/paymentHistory/payment_history.dart';
+import 'package:runx/payment/payment_history.dart';
 
 class SideDrawer extends StatelessWidget {
   const SideDrawer({Key? key}) : super(key: key);

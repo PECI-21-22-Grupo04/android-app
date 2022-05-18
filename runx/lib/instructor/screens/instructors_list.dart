@@ -52,24 +52,43 @@ class _InstructorsListState extends State<InstructorsList> {
 
   Widget buildInstructorList(
       BuildContext context, InstructorProfile instProfile) {
-    const color = Colors.green;
-    return Card(
-      child: ExpansionTile(
-          tilePadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-          title: Text(
-            instProfile.firstName +
-                " " +
-                instProfile.lastName +
-                "\n" +
-                instProfile.email,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Card(
+        elevation: 0,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListTile(
+            leading: Image.asset(
+              'assets/images/profile_icon.png',
+              height: 60.0,
+              fit: BoxFit.cover,
+            ),
+            title: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                    child: Text(
+                        instProfile.firstName + " " + instProfile.lastName,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18)))),
+            subtitle: Center(
+                child: Text(instProfile.getAverageRating(),
+                    style: const TextStyle(
+                        height: 2, fontWeight: FontWeight.bold, fontSize: 15))),
+            trailing: Text(
+              "Vagas\n" +
+                  instProfile.getAvailableSpotsLeft().toString() +
+                  "/" +
+                  instProfile.maxClients,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                  color: Color.fromARGB(255, 77, 212, 44),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18),
+            ),
           ),
-          subtitle: Text("Rating Médio: " + instProfile.averageRating),
-          trailing: Text(
-            instProfile.getAvailableSpotsLeft().toString(),
-            style: const TextStyle(
-                color: color, fontWeight: FontWeight.bold, fontSize: 16),
-          )),
+        ),
+      ),
     );
   }
 }

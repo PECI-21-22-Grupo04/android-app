@@ -30,9 +30,6 @@ class _LibraryState extends State<Library> {
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
                   children: <Widget>[
-                    const SizedBox(
-                      height: 50,
-                    ),
                     InkWell(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(

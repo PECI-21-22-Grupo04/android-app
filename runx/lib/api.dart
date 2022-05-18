@@ -136,4 +136,34 @@ class APICaller {
       return "ERROR";
     }
   }
+
+  // Select Default Exercises
+  Future<String> selectDefaultExercises() async {
+    try {
+      final response = await http.post(
+        Uri.parse(host + port + '/selectDefaultExercises'),
+        headers: <String, String>{
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        },
+      );
+      return response.body;
+    } on Exception {
+      return "ERROR";
+    }
+  }
+
+  // Select Default Programs
+  Future<String> selectDefaultPrograms() async {
+    try {
+      final response = await http.post(
+        Uri.parse(host + port + '/selectDefaultPrograms'),
+        headers: <String, String>{
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        },
+      );
+      return response.body;
+    } on Exception {
+      return "ERROR";
+    }
+  }
 }
