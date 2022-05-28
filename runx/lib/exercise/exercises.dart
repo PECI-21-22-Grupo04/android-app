@@ -99,6 +99,46 @@ class Lists extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    openAlertBox(String video) {
+      return showDialog(
+          context: context,
+          builder: (context) {
+            double height = MediaQuery.of(context).size.height / 2;
+            return StatefulBuilder(builder: (context, setState) {
+              return Consumer(
+                  builder: (context, ThemeModel themeNotifier, child) {
+                return Dialog(
+                    insetPadding: EdgeInsets.zero,
+                    elevation: 0,
+                    backgroundColor: Colors.transparent,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.topRight,
+                            child: VideoPlayAsset(video: video),
+                            height: height,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Colors.transparent),
+                          ),
+                        ),
+                        Container(
+                            width: 600,
+                            height: 600,
+                            color: themeNotifier.isDark
+                                ? themeSecondaryDark
+                                : themeSecondaryLight)
+                      ],
+                    ));
+              });
+            });
+          });
+    }
+
     return Consumer(builder: (context, ThemeModel themeNotifier, child) {
       return Container(
           color:
@@ -110,11 +150,7 @@ class Lists extends StatelessWidget {
               Item item = _data[index];
               return GestureDetector(
                   onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => const VideoPlayAsset(
-                        video: 'assets/videos/sample.mp4',
-                      ),
-                    ));
+                    openAlertBox('assets/videos/sample.mp4');
                   },
                   child: Card(
                     color: themeNotifier.isDark

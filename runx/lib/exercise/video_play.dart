@@ -48,13 +48,11 @@ class _ChewieListItemState extends State<ChewieListItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: <Widget>[
-      Container(
-          decoration: const BoxDecoration(color: Colors.black),
-          child: Chewie(
-            controller: _chewieController,
-          ))
-    ]);
+    return Container(
+        decoration: const BoxDecoration(color: Colors.black),
+        child: Chewie(
+          controller: _chewieController,
+        ));
   }
 
   @override
@@ -80,7 +78,7 @@ class VideoPlayAsset extends StatelessWidget {
       videoPlayerController: VideoPlayerController.asset(
         video,
       ),
-      looping: true,
+      looping: false,
     ));
   }
 }
@@ -99,7 +97,7 @@ class VideoPlayNetwork extends StatelessWidget {
       videoPlayerController: VideoPlayerController.network(
         video,
       ),
-      looping: true,
+      looping: false,
     ));
   }
 }
