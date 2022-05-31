@@ -12,7 +12,7 @@ import 'package:runx/caching/models/payment.dart';
 import 'package:runx/api.dart';
 import 'package:runx/preferences/theme_model.dart';
 import 'package:runx/preferences/colors.dart';
-import 'package:runx/authentication/firebase.dart';
+import 'package:runx/authentication/logic/firebase_services.dart';
 import 'package:runx/caching/hive_helper.dart';
 
 // Screens

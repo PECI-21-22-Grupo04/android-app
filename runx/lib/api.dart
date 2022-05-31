@@ -6,7 +6,10 @@ class APICaller {
   final String host = 'http://localhost:';
   final String port = '8080';
 
-  // Select Client
+  /// ***************** REGISTER/LOGIN ***************** ///
+  /// API calls needed for register and login operations ///
+  /// ************************************************** ///
+
   Future<String> selectClient({String? email}) async {
     try {
       final response = await http.post(
@@ -24,7 +27,6 @@ class APICaller {
     }
   }
 
-  // Create Client
   Future<String> createClient(
       {String? email,
       String? fname,
@@ -59,7 +61,6 @@ class APICaller {
     }
   }
 
-  // Delete Client
   Future<String> deleteClient({String? email}) async {
     try {
       final response = await http.post(
@@ -106,7 +107,10 @@ class APICaller {
     }
   }
 
-  // Select Client payment history
+  /// ******************** PAYMENTS ******************** ///
+  /// API calls needed for payment related operations    ///
+  /// ************************************************** ///
+
   Future<String> selectClientPaymentHistory({String? email}) async {
     try {
       final response = await http.post(
@@ -122,7 +126,31 @@ class APICaller {
     }
   }
 
-  // Select Available Instructors
+  Future<String> finalizeClientPayment(
+      String? email, String? modality, String? amount, String? transID) async {
+    try {
+      final response = await http.post(
+        Uri.parse(host + port + '/finalizeClientPayment'),
+        headers: <String, String>{
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        },
+        body: (<String, String>{
+          "email": email.toString(),
+          "modality": modality.toString(),
+          "amount": amount.toString(),
+          "transID": transID.toString(),
+        }),
+      );
+      return response.body;
+    } on Exception {
+      return "ERROR";
+    }
+  }
+
+  /// ******************** INSTRUCTORS ***************** ///
+  /// API calls needed for instructor related operations ///
+  /// ************************************************** ///
+
   Future<String> selectAvailableInstructors() async {
     try {
       final response = await http.post(
@@ -137,7 +165,11 @@ class APICaller {
     }
   }
 
-  // Select Default Exercises
+  /// ******************** FREE CONTENT **************** ///
+  /// API calls needed for providing free content        ///
+  /// (programs and exercies)                            ///
+  /// ************************************************** ///
+
   Future<String> selectDefaultExercises() async {
     try {
       final response = await http.post(
@@ -152,7 +184,6 @@ class APICaller {
     }
   }
 
-  // Select Default Programs
   Future<String> selectDefaultPrograms() async {
     try {
       final response = await http.post(

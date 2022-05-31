@@ -8,6 +8,8 @@ import 'package:provider/provider.dart';
 // Logic
 import 'package:runx/preferences/theme_model.dart';
 import 'package:runx/preferences/colors.dart';
+import 'package:runx/payment/logic/paypal_webview.dart';
+import 'package:runx/caching/sharedpref_helper.dart';
 
 // Screens
 import 'package:runx/profile/screens/editprofile.dart';
@@ -21,7 +23,7 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   @override
-  Widget build(BuildContext context) {
+  Consumer<ThemeModel> build(BuildContext context) {
     Box userInfo = Hive.box("UserProfile");
     String? userEmail = FirebaseAuth.instance.currentUser!.email;
 
@@ -42,26 +44,27 @@ class _ProfileState extends State<Profile> {
                 ),
               ),
               Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  child: Container(
-                    decoration: const BoxDecoration(
-                        color: Color.fromARGB(255, 239, 232, 99)),
-                    child: ListTile(
-                      title: const Text(
-                        "Conta grátis! Pressione aqui para fazer upgrade",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
+                height: 50,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: Container(
+                  decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 239, 232, 99)),
+                  child: ListTile(
+                    title: Text(
+                      "Conta grátis! Pressione aqui para fazer upgrade",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
                       ),
-                      onTap: () {
-                        openAlertBox();
-                      },
+                      textAlign: TextAlign.center,
                     ),
-                  )),
+                    onTap: () {
+                      openAlertBox();
+                    },
+                  ),
+                ),
+              ),
               Container(
                 margin: const EdgeInsets.fromLTRB(16.0, 200.0, 16.0, 16.0),
                 child: Column(
@@ -323,7 +326,8 @@ class _ProfileState extends State<Profile> {
                                     ),
                                     child: InkWell(
                                       onTap: () {
-                                        print("pressed Mensal");
+                                        modality = "Monthly";
+                                        price = "9.99";
                                         setState(() => pressAttention1 = true);
                                         setState(() => pressAttention2 = false);
                                       },
@@ -372,7 +376,8 @@ class _ProfileState extends State<Profile> {
                                 ),
                                 child: InkWell(
                                   onTap: () {
-                                    print("pressed Anual");
+                                    modality = "Yearly";
+                                    price = "99.99";
                                     setState(() => pressAttention1 = false);
                                     setState(() => pressAttention2 = true);
                                   },
@@ -421,7 +426,19 @@ class _ProfileState extends State<Profile> {
                           ),
                           child: InkWell(
                             onTap: () {
-                              print("pressed paypal");
+                              if (modality == "") {
+                              } else {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => PaypalPayment(
+                                            pAmount: price,
+                                            pModality: modality,
+                                            email: FirebaseAuth
+                                                .instance.currentUser!.email!,
+                                          )),
+                                );
+                              }
                             },
                             child: const ListTile(
                               leading: Icon(

@@ -37,10 +37,10 @@ class Payment extends HiveObject {
   }
 
   String getModality() {
-    if (modality == "monthly") {
-      return "mensal";
+    if (modality == "Monthly") {
+      return "Mensal";
     } else {
-      return "anual";
+      return "Anual";
     }
   }
 

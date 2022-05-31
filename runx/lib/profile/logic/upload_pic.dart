@@ -42,7 +42,5 @@ uploadPic() async {
       // refreshing the UI when photo updated
       print("URL UPLOADED AT: $url");
     });
-  } catch (e) {
-    print(e);
-  }
+  } catch (e) {}
 }

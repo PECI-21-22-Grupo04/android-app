@@ -4,15 +4,19 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http_auth/http_auth.dart';
 
+// Logic
+import 'package:runx/api.dart';
+import 'package:runx/caching/sharedpref_helper.dart';
+
 class PaypalServices {
   String domain = "https://api.sandbox.paypal.com"; // for sandbox mode
-  //String domain = "https://api.paypal.com";       // for production mode
+  //String domain = "https://api.paypal.com"; // for production mode
 
-  // Credentials provided by Paypal
+  // ClientId and Secret, provided by Paypal
   String clientId =
-      'Ab4vS4vmfQFgUuQMH49F9Uy3L1FdNHtfGrASCyjNijm_EkHWCFM96ex0la-YFbwavw41R3rTKU3k_Bbm';
+      'AaUcJJIFmro9A-NiT-X7T3no0oqohDmb5wwOBd_bIjHcljSd-pEid-SqRcPUuYZgt9jyAvE-aZso6oVk';
   String secret =
-      'EDjvPfYgTYqdYWR2BfOiBW4dz_jeeuadqH7Z98pZMDvY33PcViiooqYFWVPFSGbfKBfNOb3LnroSI1hv';
+      'EOLeLYsBMpbqz-De3ZRyQs27VfVr8uqcECoHw60IVQg58v8Qf41ypaB5oXYLpt0zftBzxHXQdgco0CWQ';
 
   // Get access token from Paypal
   Future<String?> getAccessToken() async {
@@ -24,38 +28,39 @@ class PaypalServices {
       if (response.statusCode == 200) {
         final body = jsonDecode(response.body);
         return body["access_token"];
+      } else {
+        return "ERROR";
       }
-      return null;
     } catch (e) {
-      rethrow;
+      return "ERROR";
     }
   }
 
-  // Create request with Paypal
+  // Create the payment request with Paypal
   Future<Map<String, String>?> createPaypalPayment(
       transactions, accessToken) async {
     try {
-      var response = await http.post(Uri.parse(domain + '/v1/payments/payment'),
-          body: jsonEncode(transactions),
-          headers: {
-            "content-type": "application/json",
-            'Authorization': 'Bearer ' + accessToken
-          });
+      final response = await http.post(
+        Uri.parse(domain + '/v1/payments/payment'),
+        headers: <String, String>{
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer ' + accessToken
+        },
+        body: jsonEncode(transactions),
+      );
 
       final body = jsonDecode(response.body);
       if (response.statusCode == 201) {
         if (body["links"] != null && body["links"].length > 0) {
           List links = body["links"];
+
           String executeUrl = "";
           String approvalUrl = "";
-
           final item = links.firstWhere((o) => o["rel"] == "approval_url",
               orElse: () => null);
-
           if (item != null) {
             approvalUrl = item["href"];
           }
-
           final item1 = links.firstWhere((o) => o["rel"] == "execute",
               orElse: () => null);
           if (item1 != null) {
@@ -65,15 +70,16 @@ class PaypalServices {
         }
         return null;
       } else {
-        throw Exception(body["message"]);
+        return {"ERROR": "ERROR"};
       }
     } catch (e) {
-      rethrow;
+      return {"ERROR": "ERROR"};
     }
   }
 
-  // Execute the payment
-  Future<String?> executePayment(url, payerId, accessToken) async {
+  // Execute the payment transaction
+  Future<String?> executePayment(
+      url, payerId, accessToken, email, amount, modality) async {
     try {
       var response = await http.post(Uri.parse(url),
           body: jsonEncode({"payer_id": payerId}),
@@ -83,12 +89,17 @@ class PaypalServices {
           });
 
       final body = jsonDecode(response.body);
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 && body["state"] == "approved") {
+        // Save payment in database
+        APICaller().finalizeClientPayment(email, modality, amount, body["id"]);
+        // Change account status to premium
+        SharedPreferencesHelper().saveStringToSF("accountStatus", "premium");
         return body["id"];
+      } else {
+        return "ERROR";
       }
-      return null;
     } catch (e) {
-      rethrow;
+      return "ERROR";
     }
   }
 }

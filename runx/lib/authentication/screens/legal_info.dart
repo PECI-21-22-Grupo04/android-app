@@ -5,8 +5,9 @@ import 'package:intl/intl.dart';
 import 'package:country_picker/country_picker.dart';
 
 // Logic
-import 'package:runx/authentication/firebase.dart';
+import 'package:runx/authentication/logic/firebase_services.dart';
 import 'package:runx/api.dart';
+import 'package:runx/caching/sharedpref_helper.dart';
 import 'package:runx/caching/models/user_profile.dart';
 
 // Screens
@@ -320,6 +321,8 @@ class _SignupFormState extends State<SignupForm> {
                               "UserProfile",
                               email,
                             );
+                            SharedPreferencesHelper()
+                                .saveStringToSF("accountStatus", "free");
                           });
                           Navigator.pushReplacement(
                               context,

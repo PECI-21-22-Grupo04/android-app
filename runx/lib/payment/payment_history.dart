@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 // Screens
-import 'package:runx/payment/screens/payment_page.dart';
+import 'package:runx/payment/screens/history_page.dart';
 
 class PaymentHistory extends StatefulWidget {
   const PaymentHistory({Key? key}) : super(key: key);

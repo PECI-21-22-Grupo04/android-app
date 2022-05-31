@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 // Logic
-import 'package:runx/utils/upload_pic.dart';
+import 'package:runx/profile/logic/upload_pic.dart';
 import 'package:runx/caching/hive_helper.dart';
 import 'package:runx/preferences/colors.dart';
 

@@ -8,6 +8,7 @@ import 'package:runx/caching/models/payment.dart';
 import 'package:runx/caching/models/exercise.dart';
 
 class HiveHelper {
+  // Register hive adapters
   void registerAdapters() {
     Hive.registerAdapter(UserProfileAdapter());
     Hive.registerAdapter(InstructorProfileAdapter());
@@ -15,6 +16,7 @@ class HiveHelper {
     Hive.registerAdapter(ExerciseAdapter());
   }
 
+  // Open boxes
   Future<void> openBoxes() async {
     await Hive.openBox("UserProfile");
     await Hive.openBox("InstructorProfile");
@@ -22,10 +24,12 @@ class HiveHelper {
     await Hive.openBox("Exercises");
   }
 
+  // Add to box without key
   Future<dynamic> openBox<T>(String boxName) async {
     await Hive.openBox(boxName);
   }
 
+  // Add to box with key
   Future<void> addToBox<T>(item, String boxName, [String? itemKey]) async {
     if (itemKey != null) {
       final openBox = await Hive.openBox(boxName);

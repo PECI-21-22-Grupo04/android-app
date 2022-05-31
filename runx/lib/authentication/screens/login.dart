@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 // Logic
-import 'package:runx/authentication/firebase.dart';
+import 'package:runx/authentication/logic/firebase_services.dart';
 import 'package:runx/api.dart';
 import 'package:runx/caching/hive_helper.dart';
 

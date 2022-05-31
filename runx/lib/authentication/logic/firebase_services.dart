@@ -6,7 +6,7 @@ class FirebaseAuthenticationCaller {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   get user => _auth.currentUser;
 
-    // Check if email is registered in firebase
+  // Check if email is registered in firebase
   Future<String> doesUserExist({required String email}) async {
     try {
       var result = await _auth.fetchSignInMethodsForEmail(email);
@@ -63,9 +63,9 @@ class FirebaseAuthenticationCaller {
         return "Ocorreu um erro de rede. \nPor favor verifique a sua conexão à Internet";
       } else if (e.code == "user-not-found") {
         return "Não existe conta registada com este email";
-      }else if (e.code == "invalid-email"){
+      } else if (e.code == "invalid-email") {
         return "Por favor introduza um email válido";
-      }else if (e.code == "wrong-password") {
+      } else if (e.code == "wrong-password") {
         return "Password incorreta";
       } else if (e.code == "user-disabled") {
         return "Esta conta está atualmente desativada. \nPor favor tente mais tarde";
