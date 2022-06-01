@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesHelper {
   // Save string in shared preferences
-  saveStringToSF(String key, String value) async {
+  Future<void> saveStringToSF(String key, String value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(key, value);
   }
@@ -18,13 +18,13 @@ class SharedPreferencesHelper {
   }
 
   // Remove string from shared preferences
-  removeStringSF(String key) async {
+  Future<void> removeStringSF(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove(key);
   }
 
   // Check if string exists in shared preferences
-  existsStringSF(String key) async {
+  Future<bool> existsStringSF(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.containsKey(key);
   }

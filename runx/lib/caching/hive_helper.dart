@@ -39,4 +39,17 @@ class HiveHelper {
       openBox.add(item);
     }
   }
+
+  // Remove item from box with given key
+  Future<void> removeFromBox<T>(String boxName, String itemKey) async {
+    final openBox = await Hive.openBox(boxName);
+    await openBox.delete(itemKey);
+  }
+
+  // Get all items in box
+  Future<Iterable> getAll(String boxName) async {
+    final box = await Hive.openBox(boxName);
+    final userList = box.values;
+    return userList;
+  }
 }

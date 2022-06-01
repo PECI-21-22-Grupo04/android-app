@@ -28,13 +28,14 @@ class InstructorProfileAdapter extends TypeAdapter<InstructorProfile> {
       currentClients: fields[8] as String,
       averageRating: fields[9] as String,
       reviews: (fields[10] as List).cast<String>(),
+      aboutMe: fields[11] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, InstructorProfile obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(12)
       ..writeByte(0)
       ..write(obj.email)
       ..writeByte(1)
@@ -56,7 +57,9 @@ class InstructorProfileAdapter extends TypeAdapter<InstructorProfile> {
       ..writeByte(9)
       ..write(obj.averageRating)
       ..writeByte(10)
-      ..write(obj.reviews);
+      ..write(obj.reviews)
+      ..writeByte(11)
+      ..write(obj.aboutMe);
   }
 
   @override

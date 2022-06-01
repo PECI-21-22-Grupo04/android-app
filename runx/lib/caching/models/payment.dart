@@ -7,7 +7,7 @@ part 'payment.g.dart';
 @HiveType(typeId: 2)
 class Payment extends HiveObject {
   @HiveField(0)
-  final String paymentID;
+  final int paymentID;
 
   @HiveField(1)
   final String modality;
@@ -26,13 +26,13 @@ class Payment extends HiveObject {
 
   factory Payment.fromJson(Map<String, dynamic> parsedJson) {
     return Payment(
-        paymentID: parsedJson['paymentID'].toString(),
+        paymentID: parsedJson['paymentID'],
         modality: parsedJson['modality'],
         amount: parsedJson['amount'].toString(),
         paymentDate: parsedJson['paymentDate']);
   }
 
-  String getPaymentID() {
+  int getPaymentID() {
     return paymentID;
   }
 

@@ -5,6 +5,9 @@ import 'package:hive_flutter/hive_flutter.dart';
 // Models
 import 'package:runx/caching/models/instructor_profile.dart';
 
+// Screens
+import 'package:runx/instructor/screens/instructor_page.dart';
+
 class InstructorsList extends StatefulWidget {
   const InstructorsList({Key? key}) : super(key: key);
 
@@ -65,16 +68,22 @@ class _InstructorsListState extends State<InstructorsList> {
               fit: BoxFit.cover,
             ),
             title: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(
-                    child: Text(
-                        instProfile.firstName + " " + instProfile.lastName,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18)))),
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  instProfile.firstName + " " + instProfile.lastName,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 18),
+                ),
+              ),
+            ),
             subtitle: Center(
-                child: Text(instProfile.getAverageRating(),
-                    style: const TextStyle(
-                        height: 2, fontWeight: FontWeight.bold, fontSize: 15))),
+              child: Text(
+                instProfile.getAverageRating(),
+                style: const TextStyle(
+                    height: 2, fontWeight: FontWeight.bold, fontSize: 15),
+              ),
+            ),
             trailing: Text(
               "Vagas\n" +
                   instProfile.getAvailableSpotsLeft().toString() +
@@ -86,6 +95,13 @@ class _InstructorsListState extends State<InstructorsList> {
                   fontWeight: FontWeight.bold,
                   fontSize: 18),
             ),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => InstructorPage(instProfile),
+                ),
+              );
+            },
           ),
         ),
       ),

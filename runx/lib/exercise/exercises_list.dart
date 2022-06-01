@@ -92,8 +92,9 @@ class Lists extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer(builder: (context, ThemeModel themeNotifier, child) {
-      return Container(
+    return Consumer(
+      builder: (context, ThemeModel themeNotifier, child) {
+        return Container(
           color:
               themeNotifier.isDark ? themeSecondaryDark : themeSecondaryLight,
           child: ListView.builder(
@@ -102,101 +103,107 @@ class Lists extends StatelessWidget {
             itemBuilder: (BuildContext context, int index) {
               Item item = _data[index];
               return GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (_) => const VideoPlayAsset(
-                        video: 'assets/videos/sample.mp4',
-                      ),
-                    ));
-                  },
-                  child: Card(
-                    color: themeNotifier.isDark
-                        ? const Color.fromARGB(255, 24, 24, 24)
-                        : Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => const VideoPlayAsset(
+                      video: 'assets/videos/sample.mp4',
                     ),
-                    elevation: 1,
-                    child: Row(
-                      children: <Widget>[
-                        ClipRRect(
-                            borderRadius: BorderRadius.circular(20.0),
-                            child: Container(
-                              height: 125,
-                              width: 110,
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: NetworkImage(item.image!),
-                                      fit: BoxFit.cover)),
-                            )),
-                        Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                  ));
+                },
+                child: Card(
+                  color: themeNotifier.isDark
+                      ? const Color.fromARGB(255, 24, 24, 24)
+                      : Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                  elevation: 1,
+                  child: Row(
+                    children: <Widget>[
+                      ClipRRect(
+                          borderRadius: BorderRadius.circular(20.0),
+                          child: Container(
+                            height: 125,
+                            width: 110,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: NetworkImage(item.image!),
+                                    fit: BoxFit.cover)),
+                          )),
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                item.name!,
+                                style: const TextStyle(
+                                    color: themeColorLight,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18),
+                              ),
+                              const SizedBox(
+                                height: 6,
+                              ),
+                              Row(
                                 children: <Widget>[
+                                  const Icon(
+                                    Icons.info_outline_rounded,
+                                    color: themeColorLight,
+                                    size: 20,
+                                  ),
+                                  const SizedBox(
+                                    width: 8,
+                                  ),
+                                  Text(item.type!,
+                                      style: TextStyle(
+                                          color: !themeNotifier.isDark
+                                              ? themePrimaryDark
+                                              : themePrimaryLight,
+                                          fontSize: 13,
+                                          letterSpacing: .3)),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 6,
+                              ),
+                              Row(
+                                children: <Widget>[
+                                  const SizedBox(
+                                    width: 1,
+                                  ),
+                                  const Icon(
+                                    FontAwesomeIcons.repeat,
+                                    color: themeColorLight,
+                                    size: 18,
+                                  ),
+                                  const SizedBox(
+                                    width: 9,
+                                  ),
                                   Text(
-                                    item.name!,
-                                    style: const TextStyle(
-                                        color: themeColorLight,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18),
-                                  ),
-                                  const SizedBox(
-                                    height: 6,
-                                  ),
-                                  Row(
-                                    children: <Widget>[
-                                      const Icon(
-                                        Icons.info_outline_rounded,
-                                        color: themeColorLight,
-                                        size: 20,
-                                      ),
-                                      const SizedBox(
-                                        width: 8,
-                                      ),
-                                      Text(item.type!,
-                                          style: TextStyle(
-                                              color: !themeNotifier.isDark
-                                                  ? themePrimaryDark
-                                                  : themePrimaryLight,
-                                              fontSize: 13,
-                                              letterSpacing: .3)),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 6,
-                                  ),
-                                  Row(
-                                    children: <Widget>[
-                                      const SizedBox(
-                                        width: 1,
-                                      ),
-                                      const Icon(
-                                        FontAwesomeIcons.repeat,
-                                        color: themeColorLight,
-                                        size: 18,
-                                      ),
-                                      const SizedBox(
-                                        width: 9,
-                                      ),
-                                      Text(item.reps!,
-                                          style: TextStyle(
-                                              color: !themeNotifier.isDark
-                                                  ? themePrimaryDark
-                                                  : themePrimaryLight,
-                                              fontSize: 13,
-                                              letterSpacing: .3)),
-                                    ],
+                                    item.reps!,
+                                    style: TextStyle(
+                                        color: !themeNotifier.isDark
+                                            ? themePrimaryDark
+                                            : themePrimaryLight,
+                                        fontSize: 13,
+                                        letterSpacing: 0.3),
                                   ),
                                 ],
                               ),
-                            ))
-                      ],
-                    ),
-                  ));
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              );
             },
-          ));
-    });
+          ),
+        );
+      },
+    );
   }
 }

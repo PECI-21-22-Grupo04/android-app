@@ -18,10 +18,22 @@ class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
 
   @override
-  _ProfileState createState() => _ProfileState();
+  _ProfileState createState() {
+    return _ProfileState();
+  }
 }
 
 class _ProfileState extends State<Profile> {
+  String _accountState = "";
+
+  @override
+  void initState() {
+    getAccountStatus().then((result) => setState(() {
+          _accountState = result!;
+        }));
+    super.initState();
+  }
+
   @override
   Consumer<ThemeModel> build(BuildContext context) {
     Box userInfo = Hive.box("UserProfile");
@@ -49,18 +61,28 @@ class _ProfileState extends State<Profile> {
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 child: Container(
-                  decoration: const BoxDecoration(
-                      color: Color.fromARGB(255, 239, 232, 99)),
+                  decoration: (_accountState == "free")
+                      ? const BoxDecoration(
+                          color: Color.fromARGB(255, 239, 232, 99))
+                      : const BoxDecoration(color: Colors.green),
                   child: ListTile(
-                    title: Text(
-                      "Conta grátis! Pressione aqui para fazer upgrade",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
+                    title: (_accountState == "free")
+                        ? const Text(
+                            "Conta grátis! Pressione aqui para fazer upgrade",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
+                          )
+                        : const Text(
+                            "Conta Premium",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
                     onTap: () {
-                      openAlertBox();
+                      (_accountState == "free") ? openAlertBox() : {};
                     },
                   ),
                 ),
@@ -261,6 +283,7 @@ class _ProfileState extends State<Profile> {
     });
   }
 
+  // Display payment box
   openAlertBox() {
     bool pressAttention1 = false;
     bool pressAttention2 = false;
@@ -276,10 +299,34 @@ class _ProfileState extends State<Profile> {
                 builder: (context, ThemeModel themeNotifier, child) {
               return AlertDialog(
                 title: const Text(
-                  "Escolha o seu plano",
+                  "Escolha o seu plano*",
                   textAlign: TextAlign.center,
                 ),
                 actions: <Widget>[
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      '* Comunicação direta com instrutores',
+                      style: TextStyle(fontSize: 12),
+                      textAlign: TextAlign.end,
+                    ),
+                  ),
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      '* Planos de treino personalizados',
+                      style: TextStyle(fontSize: 12),
+                      textAlign: TextAlign.end,
+                    ),
+                  ),
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      '* Ligação de dispositivos móveis',
+                      style: TextStyle(fontSize: 12),
+                      textAlign: TextAlign.end,
+                    ),
+                  ),
                   Align(
                     alignment: Alignment.center,
                     child: TextButton(
@@ -431,12 +478,13 @@ class _ProfileState extends State<Profile> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => PaypalPayment(
-                                            pAmount: price,
-                                            pModality: modality,
-                                            email: FirebaseAuth
-                                                .instance.currentUser!.email!,
-                                          )),
+                                    builder: (context) => PaypalPayment(
+                                      pAmount: price,
+                                      pModality: modality,
+                                      email: FirebaseAuth
+                                          .instance.currentUser!.email!,
+                                    ),
+                                  ),
                                 );
                               }
                             },
@@ -461,5 +509,9 @@ class _ProfileState extends State<Profile> {
             });
           });
         });
+  }
+
+  Future<String?> getAccountStatus() async {
+    return await SharedPreferencesHelper().getStringValuesSF("accountStatus");
   }
 }

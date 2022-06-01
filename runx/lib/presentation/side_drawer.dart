@@ -83,8 +83,8 @@ class SideDrawer extends StatelessWidget {
                                   .map((i) => Payment.fromJson(i)));
                               // 3º - Save in Hive for caching
                               for (Payment p in List.from(itemsList)) {
-                                HiveHelper()
-                                    .addToBox(p, "PaymentHistory", p.paymentID);
+                                HiveHelper().addToBox(p, "PaymentHistory",
+                                    p.paymentID.toString());
                               }
                             }
                           });

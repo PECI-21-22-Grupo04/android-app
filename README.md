@@ -9,4 +9,5 @@ The application connects to our API and sends GET/POST requests to obtain any ne
 
 ### Information Storage
 Credentials are stored in Firebase Authentication system. <br>
+Videos and Images are stored in Firestore Database system. <br>
 Remaining data is stored in a MySQL database.

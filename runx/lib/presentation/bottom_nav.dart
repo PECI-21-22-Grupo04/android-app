@@ -9,12 +9,13 @@ import 'package:runx/caching/models/instructor_profile.dart';
 // Logic
 import 'package:runx/api.dart';
 import 'package:runx/caching/hive_helper.dart';
+import 'package:runx/caching/sharedpref_helper.dart';
 import 'package:runx/preferences/colors.dart';
 import 'package:runx/preferences/theme_model.dart';
 
 // Screens
 import 'package:runx/presentation/side_drawer.dart';
-import 'package:runx/instructor/available_instructors.dart';
+import 'package:runx/instructor/screens/available_instructors.dart';
 import 'package:runx/homepage/homepage.dart';
 import 'package:runx/profile/profile.dart';
 import 'package:runx/exercise/library.dart';
@@ -28,6 +29,16 @@ class BottomNav extends StatefulWidget {
 }
 
 class _BottomNavState extends State<BottomNav> {
+  String _accountState = "";
+
+  @override
+  void initState() {
+    getAccountStatus().then((result) => setState(() {
+          _accountState = result!;
+        }));
+    super.initState();
+  }
+
   int _selectedIndex = 0;
   String _pageTitle = "Início";
 
@@ -48,20 +59,32 @@ class _BottomNavState extends State<BottomNav> {
         _pageTitle = "Exercícios e Planos";
       } else if (index == 2) {
         // 1º - Fetch data from DB
-        APICaller().selectAvailableInstructors().then((availInstructors) {
-          if (json.decode(availInstructors)["code"] == 0 &&
-              json.decode(availInstructors)["data"] != null) {
-            // 2º - Convert json received to objects
-            List<InstructorProfile> itemsList = List<InstructorProfile>.from(
-                json
-                    .decode(availInstructors)["data"][0]
-                    .map((i) => InstructorProfile.fromJson(i)));
-            // 3º - Save in Hive for caching
-            for (InstructorProfile ip in List.from(itemsList)) {
-              HiveHelper().addToBox(ip, "InstructorProfile", ip.email);
+        APICaller().selectAvailableInstructors().then(
+          (availInstructors) async {
+            if (json.decode(availInstructors)["code"] == 0 &&
+                json.decode(availInstructors)["data"] != null) {
+              // 2º - Convert json received to objects
+              List<InstructorProfile> itemsList = List<InstructorProfile>.from(
+                  json
+                      .decode(availInstructors)["data"][0]
+                      .map((i) => InstructorProfile.fromJson(i)));
+              // 3º - Remove old cached items that no longer exist in database
+              for (InstructorProfile cachedIp
+                  in await HiveHelper().getAll("InstructorProfile")) {
+                if (!itemsList
+                    .map((item) => item.email)
+                    .contains(cachedIp.email)) {
+                  HiveHelper()
+                      .removeFromBox("InstructorProfile", cachedIp.email);
+                }
+              }
+              // 4º Cache the new database items
+              for (InstructorProfile ip in List.from(itemsList)) {
+                HiveHelper().addToBox(ip, "InstructorProfile", ip.email);
+              }
             }
-          }
-        });
+          },
+        );
         _pageTitle = "Instrutor";
       } else if (index == 3) {
         _pageTitle = "Dispositivos";
@@ -86,6 +109,20 @@ class _BottomNavState extends State<BottomNav> {
               onPressed: () => Scaffold.of(context).openDrawer(),
             ),
           ),
+          actions: <Widget>[
+            (_accountState == "premium")
+                ? Container(
+                    width: 65.0,
+                    alignment: Alignment.center,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                          image:
+                              AssetImage('assets/images/premium_account.png'),
+                          fit: BoxFit.fill),
+                    ),
+                  )
+                : Container(),
+          ],
         ),
         drawer: const SideDrawer(),
         body: Stack(
@@ -149,4 +186,8 @@ class _BottomNavState extends State<BottomNav> {
       );
     });
   }
+}
+
+Future<String?> getAccountStatus() async {
+  return await SharedPreferencesHelper().getStringValuesSF("accountStatus");
 }

@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'package:http_auth/http_auth.dart';
+import 'package:intl/intl.dart';
 
 // Logic
 import 'package:runx/api.dart';
@@ -93,7 +94,11 @@ class PaypalServices {
         // Save payment in database
         APICaller().finalizeClientPayment(email, modality, amount, body["id"]);
         // Change account status to premium
+        var formatter = DateFormat('dd-MM-yyyy');
+        String formattedDate = formatter.format(DateTime.now());
+        SharedPreferencesHelper().saveStringToSF("paidDate", formattedDate);
         SharedPreferencesHelper().saveStringToSF("accountStatus", "premium");
+        SharedPreferencesHelper().saveStringToSF("plan", modality.toString());
         return body["id"];
       } else {
         return "ERROR";

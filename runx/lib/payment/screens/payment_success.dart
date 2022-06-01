@@ -1,9 +1,11 @@
 // System Packages
 import 'package:flutter/material.dart';
-//import 'package:flutter_svg/svg.dart';
 
 // Widgets
 import 'package:runx/payment/widgets/button_profile.dart';
+
+// Screens
+import 'package:runx/presentation/bottom_nav.dart';
 
 class PaymentSuccess extends StatefulWidget {
   const PaymentSuccess({Key? key, required this.title}) : super(key: key);
@@ -72,12 +74,13 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
             SizedBox(height: screenHeight * 0.06),
             Flexible(
               child: ProfileButton(
-                title: 'Entendido',
-                onTap: () {
-                  int count = 0;
-                  Navigator.of(context).popUntil((_) => count++ >= 3);
-                },
-              ),
+                  title: 'Entendido',
+                  onTap: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (context) => const BottomNav()),
+                        (Route<dynamic> route) => false);
+                  }),
             ),
           ],
         ),

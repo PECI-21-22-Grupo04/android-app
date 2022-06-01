@@ -137,7 +137,7 @@ class PaypalPaymentState extends State<PaypalPayment> {
               "shipping_discount": ((-1.0) * shippingDiscountCost).toString()
             }
           },
-          "description": "The payment transaction description.",
+          "description": "Purchase of a " + widget.pModality + " plan in RunX",
           "payment_options": {
             "allowed_payment_method": "INSTANT_FUNDING_SOURCE"
           },

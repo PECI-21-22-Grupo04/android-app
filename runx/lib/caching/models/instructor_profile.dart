@@ -39,6 +39,9 @@ class InstructorProfile extends HiveObject {
   @HiveField(10)
   final List<String> reviews;
 
+  @HiveField(11)
+  final String aboutMe;
+
   InstructorProfile(
       {required this.email,
       required this.firstName,
@@ -50,7 +53,8 @@ class InstructorProfile extends HiveObject {
       required this.maxClients,
       required this.currentClients,
       required this.averageRating,
-      required this.reviews});
+      required this.reviews,
+      required this.aboutMe});
 
   factory InstructorProfile.fromJson(Map<String, dynamic> parsedJson) {
     String currC;
@@ -77,7 +81,8 @@ class InstructorProfile extends HiveObject {
         maxClients: parsedJson["maxClients"].toString(),
         currentClients: currC,
         averageRating: avgR,
-        reviews: []);
+        reviews: [],
+        aboutMe: parsedJson["aboutMe"].toString());
   }
 
   String getEmail() {
@@ -128,5 +133,13 @@ class InstructorProfile extends HiveObject {
 
   int getAvailableSpotsLeft() {
     return (int.parse(maxClients) - int.parse(currentClients));
+  }
+
+  String getAboutMe() {
+    return aboutMe;
+  }
+
+  String getFullName() {
+    return firstName + " " + lastName;
   }
 }

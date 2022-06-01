@@ -19,6 +19,7 @@ class _TransactionPageState extends State<TransactionPage> {
           valueListenable: Hive.box("PaymentHistory").listenable(),
           builder: (context, box, _) {
             final payments = box.values.toList().cast<Payment>();
+            payments.sort((a, b) => a.paymentID.compareTo(b.paymentID));
             return buildContent(payments);
           },
         ),
@@ -59,7 +60,7 @@ class _TransactionPageState extends State<TransactionPage> {
         tilePadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
         title: Text(
           "ID: " +
-              payments.paymentID +
+              payments.paymentID.toString() +
               " - " +
               "Pagamento " +
               payments.getModality() +

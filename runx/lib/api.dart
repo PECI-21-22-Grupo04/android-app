@@ -1,6 +1,11 @@
 // System Packages
 import 'dart:async';
+import 'dart:convert';
+import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+
+// Logic
+import 'package:runx/caching/sharedpref_helper.dart';
 
 class APICaller {
   final String host = 'http://localhost:';
@@ -159,6 +164,33 @@ class APICaller {
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
         },
       );
+      return response.body;
+    } on Exception {
+      return "ERROR";
+    }
+  }
+
+  Future<String> associateInstructor(
+      String? clientEmail, String? instructorEmail) async {
+    try {
+      final response = await http.post(
+        Uri.parse(host + port + '/associateInstructor'),
+        headers: <String, String>{
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        },
+        body: (<String, String>{
+          "clientEmail": clientEmail.toString(),
+          "instructorEmail": instructorEmail.toString(),
+        }),
+      );
+      if (jsonDecode((response.body))["code"] == 0) {
+        var formatter = DateFormat('dd-MM-yyyy');
+        String formattedDate = formatter.format(DateTime.now());
+        SharedPreferencesHelper()
+            .saveStringToSF("associatedInstructor", instructorEmail!);
+        SharedPreferencesHelper()
+            .saveStringToSF("associatedDate", formattedDate);
+      }
       return response.body;
     } on Exception {
       return "ERROR";
