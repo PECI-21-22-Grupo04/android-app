@@ -1,7 +1,10 @@
 // System Packages
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
+
+// Models
+import 'package:runx/caching/models/instructor_profile.dart';
+import 'package:runx/caching/models/user_profile.dart';
 
 // Logic
 import 'package:runx/authentication/logic/firebase_services.dart';
@@ -10,7 +13,6 @@ import 'package:runx/caching/hive_helper.dart';
 
 // Screens
 import 'package:runx/authentication/screens/sign_up.dart';
-import 'package:runx/caching/models/user_profile.dart';
 import 'package:runx/presentation/bottom_nav.dart';
 
 class Login extends StatelessWidget {
@@ -148,18 +150,99 @@ class _LoginFormState extends State<LoginForm> {
                       .then((result) {
                     // If result is null, the user is succesfully authenticated and will be redirected to home page
                     if (result == null) {
-                      APICaller().selectClient(email: email).then((userInfo) {
-                        // Save data in Hive or update if it already exists
-                        HiveHelper().addToBox(
-                          UserProfile.fromJson(json.decode(userInfo)),
-                          "UserProfile",
-                          email,
-                        );
-                      });
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const BottomNav()));
+                      APICaller().selectClient(email: email).then(
+                        (userInfo) {
+                          if (userInfo != "ERROR" &&
+                              json.decode(userInfo)["code"] == 0) {
+                            // Save data in Hive or update if it already exists
+                            HiveHelper()
+                                .addToBox(
+                                    UserProfile.fromJson(json.decode(userInfo)),
+                                    "UserProfile",
+                                    email)
+                                .then((value1) {
+                              APICaller()
+                                  .isClientAssociated(email: email)
+                                  .then((value2) {
+                                if (userInfo != "ERROR" &&
+                                    json.decode(userInfo)["code"] != 1) {
+                                  APICaller()
+                                      .selectAssociatedInstructor(email: email)
+                                      .then(
+                                    (instr) async {
+                                      if (json.decode(instr)["code"] == 0 &&
+                                          json.decode(instr)["data"] != null) {
+                                        // 2º - Convert json received to objects
+                                        List<InstructorProfile> itemsList =
+                                            List<InstructorProfile>.from(
+                                          json.decode(instr)["data"][0].map(
+                                                (i) =>
+                                                    InstructorProfile.fromJson(
+                                                        i),
+                                              ),
+                                        );
+                                        // 3º - Remove old cached items
+                                        for (InstructorProfile cachedIp
+                                            in await HiveHelper()
+                                                .getAll("InstructorProfile")) {
+                                          if (!itemsList
+                                              .map((item) => item.email)
+                                              .contains(cachedIp.email)) {
+                                            HiveHelper().removeFromBox(
+                                                "InstructorProfile",
+                                                cachedIp.email);
+                                          }
+                                        }
+                                        // 4º Cache the new database items
+                                        for (InstructorProfile ip
+                                            in List.from(itemsList)) {
+                                          HiveHelper().addToBox(ip,
+                                              "InstructorProfile", ip.email);
+                                        }
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const BottomNav(),
+                                          ),
+                                        );
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                              "Ocorreu um problema. Verifique a sua conexão ou tente mais tarde.",
+                                              style: TextStyle(fontSize: 16),
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                    },
+                                  );
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                        "Ocorreu um problema. Verifique a sua conexão ou tente mais tarde.",
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                    ),
+                                  );
+                                }
+                              });
+                            });
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  "Ocorreu um problema. Verifique a sua conexão ou tente mais tarde.",
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                      );
                     }
                     // Else show error message
                     else {

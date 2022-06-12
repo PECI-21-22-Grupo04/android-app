@@ -15,7 +15,7 @@ import 'package:runx/preferences/theme_model.dart';
 
 // Screens
 import 'package:runx/presentation/side_drawer.dart';
-import 'package:runx/instructor/screens/available_instructors.dart';
+import 'package:runx/instructor/available_instructors.dart';
 import 'package:runx/homepage/homepage.dart';
 import 'package:runx/profile/profile.dart';
 import 'package:runx/exercise/library.dart';
@@ -30,12 +30,22 @@ class BottomNav extends StatefulWidget {
 
 class _BottomNavState extends State<BottomNav> {
   String _accountState = "";
+  String _associatedInstructorEmail = "";
 
   @override
   void initState() {
+    getAccountStatus().then(((status) {
+      getAssociatedInstructorEmail().then((inst) => setState(() {
+            _accountState = status!;
+            _associatedInstructorEmail = inst!;
+          }));
+    }));
+
+    /*
     getAccountStatus().then((result) => setState(() {
           _accountState = result!;
         }));
+        */
     super.initState();
   }
 
@@ -47,52 +57,8 @@ class _BottomNavState extends State<BottomNav> {
     Library(),
     InstructorList(),
     Devices(),
-    Profile()
+    Profile(),
   ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-      if (index == 0) {
-        _pageTitle = "Início";
-      } else if (index == 1) {
-        _pageTitle = "Exercícios e Planos";
-      } else if (index == 2) {
-        // 1º - Fetch data from DB
-        APICaller().selectAvailableInstructors().then(
-          (availInstructors) async {
-            if (json.decode(availInstructors)["code"] == 0 &&
-                json.decode(availInstructors)["data"] != null) {
-              // 2º - Convert json received to objects
-              List<InstructorProfile> itemsList = List<InstructorProfile>.from(
-                  json
-                      .decode(availInstructors)["data"][0]
-                      .map((i) => InstructorProfile.fromJson(i)));
-              // 3º - Remove old cached items that no longer exist in database
-              for (InstructorProfile cachedIp
-                  in await HiveHelper().getAll("InstructorProfile")) {
-                if (!itemsList
-                    .map((item) => item.email)
-                    .contains(cachedIp.email)) {
-                  HiveHelper()
-                      .removeFromBox("InstructorProfile", cachedIp.email);
-                }
-              }
-              // 4º Cache the new database items
-              for (InstructorProfile ip in List.from(itemsList)) {
-                HiveHelper().addToBox(ip, "InstructorProfile", ip.email);
-              }
-            }
-          },
-        );
-        _pageTitle = "Instrutor";
-      } else if (index == 3) {
-        _pageTitle = "Dispositivos";
-      } else {
-        _pageTitle = "Perfil";
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -186,8 +152,61 @@ class _BottomNavState extends State<BottomNav> {
       );
     });
   }
+
+  void _onItemTapped(int index) {
+    setState(
+      () {
+        _selectedIndex = index;
+        if (index == 0) {
+          _pageTitle = "Início";
+        } else if (index == 1) {
+          _pageTitle = "Exercícios e Planos";
+        } else if (index == 2) {
+          if (_associatedInstructorEmail == "") {
+            // 1º - Fetch data from DB
+            APICaller().selectAvailableInstructors().then(
+              (availInstructors) async {
+                if (json.decode(availInstructors)["code"] == 0 &&
+                    json.decode(availInstructors)["data"] != null) {
+                  // 2º - Convert json received to objects
+                  List<InstructorProfile> itemsList =
+                      List<InstructorProfile>.from(json
+                          .decode(availInstructors)["data"][0]
+                          .map((i) => InstructorProfile.fromJson(i)));
+                  // 3º - Remove old cached items that no longer exist in database
+                  for (InstructorProfile cachedIp
+                      in await HiveHelper().getAll("InstructorProfile")) {
+                    if (!itemsList
+                        .map((item) => item.email)
+                        .contains(cachedIp.email)) {
+                      HiveHelper()
+                          .removeFromBox("InstructorProfile", cachedIp.email);
+                    }
+                  }
+                  // 4º Cache the new database items
+                  for (InstructorProfile ip in List.from(itemsList)) {
+                    HiveHelper().addToBox(ip, "InstructorProfile", ip.email);
+                  }
+                }
+              },
+            );
+          }
+          _pageTitle = "Instrutor";
+        } else if (index == 3) {
+          _pageTitle = "Dispositivos";
+        } else {
+          _pageTitle = "Perfil";
+        }
+      },
+    );
+  }
 }
 
 Future<String?> getAccountStatus() async {
   return await SharedPreferencesHelper().getStringValuesSF("accountStatus");
+}
+
+Future<String?> getAssociatedInstructorEmail() async {
+  return await SharedPreferencesHelper()
+      .getStringValuesSF("associatedInstructor");
 }

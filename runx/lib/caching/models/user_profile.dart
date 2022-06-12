@@ -39,6 +39,9 @@ class UserProfile extends HiveObject {
   @HiveField(10)
   late String pathologies;
 
+  @HiveField(11)
+  late String imagePath;
+
   UserProfile(
       {required this.email,
       required this.firstName,
@@ -50,7 +53,8 @@ class UserProfile extends HiveObject {
       required this.city,
       required this.country,
       required this.registerDate,
-      required this.pathologies});
+      required this.pathologies,
+      required this.imagePath});
 
   factory UserProfile.fromJson(Map<String, dynamic> parsedJson) {
     return UserProfile(
@@ -64,7 +68,8 @@ class UserProfile extends HiveObject {
         city: parsedJson["cityC"],
         country: parsedJson["countryC"],
         registerDate: parsedJson["registerDateC"],
-        pathologies: parsedJson["pathologiesC"]);
+        pathologies: parsedJson["pathologiesC"],
+        imagePath: parsedJson["imagePathC"]);
   }
 
   String getEmail() {
@@ -111,5 +116,9 @@ class UserProfile extends HiveObject {
 
   String getPathologies() {
     return pathologies;
+  }
+
+  String getImagePath() {
+    return imagePath;
   }
 }

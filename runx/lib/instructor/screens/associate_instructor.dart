@@ -10,16 +10,16 @@ import 'package:runx/caching/models/instructor_profile.dart';
 // Widgets
 import 'package:runx/instructor/widgets/instructor_widgets.dart';
 
-class InstructorPage extends StatefulWidget {
+class AssociateInstructor extends StatefulWidget {
   final InstructorProfile instProfile;
 
-  const InstructorPage(this.instProfile, {Key? key}) : super(key: key);
+  const AssociateInstructor(this.instProfile, {Key? key}) : super(key: key);
 
   @override
-  State<InstructorPage> createState() => _InstructorPageState();
+  State<AssociateInstructor> createState() => _AssociateInstructorState();
 }
 
-class _InstructorPageState extends State<InstructorPage> {
+class _AssociateInstructorState extends State<AssociateInstructor> {
   String _accountState = "";
 
   @override
@@ -51,7 +51,9 @@ class _InstructorPageState extends State<InstructorPage> {
                   buildFullName(widget.instProfile.getFullName()),
                   buildStatus(context, widget.instProfile.getRegisterDate()),
                   buildStatContainer(
-                      widget.instProfile.getMaxClients(),
+                      (int.parse(widget.instProfile.getMaxClients()) -
+                              int.parse(widget.instProfile.getCurrentClients()))
+                          .toString(),
                       widget.instProfile.getCurrentClients(),
                       widget.instProfile.getAverageRating()),
                   buildBio(context, widget.instProfile.getAboutMe()),

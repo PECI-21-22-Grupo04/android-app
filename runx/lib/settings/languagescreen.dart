@@ -27,11 +27,12 @@ class _LanguagesScreenState extends State<LanguagesScreen> {
               },
             ),
             SettingsTile(
-              title: const Text("English"),
+              title: const Text("English (Coming Soon)"),
               trailing: trailingWidget(1),
               onPressed: (BuildContext context) {
                 changeLanguage(1);
               },
+              enabled: false,
             ),
           ]),
         ],

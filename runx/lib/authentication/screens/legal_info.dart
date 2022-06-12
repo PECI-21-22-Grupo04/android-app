@@ -322,7 +322,17 @@ class _SignupFormState extends State<SignupForm> {
                               email,
                             );
                             SharedPreferencesHelper()
+                                .saveStringToSF("paidDate", "");
+                            SharedPreferencesHelper()
                                 .saveStringToSF("accountStatus", "free");
+                            SharedPreferencesHelper()
+                                .saveStringToSF("plan", "");
+                            SharedPreferencesHelper()
+                                .saveStringToSF("isAssociated", "no");
+                            SharedPreferencesHelper()
+                                .saveStringToSF("associatedDate", "");
+                            SharedPreferencesHelper()
+                                .saveStringToSF("associatedInstructor", "");
                           });
                           Navigator.pushReplacement(
                               context,

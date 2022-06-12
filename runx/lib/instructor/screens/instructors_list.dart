@@ -6,7 +6,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:runx/caching/models/instructor_profile.dart';
 
 // Screens
-import 'package:runx/instructor/screens/instructor_page.dart';
+import 'package:runx/instructor/screens/associate_instructor.dart';
 
 class InstructorsList extends StatefulWidget {
   const InstructorsList({Key? key}) : super(key: key);
@@ -98,7 +98,7 @@ class _InstructorsListState extends State<InstructorsList> {
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (_) => InstructorPage(instProfile),
+                  builder: (_) => AssociateInstructor(instProfile),
                 ),
               );
             },

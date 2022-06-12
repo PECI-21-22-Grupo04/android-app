@@ -1,14 +1,18 @@
 // System Packages
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:runx/api.dart';
 
 // Logic
+import 'package:runx/api.dart';
+import 'package:runx/payment/logic/paypal_webview.dart';
 import 'package:runx/preferences/theme_model.dart';
 import 'package:runx/preferences/colors.dart';
-import 'package:runx/payment/logic/paypal_webview.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+// Screens
+import 'package:runx/presentation/bottom_nav.dart';
 
 Widget buildCoverImage(Size screenSize) {
   return Container(
@@ -155,9 +159,23 @@ Widget buildButtons(
             onTap: () {
               (accountStatus == "free")
                   ? openAlertBox(context)
-                  : APICaller().associateInstructor(
-                      FirebaseAuth.instance.currentUser!.email!,
-                      instructorEmail);
+                  : APICaller()
+                      .associateInstructor(
+                          FirebaseAuth.instance.currentUser!.email!,
+                          instructorEmail)
+                      .then((value) {
+                      if (jsonDecode(value)["code"] == 0) {
+                        alertDialog(context);
+                      } else {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          content: Text(
+                            "Ocorreu um error. Verifique a sua conexão ou tente mais tarde",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ));
+                      }
+                    });
             },
           ),
         ),
@@ -425,6 +443,54 @@ openAlertBox(BuildContext context) {
             },
           );
         },
+      );
+    },
+  );
+}
+
+// Succesful instructor association
+Future alertDialog(BuildContext context) {
+  return showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text(
+          "Sucesso!",
+          style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.lightGreen),
+          textAlign: TextAlign.center,
+        ),
+        content: const Text(
+            "Está oficialmente associado a um instructor! \nPoderá interagir com este na sua página de instrutor"),
+        actions: <Widget>[
+          InkWell(
+            child: Container(
+              height: 45.0,
+              decoration: const BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: const Center(
+                child: Text(
+                  "Entendido",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 20),
+                ),
+              ),
+            ),
+            onTap: () {
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                  builder: (context) => const BottomNav(),
+                ),
+                (Route<dynamic> route) => false,
+              );
+            },
+          ),
+        ],
       );
     },
   );

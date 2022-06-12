@@ -33,10 +33,10 @@ class HiveHelper {
   Future<void> addToBox<T>(item, String boxName, [String? itemKey]) async {
     if (itemKey != null) {
       final openBox = await Hive.openBox(boxName);
-      openBox.put(itemKey, item);
+      await openBox.put(itemKey, item);
     } else {
       final openBox = await Hive.openBox(boxName);
-      openBox.add(item);
+      await openBox.add(item);
     }
   }
 

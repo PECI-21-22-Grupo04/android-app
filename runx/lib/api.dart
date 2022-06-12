@@ -26,6 +26,35 @@ class APICaller {
           "email": email.toString(),
         }),
       );
+
+      if (jsonDecode((response.body))["code"] == 0) {
+        try {
+          final response2 = await http.post(
+            Uri.parse(host + port + '/selectLatestClientPayment'),
+            headers: <String, String>{
+              'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            body: (<String, String>{
+              "email": email.toString(),
+            }),
+          );
+
+          if (jsonDecode((response2.body))["code"] == 0 ||
+              jsonDecode((response2.body))["code"] == 2) {
+            SharedPreferencesHelper().saveStringToSF(
+                "paidDate",
+                jsonDecode((response2.body))["paidDate"]
+                    .toString()
+                    .split(" ")[0]);
+            SharedPreferencesHelper().saveStringToSF(
+                "accountStatus", jsonDecode((response2.body))["accountStatus"]);
+            SharedPreferencesHelper()
+                .saveStringToSF("plan", jsonDecode((response2.body))["plan"]);
+          }
+        } on Exception {
+          return "ERROR";
+        }
+      }
       return response.body;
     } on Exception {
       return "ERROR";
@@ -184,13 +213,57 @@ class APICaller {
         }),
       );
       if (jsonDecode((response.body))["code"] == 0) {
-        var formatter = DateFormat('dd-MM-yyyy');
+        var formatter = DateFormat('yyyy-MM-dd');
         String formattedDate = formatter.format(DateTime.now());
+        SharedPreferencesHelper().saveStringToSF("isAssociated", "yes");
         SharedPreferencesHelper()
             .saveStringToSF("associatedInstructor", instructorEmail!);
         SharedPreferencesHelper()
             .saveStringToSF("associatedDate", formattedDate);
       }
+      return response.body;
+    } on Exception {
+      return "ERROR";
+    }
+  }
+
+  Future<String> isClientAssociated({String? email}) async {
+    try {
+      final response = await http.post(
+        Uri.parse(host + port + '/isClientAssociated'),
+        headers: <String, String>{
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        },
+        body: (<String, String>{
+          "email": email.toString(),
+        }),
+      );
+      if (jsonDecode((response.body))["code"] == 0 ||
+          jsonDecode((response.body))["code"] == 2) {
+        SharedPreferencesHelper().saveStringToSF(
+            "isAssociated", jsonDecode((response.body))["isAssociated"]);
+        SharedPreferencesHelper().saveStringToSF(
+            "associatedDate", jsonDecode((response.body))["associatedDate"]);
+        SharedPreferencesHelper().saveStringToSF("associatedInstructor",
+            jsonDecode((response.body))["associatedInstructor"]);
+      }
+      return response.body;
+    } on Exception {
+      return "ERROR";
+    }
+  }
+
+  Future<String> selectAssociatedInstructor({String? email}) async {
+    try {
+      final response = await http.post(
+        Uri.parse(host + port + '/selectAssociatedInstructor'),
+        headers: <String, String>{
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        },
+        body: (<String, String>{
+          "email": email.toString(),
+        }),
+      );
       return response.body;
     } on Exception {
       return "ERROR";

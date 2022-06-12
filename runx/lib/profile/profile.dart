@@ -11,6 +11,9 @@ import 'package:runx/preferences/colors.dart';
 import 'package:runx/payment/logic/paypal_webview.dart';
 import 'package:runx/caching/sharedpref_helper.dart';
 
+// Widgets
+import 'package:runx/profile/widgets/premium_days.dart';
+
 // Screens
 import 'package:runx/profile/screens/editprofile.dart';
 
@@ -25,12 +28,20 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   String _accountState = "";
+  String _paidDate = "";
+  String _plan = "";
 
   @override
   void initState() {
-    getAccountStatus().then((result) => setState(() {
-          _accountState = result!;
-        }));
+    getAccountStatus().then((state) {
+      getPaidDate().then((paidDate) {
+        getPlan().then((plan) => setState(() {
+              _accountState = state!;
+              _paidDate = paidDate!;
+              _plan = plan!;
+            }));
+      });
+    });
     super.initState();
   }
 
@@ -74,13 +85,7 @@ class _ProfileState extends State<Profile> {
                             ),
                             textAlign: TextAlign.center,
                           )
-                        : const Text(
-                            "Conta Premium",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
+                        : buildPremiumCountdown(_paidDate, _plan),
                     onTap: () {
                       (_accountState == "free") ? openAlertBox() : {};
                     },
@@ -513,5 +518,13 @@ class _ProfileState extends State<Profile> {
 
   Future<String?> getAccountStatus() async {
     return await SharedPreferencesHelper().getStringValuesSF("accountStatus");
+  }
+
+  Future<String?> getPaidDate() async {
+    return await SharedPreferencesHelper().getStringValuesSF("paidDate");
+  }
+
+  Future<String?> getPlan() async {
+    return await SharedPreferencesHelper().getStringValuesSF("plan");
   }
 }

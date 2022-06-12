@@ -42,6 +42,12 @@ class InstructorProfile extends HiveObject {
   @HiveField(11)
   final String aboutMe;
 
+  @HiveField(12)
+  final String imagePath;
+
+  @HiveField(13)
+  final String firebaseID;
+
   InstructorProfile(
       {required this.email,
       required this.firstName,
@@ -54,7 +60,9 @@ class InstructorProfile extends HiveObject {
       required this.currentClients,
       required this.averageRating,
       required this.reviews,
-      required this.aboutMe});
+      required this.aboutMe,
+      required this.imagePath,
+      required this.firebaseID});
 
   factory InstructorProfile.fromJson(Map<String, dynamic> parsedJson) {
     String currC;
@@ -65,7 +73,7 @@ class InstructorProfile extends HiveObject {
       currC = "0";
     }
     if (parsedJson["averageRating"] != null) {
-      avgR = parsedJson["averageRating"].toString();
+      avgR = parsedJson["averageRating"].toString() + "/5";
     } else {
       avgR = "Sem ratings!";
     }
@@ -82,7 +90,9 @@ class InstructorProfile extends HiveObject {
         currentClients: currC,
         averageRating: avgR,
         reviews: [],
-        aboutMe: parsedJson["aboutMe"].toString());
+        aboutMe: parsedJson["aboutMe"],
+        imagePath: parsedJson["imagePath"],
+        firebaseID: parsedJson["firebaseID"]);
   }
 
   String getEmail() {
@@ -120,7 +130,7 @@ class InstructorProfile extends HiveObject {
   }
 
   String getCurrentClients() {
-    return maxClients;
+    return currentClients;
   }
 
   String getAverageRating() {
@@ -137,6 +147,10 @@ class InstructorProfile extends HiveObject {
 
   String getAboutMe() {
     return aboutMe;
+  }
+
+  String getImagePath() {
+    return imagePath;
   }
 
   String getFullName() {
