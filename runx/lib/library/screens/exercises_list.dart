@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:runx/exercise/video_play.dart';
+import 'package:runx/library/logic/video_play.dart';
 import 'package:runx/preferences/colors.dart';
 
-import '../preferences/theme_model.dart';
+import '../../preferences/theme_model.dart';
 
 class ExerciseList extends StatefulWidget {
   const ExerciseList({Key? key}) : super(key: key);

@@ -21,7 +21,7 @@ class HiveHelper {
     await Hive.openBox("UserProfile");
     await Hive.openBox("InstructorProfile");
     await Hive.openBox("PaymentHistory");
-    await Hive.openBox("Exercises");
+    await Hive.openBox("FreeExercises");
   }
 
   // Add to box without key

@@ -1,14 +1,20 @@
 // System Packages
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+// Models
+import 'package:runx/caching/models/exercise.dart';
 
 // Logic
 import 'package:runx/preferences/colors.dart';
 import 'package:runx/preferences/theme_model.dart';
+import 'package:runx/api.dart';
+import 'package:runx/caching/hive_helper.dart';
 
 // Screens
-import 'package:runx/exercise/exercises.dart';
-import 'package:runx/exercise/plans.dart';
+import 'package:runx/library/plans_library.dart';
+import 'package:runx/library/exercise_library.dart';
 
 class Library extends StatefulWidget {
   const Library({Key? key}) : super(key: key);
@@ -32,8 +38,33 @@ class _LibraryState extends State<Library> {
                   children: <Widget>[
                     InkWell(
                       onTap: () {
+                        APICaller().selectDefaultExercises().then((exer) async {
+                          if (json.decode(exer)["code"] == 0 &&
+                              json.decode(exer)["data"] != null) {
+                            List<Exercise> itemsList = List<Exercise>.from(
+                              json
+                                  .decode(exer)["data"][0]
+                                  .map((i) => Exercise.fromJson(i)),
+                            );
+                            // 3º - Remove old cached items
+                            for (Exercise cachedIp
+                                in await HiveHelper().getAll("FreeExercises")) {
+                              if (!itemsList
+                                  .map((item) => item.exerciseID)
+                                  .contains(cachedIp.exerciseID)) {
+                                HiveHelper().removeFromBox(
+                                    "FreeExercises", cachedIp.exerciseID);
+                              }
+                            }
+                            // 4º Cache the new database items
+                            for (Exercise ip in List.from(itemsList)) {
+                              HiveHelper()
+                                  .addToBox(ip, "FreeExercises", ip.exerciseID);
+                            }
+                          }
+                        });
                         Navigator.of(context).push(MaterialPageRoute(
-                          builder: (_) => const Exercises(),
+                          builder: (_) => const ExerciseLibrary(),
                         ));
                       },
                       child: Container(
@@ -69,13 +100,11 @@ class _LibraryState extends State<Library> {
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 75,
-                    ),
+                    const SizedBox(height: 75),
                     InkWell(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                          builder: (_) => const Plans(),
+                          builder: (_) => const PlanLibrary(),
                         ));
                       },
                       child: Container(

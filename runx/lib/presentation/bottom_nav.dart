@@ -18,7 +18,7 @@ import 'package:runx/presentation/side_drawer.dart';
 import 'package:runx/instructor/available_instructors.dart';
 import 'package:runx/homepage/homepage.dart';
 import 'package:runx/profile/profile.dart';
-import 'package:runx/exercise/library.dart';
+import 'package:runx/library/main_library.dart';
 import 'package:runx/device/devices.dart';
 
 class BottomNav extends StatefulWidget {
@@ -40,12 +40,6 @@ class _BottomNavState extends State<BottomNav> {
             _associatedInstructorEmail = inst!;
           }));
     }));
-
-    /*
-    getAccountStatus().then((result) => setState(() {
-          _accountState = result!;
-        }));
-        */
     super.initState();
   }
 

@@ -1,35 +1,52 @@
+// System Packages
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:runx/exercise/exercises_list.dart';
-import 'package:runx/exercise/video_play.dart';
+import 'package:runx/library/screens/exercises_list.dart';
+
+// Logic
 import 'package:runx/preferences/colors.dart';
+import 'package:runx/preferences/theme_model.dart';
 
-import '../preferences/theme_model.dart';
-
-class Plans extends StatefulWidget {
-  const Plans({Key? key}) : super(key: key);
+class PlanLibrary extends StatefulWidget {
+  const PlanLibrary({Key? key}) : super(key: key);
 
   @override
-  State<Plans> createState() => _PlansState();
+  State<PlanLibrary> createState() => _PlanLibraryState();
 }
 
-class _PlansState extends State<Plans> {
+class _PlanLibraryState extends State<PlanLibrary> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Biblioteca de Planos"),
-        elevation: 2,
-        actions: <Widget>[
-          Container(
-            padding: const EdgeInsets.all(10),
-            child: const Icon(Icons.filter_list),
-          )
-        ],
+      body: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Biblioteca de Planos'),
+            bottom: const TabBar(
+              tabs: [
+                Tab(
+                  text: "Planos Grátis",
+                ),
+                Tab(
+                  text: "Planos Pessoais",
+                ),
+              ],
+            ),
+          ),
+          body: TabBarView(
+            children: [
+              buildFreeExercises(context),
+              Icon(Icons.directions_transit),
+            ],
+          ),
+        ),
       ),
-      body: Lists(),
     );
+  }
+
+  Widget buildFreeExercises(BuildContext context) {
+    return Scaffold(body: Lists());
   }
 }
 

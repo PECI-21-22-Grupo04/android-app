@@ -33,16 +33,25 @@ class Exercise extends HiveObject {
   @HiveField(8)
   final String isPublic;
 
-  Exercise(
-      {required this.exerciseID,
-      required this.name,
-      required this.forPathology,
-      required this.difficulty,
-      required this.description,
-      required this.targetMuscle,
-      required this.thumbnailPath,
-      required this.videoPath,
-      required this.isPublic});
+  @HiveField(9)
+  final String firebaseRef;
+
+  @HiveField(11)
+  final String creatorID;
+
+  Exercise({
+    required this.exerciseID,
+    required this.name,
+    required this.forPathology,
+    required this.difficulty,
+    required this.description,
+    required this.targetMuscle,
+    required this.thumbnailPath,
+    required this.videoPath,
+    required this.isPublic,
+    required this.firebaseRef,
+    required this.creatorID,
+  });
 
   factory Exercise.fromJson(Map<String, dynamic> parsedJson) {
     return Exercise(
@@ -54,6 +63,8 @@ class Exercise extends HiveObject {
         targetMuscle: parsedJson["targetMuscle"],
         thumbnailPath: parsedJson["thumbnailPath"],
         videoPath: parsedJson["videoPath"],
-        isPublic: parsedJson["isPublic"].toString());
+        isPublic: parsedJson["isPublic"]["data"][0].toString(),
+        firebaseRef: parsedJson["firebaseRef"],
+        creatorID: parsedJson["creatorID"].toString());
   }
 }

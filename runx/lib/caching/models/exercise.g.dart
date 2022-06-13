@@ -26,13 +26,15 @@ class ExerciseAdapter extends TypeAdapter<Exercise> {
       thumbnailPath: fields[6] as String,
       videoPath: fields[7] as String,
       isPublic: fields[8] as String,
+      firebaseRef: fields[9] as String,
+      creatorID: fields[11] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, Exercise obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.exerciseID)
       ..writeByte(1)
@@ -50,7 +52,11 @@ class ExerciseAdapter extends TypeAdapter<Exercise> {
       ..writeByte(7)
       ..write(obj.videoPath)
       ..writeByte(8)
-      ..write(obj.isPublic);
+      ..write(obj.isPublic)
+      ..writeByte(9)
+      ..write(obj.firebaseRef)
+      ..writeByte(11)
+      ..write(obj.creatorID);
   }
 
   @override

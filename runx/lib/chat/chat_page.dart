@@ -10,9 +10,11 @@ import 'package:provider/provider.dart';
 import 'package:runx/caching/models/instructor_profile.dart';
 import 'package:uuid/uuid.dart';
 
+// Models
+import 'package:runx/preferences/theme_model.dart';
+
 // Logic
 import 'package:runx/preferences/colors.dart';
-import 'package:runx/preferences/theme_model.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage(InstructorProfile instructor, {Key? key}) : super(key: key);
@@ -31,6 +33,31 @@ class ChatPageState extends State<ChatPage> {
   void initState() {
     super.initState();
     loadMessages();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer(builder: (context, ThemeModel themeNotifier, child) {
+      return Scaffold(
+        body: SafeArea(
+          bottom: false,
+          child: Chat(
+            theme: DefaultChatTheme(
+                backgroundColor: themeNotifier.isDark
+                    ? themeSecondaryDark
+                    : themeSecondaryLight,
+                secondaryColor: themePrimaryLight,
+                inputBackgroundColor: Colors.transparent,
+                inputTextColor: themeNotifier.isDark ? neutral7 : neutral0),
+            messages: messageList,
+            onMessageTap: handleMessageTap,
+            onPreviewDataFetched: handlePreviewDataFetched,
+            onSendPressed: handleSendPressed,
+            user: user,
+          ),
+        ),
+      );
+    });
   }
 
   void addMessage(types.Message message) {
@@ -79,31 +106,6 @@ class ChatPageState extends State<ChatPage> {
 
     setState(() {
       messageList = messages;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer(builder: (context, ThemeModel themeNotifier, child) {
-      return Scaffold(
-        body: SafeArea(
-          bottom: false,
-          child: Chat(
-            theme: DefaultChatTheme(
-                backgroundColor: themeNotifier.isDark
-                    ? themeSecondaryDark
-                    : themeSecondaryLight,
-                secondaryColor: themePrimaryLight,
-                inputBackgroundColor: Colors.transparent,
-                inputTextColor: themeNotifier.isDark ? neutral7 : neutral0),
-            messages: messageList,
-            onMessageTap: handleMessageTap,
-            onPreviewDataFetched: handlePreviewDataFetched,
-            onSendPressed: handleSendPressed,
-            user: user,
-          ),
-        ),
-      );
     });
   }
 }

@@ -1,6 +1,7 @@
 // System Packages
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 
@@ -262,6 +263,30 @@ class APICaller {
         },
         body: (<String, String>{
           "email": email.toString(),
+        }),
+      );
+      return response.body;
+    } on Exception {
+      return "ERROR";
+    }
+  }
+
+  Future<String> reviewAssociatedInstructor(
+      {String? clientEmail,
+      String? instructorEmail,
+      num? rating,
+      String? review}) async {
+    try {
+      final response = await http.post(
+        Uri.parse(host + port + '/clientReviewInstructor'),
+        headers: <String, String>{
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        },
+        body: (<String, String>{
+          "clientEmail": clientEmail.toString(),
+          "instructorEmail": instructorEmail.toString(),
+          "rating": rating.toString(),
+          "review": review.toString(),
         }),
       );
       return response.body;
