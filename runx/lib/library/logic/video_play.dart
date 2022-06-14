@@ -1,19 +1,15 @@
 // System Packages
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
-
-// Logic
 import 'package:video_player/video_player.dart';
 
 class ChewieListItem extends StatefulWidget {
   final VideoPlayerController videoPlayerController;
   final bool looping;
 
-  const ChewieListItem({
-    required this.videoPlayerController,
-    required this.looping,
-    Key? key,
-  }) : super(key: key);
+  const ChewieListItem(
+      {required this.videoPlayerController, required this.looping, Key? key})
+      : super(key: key);
 
   @override
   _ChewieListItemState createState() => _ChewieListItemState();
@@ -31,10 +27,10 @@ class _ChewieListItemState extends State<ChewieListItem> {
       autoInitialize: true,
       looping: widget.looping,
       errorBuilder: (context, errorMessage) {
-        return Center(
+        return const Center(
           child: Text(
-            errorMessage,
-            style: const TextStyle(color: Colors.white),
+            "Ocorreu um erro a processar este video!",
+            style: TextStyle(color: Colors.white),
           ),
         );
       },
@@ -64,16 +60,13 @@ class VideoPlayAsset extends StatelessWidget {
   const VideoPlayAsset({Key? key, required this.video}) : super(key: key);
 
   @override
-  Widget build(
-    BuildContext context,
-  ) {
+  Widget build(BuildContext context) {
     return Scaffold(
-        body: ChewieListItem(
-      videoPlayerController: VideoPlayerController.asset(
-        video,
+      body: ChewieListItem(
+        videoPlayerController: VideoPlayerController.asset(video),
+        looping: false,
       ),
-      looping: false,
-    ));
+    );
   }
 }
 
@@ -83,15 +76,11 @@ class VideoPlayNetwork extends StatelessWidget {
   const VideoPlayNetwork({Key? key, required this.video}) : super(key: key);
 
   @override
-  Widget build(
-    BuildContext context,
-  ) {
+  Widget build(BuildContext context) {
     return Scaffold(
-        body: ChewieListItem(
-      videoPlayerController: VideoPlayerController.network(
-        video,
-      ),
-      looping: false,
-    ));
+      body: ChewieListItem(
+          videoPlayerController: VideoPlayerController.network(video),
+          looping: false),
+    );
   }
 }

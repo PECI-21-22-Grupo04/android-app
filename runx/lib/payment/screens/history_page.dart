@@ -29,8 +29,11 @@ class _TransactionPageState extends State<TransactionPage> {
     if (payments.isEmpty) {
       return const Center(
         child: Center(
-          child: Text('Não conseguimos encontrar pagamentos efetuados!',
-              textAlign: TextAlign.center, style: TextStyle(fontSize: 24)),
+          child: Text(
+            'Não conseguimos encontrar pagamentos efetuados!',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 24),
+          ),
         ),
       );
     }

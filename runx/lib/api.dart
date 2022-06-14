@@ -12,10 +12,9 @@ class APICaller {
   final String host = 'http://localhost:';
   final String port = '8080';
 
-  /// ***************** REGISTER/LOGIN ***************** ///
-  /// API calls needed for register and login operations ///
-  /// ************************************************** ///
-
+  ///***************** REGISTER/LOGIN ******************///
+  /// API calls needed for authentication operations    ///
+  ///***************************************************///
   Future<String> selectClient({String? email}) async {
     try {
       final response = await http.post(
@@ -113,7 +112,6 @@ class APICaller {
     }
   }
 
-// Save Client Information
   Future<String> addClientInfo(
       {String? email,
       String? height,
@@ -142,10 +140,9 @@ class APICaller {
     }
   }
 
-  /// ******************** PAYMENTS ******************** ///
-  /// API calls needed for payment related operations    ///
-  /// ************************************************** ///
-
+  ///******************** PAYMENTS *******************///
+  /// API calls needed for payment related operations ///
+  ///*************************************************///
   Future<String> selectClientPaymentHistory({String? email}) async {
     try {
       final response = await http.post(
@@ -182,10 +179,9 @@ class APICaller {
     }
   }
 
-  /// ******************** INSTRUCTORS ***************** ///
+  ///******************** INSTRUCTORS *******************///
   /// API calls needed for instructor related operations ///
-  /// ************************************************** ///
-
+  ///****************************************************///
   Future<String> selectAvailableInstructors() async {
     try {
       final response = await http.post(
@@ -295,11 +291,9 @@ class APICaller {
     }
   }
 
-  /// ******************** FREE CONTENT **************** ///
-  /// API calls needed for providing free content        ///
-  /// (programs and exercies)                            ///
-  /// ************************************************** ///
-
+  ///********************* FREE CONTENT *******************///
+  /// API calls needed for free content related operations ///
+  ///******************************************************///
   Future<String> selectDefaultExercises() async {
     try {
       final response = await http.post(
@@ -321,6 +315,26 @@ class APICaller {
         headers: <String, String>{
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
         },
+      );
+      return response.body;
+    } on Exception {
+      return "ERROR";
+    }
+  }
+
+  ///********************* FREE CONTENT *******************///
+  /// API calls needed for premium related operations      ///
+  ///******************************************************///
+  Future<String> selectClientPrograms({String? email}) async {
+    try {
+      final response = await http.post(
+        Uri.parse(host + port + '/selectClientPrograms'),
+        headers: <String, String>{
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        },
+        body: (<String, String>{
+          "email": email.toString(),
+        }),
       );
       return response.body;
     } on Exception {

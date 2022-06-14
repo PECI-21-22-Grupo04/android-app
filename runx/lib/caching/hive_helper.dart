@@ -1,5 +1,6 @@
 // System Packages
 import 'package:hive/hive.dart';
+import 'package:runx/caching/models/plan.dart';
 
 // Models
 import 'package:runx/caching/models/user_profile.dart';
@@ -14,6 +15,7 @@ class HiveHelper {
     Hive.registerAdapter(InstructorProfileAdapter());
     Hive.registerAdapter(PaymentAdapter());
     Hive.registerAdapter(ExerciseAdapter());
+    Hive.registerAdapter(PlanAdapter());
   }
 
   // Open boxes
@@ -22,6 +24,8 @@ class HiveHelper {
     await Hive.openBox("InstructorProfile");
     await Hive.openBox("PaymentHistory");
     await Hive.openBox("FreeExercises");
+    await Hive.openBox("FreePlans");
+    await Hive.openBox("PremiumPlans");
   }
 
   // Add to box without key

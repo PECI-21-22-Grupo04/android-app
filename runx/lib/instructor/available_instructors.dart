@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:runx/caching/sharedpref_helper.dart';
 
 // Screens
-import 'package:runx/instructor/screens/instructors_list.dart';
+import 'package:runx/instructor/instructors_list.dart';
 import 'package:runx/instructor/personal_instructor.dart';
 
 class InstructorList extends StatefulWidget {

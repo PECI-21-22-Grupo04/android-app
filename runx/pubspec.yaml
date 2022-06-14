@@ -63,6 +63,7 @@ dependencies:
   http_auth: ^1.0.1
   webview_flutter: ^3.0.4
   flutter_rating_bar: ^4.0.1
+  video_player: ^2.4.4
 
 dev_dependencies:
   flutter_test:

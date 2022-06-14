@@ -31,8 +31,11 @@ class _InstructorsListState extends State<InstructorsList> {
     if (availIns.isEmpty) {
       return const Center(
         child: Center(
-          child: Text('Não conseguimos encontrar instrutores disponiveis!',
-              textAlign: TextAlign.center, style: TextStyle(fontSize: 24)),
+          child: Text(
+            'Não conseguimos encontrar instrutores disponiveis!\n\n\n Verifique a sua conexão à internet',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 24),
+          ),
         ),
       );
     }

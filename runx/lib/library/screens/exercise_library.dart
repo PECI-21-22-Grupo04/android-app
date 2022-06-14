@@ -1,15 +1,15 @@
 // System Packages
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:provider/provider.dart';
 
 // Models
 import 'package:runx/caching/models/exercise.dart';
 
 // Logic
 import 'package:runx/preferences/colors.dart';
-import 'package:runx/preferences/theme_model.dart';
-import 'package:runx/library/logic/video_play.dart';
+
+// Screens
+import 'package:runx/library/screens/exercise_details.dart';
 
 class ExerciseLibrary extends StatefulWidget {
   const ExerciseLibrary({Key? key}) : super(key: key);
@@ -65,7 +65,7 @@ class _ExerciseLibraryState extends State<ExerciseLibrary> {
       return const Center(
         child: Center(
           child: Text(
-              'Não conseguimos encontrar exercicios! Verifique a sua conexão à internet.',
+              'Não conseguimos encontrar exercicios!\n\n\n Verifique a sua conexão à internet',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 24)),
         ),
@@ -79,8 +79,8 @@ class _ExerciseLibraryState extends State<ExerciseLibrary> {
             padding: const EdgeInsets.all(8),
             itemCount: exercises.length,
             itemBuilder: (BuildContext context, int index) {
-              final transaction = exercises[index];
-              return buildTransaction(context, transaction);
+              final exercise = exercises[index];
+              return buildTransaction(context, exercise);
             },
           ),
         ),
@@ -91,7 +91,14 @@ class _ExerciseLibraryState extends State<ExerciseLibrary> {
   Widget buildTransaction(BuildContext context, Exercise exercise) {
     return GestureDetector(
       onTap: () {
-        openAlertBox(context, exercise);
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => ExerciseDetails(
+              context,
+              exercise: exercise,
+            ),
+          ),
+        );
       },
       child: Card(
         shape: RoundedRectangleBorder(
@@ -106,9 +113,10 @@ class _ExerciseLibraryState extends State<ExerciseLibrary> {
                 height: 125,
                 width: 110,
                 decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage('assets/images/exercise_icon.png'),
-                        fit: BoxFit.cover)),
+                  image: DecorationImage(
+                      image: AssetImage('assets/images/exercise_icon.png'),
+                      fit: BoxFit.cover),
+                ),
               ),
             ),
             Padding(
@@ -119,9 +127,10 @@ class _ExerciseLibraryState extends State<ExerciseLibrary> {
                   Text(
                     exercise.name,
                     style: const TextStyle(
-                        color: themeColorLight,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18),
+                      color: themeColorLight,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
                   ),
                   const SizedBox(height: 6),
                   Row(
@@ -132,9 +141,13 @@ class _ExerciseLibraryState extends State<ExerciseLibrary> {
                         size: 20,
                       ),
                       const SizedBox(width: 8),
-                      Text(exercise.difficulty,
-                          style:
-                              const TextStyle(fontSize: 13, letterSpacing: .3)),
+                      Text(
+                        exercise.difficulty,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          letterSpacing: .3,
+                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 6),
@@ -146,9 +159,13 @@ class _ExerciseLibraryState extends State<ExerciseLibrary> {
                         size: 20,
                       ),
                       const SizedBox(width: 8),
-                      Text(exercise.targetMuscle,
-                          style:
-                              const TextStyle(fontSize: 13, letterSpacing: .3)),
+                      Text(
+                        exercise.targetMuscle,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          letterSpacing: .3,
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -159,49 +176,4 @@ class _ExerciseLibraryState extends State<ExerciseLibrary> {
       ),
     );
   }
-}
-
-openAlertBox(BuildContext context, Exercise exercise) {
-  return showDialog(
-    context: context,
-    builder: (context) {
-      return StatefulBuilder(
-        builder: (context, setState) {
-          return Consumer(
-            builder: (context, ThemeModel themeNotifier, child) {
-              return Dialog(
-                insetPadding: EdgeInsets.zero,
-                backgroundColor: Colors.transparent,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Expanded(
-                      child: Container(
-                        alignment: Alignment.center,
-                        child: const VideoPlayAsset(
-                            video: "assets/videos/sample.mp4"),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: Colors.transparent),
-                      ),
-                    ),
-                    Container(
-                      width: 600,
-                      height: 600,
-                      color: themeNotifier.isDark
-                          ? themeSecondaryDark
-                          : themeSecondaryLight,
-                      child: Text("asa"),
-                    )
-                  ],
-                ),
-              );
-            },
-          );
-        },
-      );
-    },
-  );
 }
