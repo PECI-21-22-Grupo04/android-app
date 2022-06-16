@@ -47,14 +47,15 @@ class Plan extends HiveObject {
 
   factory Plan.fromJson(Map<String, dynamic> parsedJson) {
     return Plan(
-        planID: parsedJson["programID"].toString(),
-        name: parsedJson["pName"],
-        description: parsedJson["pDescription"],
-        forPathology: parsedJson["forPathology"],
-        thumbnailPath: parsedJson["thumbnailPath"],
-        videoPath: parsedJson["videoPath"],
-        isPublic: parsedJson["isPublic"]["data"][0].toString(),
-        isShowcase: parsedJson["isShowcaseProg"]["data"][0].toString(),
-        creatorID: parsedJson["creatorIntsID"].toString());
+      planID: parsedJson["programID"].toString(),
+      name: parsedJson["pName"],
+      description: parsedJson["pDescription"],
+      forPathology: parsedJson["forPathology"],
+      thumbnailPath: parsedJson["thumbnailPath"],
+      videoPath: parsedJson["videoPath"],
+      isPublic: parsedJson["isPublic"]["data"][0].toString(),
+      isShowcase: parsedJson["isShowcaseProg"]["data"][0].toString(),
+      creatorID: parsedJson["creatorIntsID"].toString(),
+    );
   }
 }

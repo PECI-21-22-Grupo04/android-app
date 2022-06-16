@@ -53,19 +53,6 @@ class _EditProfileState extends State<EditProfile> {
               },
             ),
             const SizedBox(height: 20),
-            const Text(
-              "Imagem de Capa",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
-            ProfileWidget(
-              imagePath:
-                  "https://www.challengetires.com/assets/img/placeholder.jpg",
-              isEdit: true,
-              onClicked: () async {
-                uploadPic();
-              },
-            ),
-            const SizedBox(height: 20),
             TextFieldWidget(
               label: 'Primeiro Nome',
               text: userInfo.get(userEmail).getFirstName(),

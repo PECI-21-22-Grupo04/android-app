@@ -304,9 +304,9 @@ class _SignupFormState extends State<SignupForm> {
                           postCode: postCodeC,
                           city: cityC,
                           country: countryC)
-                      .then((result1) {
-                    if (result1 != "ERROR" &&
-                        json.decode(result1)["code"] == 0) {
+                      .then((clientCreated) {
+                    if (clientCreated != "ERROR" &&
+                        json.decode(clientCreated)["code"] == 0) {
                       // 2) Register Email/Password in Firebase Authentication
                       FirebaseAuthenticationCaller()
                           .signUp(email: email!, password: pass!)
@@ -357,7 +357,7 @@ class _SignupFormState extends State<SignupForm> {
                         }
                       });
                     } else {
-                      if (result1 == "ERROR") {
+                      if (clientCreated == "ERROR") {
                         ScaffoldMessenger.of(context)
                             .showSnackBar(const SnackBar(
                           content: Text(
@@ -366,7 +366,7 @@ class _SignupFormState extends State<SignupForm> {
                         ));
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text((json.decode(result1)["msg"]),
+                          content: Text((json.decode(clientCreated)["msg"]),
                               style: const TextStyle(fontSize: 16)),
                         ));
                       }

@@ -16,7 +16,7 @@ import 'package:runx/authentication/logic/firebase_services.dart';
 import 'package:runx/caching/hive_helper.dart';
 
 // Screens
-import 'package:runx/authentication/screens/login.dart';
+import 'package:runx/authentication/login.dart';
 import 'package:runx/settings/settings.dart';
 import 'package:runx/payment/payment_history.dart';
 
@@ -75,7 +75,8 @@ class SideDrawer extends StatelessWidget {
                           APICaller()
                               .selectClientPaymentHistory(email: userEmail)
                               .then((paymentsMade) {
-                            if (json.decode(paymentsMade)["code"] == 0 &&
+                            if (paymentsMade != "ERROR" &&
+                                json.decode(paymentsMade)["code"] == 0 &&
                                 json.decode(paymentsMade)["data"] != null) {
                               // 2º - Convert json received to objects
                               List<Payment> itemsList = List<Payment>.from(json

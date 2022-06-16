@@ -10,7 +10,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:runx/caching/hive_helper.dart';
 
 // Screens
-import 'package:runx/authentication/screens/login.dart';
+import 'package:runx/authentication/login.dart';
 import 'package:runx/preferences/theme_data.dart';
 import 'package:runx/preferences/theme_model.dart';
 import 'package:runx/presentation/bottom_nav.dart';
@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
           builder: (context, ThemeModel themeNotifier, child) {
         return MaterialApp(
           localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
-          supportedLocales: const [Locale('pt'), Locale('pt')],
+          supportedLocales: const [Locale('pt'), Locale('PT')],
           theme: themeNotifier.isDark
               ? CustomThemeDark.darkTheme
               : CustomThemeLight.lightTheme,

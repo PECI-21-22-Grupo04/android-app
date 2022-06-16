@@ -8,6 +8,9 @@ import 'package:runx/caching/models/plan.dart';
 // Logic
 import 'package:runx/preferences/colors.dart';
 
+// Screens
+import 'package:runx/library/screens/plan_details.dart';
+
 Widget buildFreePlans(BuildContext context) {
   return Scaffold(body: buildFreeList(context));
 }
@@ -54,16 +57,11 @@ Widget buildFreeContent(List<Plan> plans) {
 Widget buildFree(BuildContext context, Plan plan) {
   return GestureDetector(
     onTap: () {
-      /*
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => ExerciseDetails(
-              context,
-              plan: plan,
-            ),
-          ),
-        );
-        */
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => PlanDetails(context, plan: plan),
+        ),
+      );
     },
     child: Card(
       shape: RoundedRectangleBorder(

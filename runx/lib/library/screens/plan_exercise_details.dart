@@ -2,23 +2,23 @@
 import 'package:flutter/material.dart';
 
 // Models
-import 'package:runx/caching/models/free_exercise.dart';
+import 'package:runx/caching/models/plan_exercise.dart';
 
 // Logic
 import 'package:runx/library/logic/video_play.dart';
 
-class ExerciseDetails extends StatefulWidget {
-  final FreeExercise exercise;
+class PlanExerciseDetails extends StatefulWidget {
+  final PlanExercise exercise;
 
-  const ExerciseDetails(BuildContext context,
+  const PlanExerciseDetails(BuildContext context,
       {Key? key, required this.exercise})
       : super(key: key);
 
   @override
-  State<ExerciseDetails> createState() => _ExerciseDetailsState();
+  State<PlanExerciseDetails> createState() => _PlanExerciseDetailsState();
 }
 
-class _ExerciseDetailsState extends State<ExerciseDetails> {
+class _PlanExerciseDetailsState extends State<PlanExerciseDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +27,7 @@ class _ExerciseDetailsState extends State<ExerciseDetails> {
     );
   }
 
-  Widget buildExerciseDetails(FreeExercise exercise) {
+  Widget buildExerciseDetails(PlanExercise exercise) {
     Size screenSize = MediaQuery.of(context).size;
     return Dialog(
       insetPadding: EdgeInsets.zero,

@@ -1,7 +1,6 @@
 // System Packages
 import 'dart:async';
 import 'dart:convert';
-import 'dart:math';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 
@@ -55,7 +54,11 @@ class APICaller {
           return "ERROR";
         }
       }
-      return response.body;
+      if (response.ok) {
+        return response.body;
+      } else {
+        return "ERROR";
+      }
     } on Exception {
       return "ERROR";
     }
@@ -89,7 +92,11 @@ class APICaller {
           "country": country.toString(),
         }),
       );
-      return response.body;
+      if (response.ok) {
+        return response.body;
+      } else {
+        return "ERROR";
+      }
     } on Exception {
       return "ERROR";
     }
@@ -106,7 +113,11 @@ class APICaller {
           "email": email.toString(),
         }),
       );
-      return response.body;
+      if (response.ok) {
+        return response.body;
+      } else {
+        return "ERROR";
+      }
     } on Exception {
       return "ERROR";
     }
@@ -134,7 +145,11 @@ class APICaller {
           "pathologies": pathologies.toString(),
         }),
       );
-      return response.body;
+      if (response.ok) {
+        return response.body;
+      } else {
+        return "ERROR";
+      }
     } on Exception {
       return "ERROR";
     }
@@ -152,7 +167,11 @@ class APICaller {
         },
         body: (<String, String>{"email": email.toString()}),
       );
-      return response.body;
+      if (response.ok) {
+        return response.body;
+      } else {
+        return "ERROR";
+      }
     } on Exception {
       return "ERROR";
     }
@@ -190,7 +209,11 @@ class APICaller {
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
         },
       );
-      return response.body;
+      if (response.ok) {
+        return response.body;
+      } else {
+        return "ERROR";
+      }
     } on Exception {
       return "ERROR";
     }
@@ -218,7 +241,11 @@ class APICaller {
         SharedPreferencesHelper()
             .saveStringToSF("associatedDate", formattedDate);
       }
-      return response.body;
+      if (response.ok) {
+        return response.body;
+      } else {
+        return "ERROR";
+      }
     } on Exception {
       return "ERROR";
     }
@@ -235,8 +262,7 @@ class APICaller {
           "email": email.toString(),
         }),
       );
-      if (jsonDecode((response.body))["code"] == 0 ||
-          jsonDecode((response.body))["code"] == 2) {
+      if (jsonDecode((response.body))["code"] != 1) {
         SharedPreferencesHelper().saveStringToSF(
             "isAssociated", jsonDecode((response.body))["isAssociated"]);
         SharedPreferencesHelper().saveStringToSF(
@@ -244,7 +270,11 @@ class APICaller {
         SharedPreferencesHelper().saveStringToSF("associatedInstructor",
             jsonDecode((response.body))["associatedInstructor"]);
       }
-      return response.body;
+      if (response.ok) {
+        return response.body;
+      } else {
+        return "ERROR";
+      }
     } on Exception {
       return "ERROR";
     }
@@ -261,7 +291,11 @@ class APICaller {
           "email": email.toString(),
         }),
       );
-      return response.body;
+      if (response.ok) {
+        return response.body;
+      } else {
+        return "ERROR";
+      }
     } on Exception {
       return "ERROR";
     }
@@ -285,7 +319,11 @@ class APICaller {
           "review": review.toString(),
         }),
       );
-      return response.body;
+      if (response.ok) {
+        return response.body;
+      } else {
+        return "ERROR";
+      }
     } on Exception {
       return "ERROR";
     }
@@ -302,7 +340,11 @@ class APICaller {
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
         },
       );
-      return response.body;
+      if (response.ok) {
+        return response.body;
+      } else {
+        return "ERROR";
+      }
     } on Exception {
       return "ERROR";
     }
@@ -316,13 +358,17 @@ class APICaller {
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
         },
       );
-      return response.body;
+      if (response.ok) {
+        return response.body;
+      } else {
+        return "ERROR";
+      }
     } on Exception {
       return "ERROR";
     }
   }
 
-  ///********************* FREE CONTENT *******************///
+  ///********************* PREMIUM CONTENT ****************///
   /// API calls needed for premium related operations      ///
   ///******************************************************///
   Future<String> selectClientPrograms({String? email}) async {
@@ -336,9 +382,38 @@ class APICaller {
           "email": email.toString(),
         }),
       );
-      return response.body;
+      if (response.ok) {
+        return response.body;
+      } else {
+        return "ERROR";
+      }
     } on Exception {
       return "ERROR";
     }
+  }
+
+  Future<String> selectAllProgramExercises() async {
+    try {
+      final response = await http.post(
+        Uri.parse(host + port + '/selectAllProgramExercises'),
+        headers: <String, String>{
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        },
+      );
+      if (response.ok) {
+        return response.body;
+      } else {
+        return "ERROR";
+      }
+    } on Exception {
+      return "ERROR";
+    }
+  }
+}
+
+/* Extension method to check if response is sucessfull (any status code between 200-299) */
+extension IsOk on http.Response {
+  bool get ok {
+    return (statusCode ~/ 100) == 2;
   }
 }

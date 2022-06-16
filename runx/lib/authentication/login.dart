@@ -12,7 +12,7 @@ import 'package:runx/api.dart';
 import 'package:runx/caching/hive_helper.dart';
 
 // Screens
-import 'package:runx/authentication/screens/sign_up.dart';
+import 'package:runx/authentication/sign_up.dart';
 import 'package:runx/presentation/bottom_nav.dart';
 
 class Login extends StatelessWidget {
@@ -148,7 +148,6 @@ class _LoginFormState extends State<LoginForm> {
                   FirebaseAuthenticationCaller()
                       .signIn(email: email!, password: password!)
                       .then((result) {
-                    // If result is null, the user is succesfully authenticated and will be redirected to home page
                     if (result == null) {
                       APICaller().selectClient(email: email).then(
                         (userInfo) {
@@ -163,14 +162,15 @@ class _LoginFormState extends State<LoginForm> {
                                 .then((value1) {
                               APICaller()
                                   .isClientAssociated(email: email)
-                                  .then((value2) {
-                                if (userInfo != "ERROR" &&
-                                    json.decode(userInfo)["code"] != 1) {
+                                  .then((isAssociated) {
+                                if (isAssociated != "ERROR" &&
+                                    json.decode(isAssociated)["code"] != 1) {
                                   APICaller()
                                       .selectAssociatedInstructor(email: email)
                                       .then(
                                     (instr) async {
-                                      if (json.decode(instr)["code"] == 0 &&
+                                      if (instr != "ERROR" &&
+                                          json.decode(instr)["code"] == 0 &&
                                           json.decode(instr)["data"] != null) {
                                         // 2º - Convert json received to objects
                                         List<InstructorProfile> itemsList =
@@ -199,6 +199,15 @@ class _LoginFormState extends State<LoginForm> {
                                           HiveHelper().addToBox(ip,
                                               "InstructorProfile", ip.email);
                                         }
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const BottomNav(),
+                                          ),
+                                        );
+                                      } else if (instr != "ERROR" &&
+                                          json.decode(instr)["code"] == 2) {
                                         Navigator.pushReplacement(
                                           context,
                                           MaterialPageRoute(
@@ -243,9 +252,7 @@ class _LoginFormState extends State<LoginForm> {
                           }
                         },
                       );
-                    }
-                    // Else show error message
-                    else {
+                    } else {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text(
                           result,

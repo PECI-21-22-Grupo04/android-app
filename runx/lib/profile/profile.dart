@@ -57,15 +57,6 @@ class _ProfileState extends State<Profile> {
         body: SingleChildScrollView(
           child: Stack(
             children: <Widget>[
-              SizedBox(
-                height: 250,
-                width: double.infinity,
-                child: Image.asset(
-                  'assets/images/background_icon.png',
-                  height: 60.0,
-                  fit: BoxFit.cover,
-                ),
-              ),
               Container(
                 height: 50,
                 decoration: BoxDecoration(
@@ -93,7 +84,7 @@ class _ProfileState extends State<Profile> {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.fromLTRB(16.0, 200.0, 16.0, 16.0),
+                margin: const EdgeInsets.fromLTRB(16.0, 50.0, 16.0, 16.0),
                 child: Column(
                   children: <Widget>[
                     Stack(

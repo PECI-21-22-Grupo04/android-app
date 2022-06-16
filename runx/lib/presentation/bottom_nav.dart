@@ -160,7 +160,8 @@ class _BottomNavState extends State<BottomNav> {
             // 1º - Fetch data from DB
             APICaller().selectAvailableInstructors().then(
               (availInstructors) async {
-                if (json.decode(availInstructors)["code"] == 0 &&
+                if (availInstructors != "ERROR" &&
+                    json.decode(availInstructors)["code"] == 0 &&
                     json.decode(availInstructors)["data"] != null) {
                   // 2º - Convert json received to objects
                   List<InstructorProfile> itemsList =

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 // Models
-import 'package:runx/caching/models/exercise.dart';
+import 'package:runx/caching/models/free_exercise.dart';
 
 // Logic
 import 'package:runx/preferences/colors.dart';
@@ -53,14 +53,14 @@ class _ExerciseLibraryState extends State<ExerciseLibrary> {
         body: ValueListenableBuilder<Box>(
           valueListenable: Hive.box("FreeExercises").listenable(),
           builder: (context, box, _) {
-            final exercises = box.values.toList().cast<Exercise>();
+            final exercises = box.values.toList().cast<FreeExercise>();
             exercises.sort((a, b) => a.name.compareTo(b.name));
             return buildContent(exercises);
           },
         ),
       );
 
-  Widget buildContent(List<Exercise> exercises) {
+  Widget buildContent(List<FreeExercise> exercises) {
     if (exercises.isEmpty) {
       return const Center(
         child: Center(
@@ -88,7 +88,7 @@ class _ExerciseLibraryState extends State<ExerciseLibrary> {
     );
   }
 
-  Widget buildTransaction(BuildContext context, Exercise exercise) {
+  Widget buildTransaction(BuildContext context, FreeExercise exercise) {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(
@@ -142,7 +142,7 @@ class _ExerciseLibraryState extends State<ExerciseLibrary> {
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        exercise.difficulty,
+                        "Dificuldade: " + exercise.difficulty,
                         style: const TextStyle(
                           fontSize: 13,
                           letterSpacing: .3,
@@ -160,7 +160,7 @@ class _ExerciseLibraryState extends State<ExerciseLibrary> {
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        exercise.targetMuscle,
+                        "Foco: " + exercise.targetMuscle,
                         style: const TextStyle(
                           fontSize: 13,
                           letterSpacing: .3,

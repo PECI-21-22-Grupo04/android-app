@@ -2,10 +2,10 @@
 import 'package:hive/hive.dart';
 
 // Generate Hive Model Adapter
-part 'exercise.g.dart';
+part 'free_exercise.g.dart';
 
 @HiveType(typeId: 3)
-class Exercise extends HiveObject {
+class FreeExercise extends HiveObject {
   @HiveField(0)
   final String exerciseID;
 
@@ -36,10 +36,10 @@ class Exercise extends HiveObject {
   @HiveField(9)
   final String firebaseRef;
 
-  @HiveField(11)
+  @HiveField(10)
   final String creatorID;
 
-  Exercise({
+  FreeExercise({
     required this.exerciseID,
     required this.name,
     required this.forPathology,
@@ -53,18 +53,19 @@ class Exercise extends HiveObject {
     required this.creatorID,
   });
 
-  factory Exercise.fromJson(Map<String, dynamic> parsedJson) {
-    return Exercise(
-        exerciseID: parsedJson["exerciseID"].toString(),
-        name: parsedJson["eName"],
-        forPathology: parsedJson["forPathology"],
-        difficulty: parsedJson["difficulty"],
-        description: parsedJson["eDescription"],
-        targetMuscle: parsedJson["targetMuscle"],
-        thumbnailPath: parsedJson["thumbnailPath"],
-        videoPath: parsedJson["videoPath"],
-        isPublic: parsedJson["isPublic"]["data"][0].toString(),
-        firebaseRef: parsedJson["firebaseRef"],
-        creatorID: parsedJson["creatorID"].toString());
+  factory FreeExercise.fromJson(Map<String, dynamic> parsedJson) {
+    return FreeExercise(
+      exerciseID: parsedJson["exerciseID"].toString(),
+      name: parsedJson["eName"],
+      forPathology: parsedJson["forPathology"],
+      difficulty: parsedJson["difficulty"],
+      description: parsedJson["eDescription"],
+      targetMuscle: parsedJson["targetMuscle"],
+      thumbnailPath: parsedJson["thumbnailPath"],
+      videoPath: parsedJson["videoPath"],
+      isPublic: parsedJson["isPublic"]["data"][0].toString(),
+      firebaseRef: parsedJson["firebaseRef"],
+      creatorID: parsedJson["creatorID"].toString(),
+    );
   }
 }

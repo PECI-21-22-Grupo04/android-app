@@ -1,22 +1,22 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'exercise.dart';
+part of 'free_exercise.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class ExerciseAdapter extends TypeAdapter<Exercise> {
+class FreeExerciseAdapter extends TypeAdapter<FreeExercise> {
   @override
   final int typeId = 3;
 
   @override
-  Exercise read(BinaryReader reader) {
+  FreeExercise read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Exercise(
+    return FreeExercise(
       exerciseID: fields[0] as String,
       name: fields[1] as String,
       forPathology: fields[2] as String,
@@ -27,12 +27,12 @@ class ExerciseAdapter extends TypeAdapter<Exercise> {
       videoPath: fields[7] as String,
       isPublic: fields[8] as String,
       firebaseRef: fields[9] as String,
-      creatorID: fields[11] as String,
+      creatorID: fields[10] as String,
     );
   }
 
   @override
-  void write(BinaryWriter writer, Exercise obj) {
+  void write(BinaryWriter writer, FreeExercise obj) {
     writer
       ..writeByte(11)
       ..writeByte(0)
@@ -55,7 +55,7 @@ class ExerciseAdapter extends TypeAdapter<Exercise> {
       ..write(obj.isPublic)
       ..writeByte(9)
       ..write(obj.firebaseRef)
-      ..writeByte(11)
+      ..writeByte(10)
       ..write(obj.creatorID);
   }
 
@@ -65,7 +65,7 @@ class ExerciseAdapter extends TypeAdapter<Exercise> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ExerciseAdapter &&
+      other is FreeExerciseAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

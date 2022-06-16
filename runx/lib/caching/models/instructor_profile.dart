@@ -79,20 +79,21 @@ class InstructorProfile extends HiveObject {
     }
 
     return InstructorProfile(
-        email: parsedJson["mail"],
-        firstName: parsedJson["firstName"],
-        lastName: parsedJson["lastName"],
-        birthdate: parsedJson["birthDate"].toString().split("T")[0],
-        sex: parsedJson["sex"],
-        country: parsedJson["country"],
-        registerDate: parsedJson["registerDate"].toString().split("T")[0],
-        maxClients: parsedJson["maxClients"].toString(),
-        currentClients: currC,
-        averageRating: avgR,
-        reviews: [],
-        aboutMe: parsedJson["aboutMe"],
-        imagePath: parsedJson["imagePath"],
-        firebaseID: parsedJson["firebaseID"]);
+      email: parsedJson["mail"],
+      firstName: parsedJson["firstName"],
+      lastName: parsedJson["lastName"],
+      birthdate: parsedJson["birthDate"].toString().split("T")[0],
+      sex: parsedJson["sex"],
+      country: parsedJson["country"],
+      registerDate: parsedJson["registerDate"].toString().split("T")[0],
+      maxClients: parsedJson["maxClients"].toString(),
+      currentClients: currC,
+      averageRating: avgR,
+      reviews: [],
+      aboutMe: parsedJson["aboutMe"],
+      imagePath: parsedJson["imagePath"],
+      firebaseID: parsedJson["firebaseID"],
+    );
   }
 
   String getEmail() {

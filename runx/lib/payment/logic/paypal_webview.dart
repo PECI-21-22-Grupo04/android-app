@@ -99,70 +99,6 @@ class PaypalPaymentState extends State<PaypalPayment> {
     });
   }
 
-  Map<String, dynamic> getOrderParams() {
-    List items = [
-      {
-        "name": widget.pModality.toString() + " Plan",
-        "quantity": 1,
-        "price": widget.pAmount.toString(),
-        "currency": defaultCurrency["currency"]
-      }
-    ];
-
-    // Checkout invoice details in format as requested by Paypal
-    String totalAmount = widget.pAmount.toString();
-    String subTotalAmount = widget.pAmount.toString();
-    String shippingCost = "0";
-    int shippingDiscountCost = 0;
-    String userFirstName = "";
-    String userLastName = "";
-    String addressCity = "";
-    String addressStreet = "";
-    String addressZipCode = "";
-    String addressCountry = "";
-    String addressState = "";
-    String addressPhoneNumber = "";
-
-    Map<String, dynamic> temp = {
-      "intent": "sale",
-      "payer": {"payment_method": "paypal"},
-      "transactions": [
-        {
-          "amount": {
-            "total": totalAmount,
-            "currency": defaultCurrency["currency"],
-            "details": {
-              "subtotal": subTotalAmount,
-              "shipping": shippingCost,
-              "shipping_discount": ((-1.0) * shippingDiscountCost).toString()
-            }
-          },
-          "description": "Purchase of a " + widget.pModality + " plan in RunX",
-          "payment_options": {
-            "allowed_payment_method": "INSTANT_FUNDING_SOURCE"
-          },
-          "item_list": {
-            "items": items,
-            if (isEnableShipping && isEnableAddress)
-              "shipping_address": {
-                "recipient_name": userFirstName + " " + userLastName,
-                "line1": addressStreet,
-                "line2": "",
-                "city": addressCity,
-                "country_code": addressCountry,
-                "postal_code": addressZipCode,
-                "phone": addressPhoneNumber,
-                "state": addressState
-              },
-          }
-        }
-      ],
-      "note_to_payer": "Contact us for any questions on your order.",
-      "redirect_urls": {"return_url": returnURL, "cancel_url": cancelURL}
-    };
-    return temp;
-  }
-
   @override
   Widget build(BuildContext context) {
     if (checkoutUrl != "") {
@@ -244,12 +180,76 @@ class PaypalPaymentState extends State<PaypalPayment> {
                         child: CircularProgressIndicator(),
                       ),
                     ),
-                    Center(child: Text("A processar")),
+                    Center(child: Text("A conectar a Paypal.com")),
                   ],
                 ),
               ),
             ],
           ));
     }
+  }
+
+  Map<String, dynamic> getOrderParams() {
+    List items = [
+      {
+        "name": widget.pModality.toString() + " Plan",
+        "quantity": 1,
+        "price": widget.pAmount.toString(),
+        "currency": defaultCurrency["currency"]
+      }
+    ];
+
+    // Checkout invoice details in format as requested by Paypal
+    String totalAmount = widget.pAmount.toString();
+    String subTotalAmount = widget.pAmount.toString();
+    String shippingCost = "0";
+    int shippingDiscountCost = 0;
+    String userFirstName = "";
+    String userLastName = "";
+    String addressCity = "";
+    String addressStreet = "";
+    String addressZipCode = "";
+    String addressCountry = "";
+    String addressState = "";
+    String addressPhoneNumber = "";
+
+    Map<String, dynamic> temp = {
+      "intent": "sale",
+      "payer": {"payment_method": "paypal"},
+      "transactions": [
+        {
+          "amount": {
+            "total": totalAmount,
+            "currency": defaultCurrency["currency"],
+            "details": {
+              "subtotal": subTotalAmount,
+              "shipping": shippingCost,
+              "shipping_discount": ((-1.0) * shippingDiscountCost).toString()
+            }
+          },
+          "description": "Purchase of a " + widget.pModality + " plan in RunX",
+          "payment_options": {
+            "allowed_payment_method": "INSTANT_FUNDING_SOURCE"
+          },
+          "item_list": {
+            "items": items,
+            if (isEnableShipping && isEnableAddress)
+              "shipping_address": {
+                "recipient_name": userFirstName + " " + userLastName,
+                "line1": addressStreet,
+                "line2": "",
+                "city": addressCity,
+                "country_code": addressCountry,
+                "postal_code": addressZipCode,
+                "phone": addressPhoneNumber,
+                "state": addressState
+              },
+          }
+        }
+      ],
+      "note_to_payer": "Contact us for any questions on your order.",
+      "redirect_urls": {"return_url": returnURL, "cancel_url": cancelURL}
+    };
+    return temp;
   }
 }

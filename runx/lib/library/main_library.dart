@@ -1,22 +1,25 @@
 // System Packages
 import 'dart:convert';
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 // Models
-import 'package:runx/caching/models/exercise.dart';
+import 'package:runx/caching/models/free_exercise.dart';
 import 'package:runx/caching/models/plan.dart';
+import 'package:runx/caching/models/plan_exercise.dart';
 
 // Logic
 import 'package:runx/preferences/colors.dart';
 import 'package:runx/preferences/theme_model.dart';
 import 'package:runx/api.dart';
 import 'package:runx/caching/hive_helper.dart';
+import 'package:runx/caching/sharedpref_helper.dart';
 
 // Screens
-import 'package:runx/library/screens/plans_library.dart';
-import 'package:runx/library/screens/exercise_library.dart';
+import 'package:runx/library/exercise_library.dart';
+import 'package:runx/library/plans_library.dart';
 
 class Library extends StatefulWidget {
   const Library({Key? key}) : super(key: key);
@@ -26,6 +29,16 @@ class Library extends StatefulWidget {
 }
 
 class _LibraryState extends State<Library> {
+  String _accountState = "";
+
+  @override
+  void initState() {
+    getAccountStatus().then((state) => setState(() {
+          _accountState = state!;
+        }));
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer(
@@ -43,15 +56,17 @@ class _LibraryState extends State<Library> {
                       onTap: () {
                         APICaller().selectDefaultExercises().then(
                           (exer) async {
-                            if (json.decode(exer)["code"] == 0 &&
+                            if (exer != "ERROR" &&
+                                json.decode(exer)["code"] == 0 &&
                                 json.decode(exer)["data"] != null) {
-                              List<Exercise> itemsList = List<Exercise>.from(
+                              List<FreeExercise> itemsList =
+                                  List<FreeExercise>.from(
                                 json
                                     .decode(exer)["data"][0]
-                                    .map((i) => Exercise.fromJson(i)),
+                                    .map((i) => FreeExercise.fromJson(i)),
                               );
                               // 3º - Remove old cached items
-                              for (Exercise cachedIp in await HiveHelper()
+                              for (FreeExercise cachedIp in await HiveHelper()
                                   .getAll("FreeExercises")) {
                                 if (!itemsList
                                     .map((item) => item.exerciseID)
@@ -61,7 +76,7 @@ class _LibraryState extends State<Library> {
                                 }
                               }
                               // 4º Cache the new database items
-                              for (Exercise ip in List.from(itemsList)) {
+                              for (FreeExercise ip in List.from(itemsList)) {
                                 HiveHelper().addToBox(
                                     ip, "FreeExercises", ip.exerciseID);
                               }
@@ -111,7 +126,8 @@ class _LibraryState extends State<Library> {
                       onTap: () {
                         APICaller().selectDefaultPrograms().then(
                           (prog) async {
-                            if (json.decode(prog)["code"] == 0 &&
+                            if (prog != "ERROR" &&
+                                json.decode(prog)["code"] == 0 &&
                                 json.decode(prog)["data"] != null) {
                               List<Plan> itemsList = List<Plan>.from(
                                 json
@@ -141,7 +157,8 @@ class _LibraryState extends State<Library> {
                                 email: FirebaseAuth.instance.currentUser!.email)
                             .then(
                           (premiumProg) async {
-                            if (json.decode(premiumProg)["code"] == 0 &&
+                            if (premiumProg != "ERROR" &&
+                                json.decode(premiumProg)["code"] == 0 &&
                                 json.decode(premiumProg)["data"] != null) {
                               List<Plan> itemsList = List<Plan>.from(
                                 json
@@ -149,15 +166,8 @@ class _LibraryState extends State<Library> {
                                     .map((i) => Plan.fromJson(i)),
                               );
                               // 3º - Remove old cached items
-                              for (Plan cachedIp in await HiveHelper()
-                                  .getAll("PremiumPlans")) {
-                                if (!itemsList
-                                    .map((item) => item.planID)
-                                    .contains(cachedIp.planID)) {
-                                  HiveHelper().removeFromBox(
-                                      "PremiumPlans", cachedIp.planID);
-                                }
-                              }
+                              await HiveHelper().clearBox("PremiumPlans");
+
                               // 4º Cache the new database items
                               for (Plan ip in List.from(itemsList)) {
                                 HiveHelper()
@@ -166,10 +176,34 @@ class _LibraryState extends State<Library> {
                             }
                           },
                         );
+                        APICaller().selectAllProgramExercises().then(
+                          (programExercises) async {
+                            if (programExercises != "ERROR" &&
+                                json.decode(programExercises)["code"] == 0 &&
+                                json.decode(programExercises)["data"] != null) {
+                              List<PlanExercise> itemsList =
+                                  List<PlanExercise>.from(
+                                json
+                                    .decode(programExercises)["data"][0]
+                                    .map((i) => PlanExercise.fromJson(i)),
+                              );
 
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (_) => const PlanLibrary(),
-                        ));
+                              // 3º - Remove old cached items
+                              await HiveHelper().clearBox("PlanExercises");
+
+                              // 4º Cache the new database items
+                              for (PlanExercise ip in List.from(itemsList)) {
+                                HiveHelper().addToBox(ip, "PlanExercises");
+                              }
+                            }
+                          },
+                        );
+                        sleep(const Duration(milliseconds: 10));
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => PlanLibrary(_accountState),
+                          ),
+                        );
                       },
                       child: Container(
                         width: double.infinity,
@@ -216,4 +250,8 @@ class _LibraryState extends State<Library> {
       },
     );
   }
+}
+
+Future<String?> getAccountStatus() async {
+  return await SharedPreferencesHelper().getStringValuesSF("accountStatus");
 }

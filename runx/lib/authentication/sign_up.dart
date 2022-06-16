@@ -7,7 +7,7 @@ import 'package:runx/api.dart';
 import 'package:runx/authentication/logic/firebase_services.dart';
 
 // Screens
-import 'package:runx/authentication/screens/login.dart';
+import 'package:runx/authentication/login.dart';
 import 'package:runx/authentication/screens/legal_info.dart';
 
 class Signup extends StatelessWidget {

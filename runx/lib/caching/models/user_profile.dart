@@ -58,18 +58,19 @@ class UserProfile extends HiveObject {
 
   factory UserProfile.fromJson(Map<String, dynamic> parsedJson) {
     return UserProfile(
-        email: parsedJson["mailC"],
-        firstName: parsedJson["firstNameC"],
-        lastName: parsedJson["lastNameC"],
-        birthdate: parsedJson["birthdateC"].toString().split("T")[0],
-        sex: parsedJson["sexC"],
-        street: parsedJson["streetC"],
-        postCode: parsedJson["postCodeC"],
-        city: parsedJson["cityC"],
-        country: parsedJson["countryC"],
-        registerDate: parsedJson["registerDateC"],
-        pathologies: parsedJson["pathologiesC"],
-        imagePath: parsedJson["imagePathC"]);
+      email: parsedJson["mailC"],
+      firstName: parsedJson["firstNameC"],
+      lastName: parsedJson["lastNameC"],
+      birthdate: parsedJson["birthdateC"].toString().split("T")[0],
+      sex: parsedJson["sexC"],
+      street: parsedJson["streetC"],
+      postCode: parsedJson["postCodeC"],
+      city: parsedJson["cityC"],
+      country: parsedJson["countryC"],
+      registerDate: parsedJson["registerDateC"],
+      pathologies: parsedJson["pathologiesC"],
+      imagePath: parsedJson["imagePathC"],
+    );
   }
 
   String getEmail() {

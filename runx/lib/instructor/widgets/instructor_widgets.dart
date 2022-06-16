@@ -164,13 +164,13 @@ Widget buildButtons(
                           FirebaseAuth.instance.currentUser!.email!,
                           instructorEmail)
                       .then((value) {
-                      if (jsonDecode(value)["code"] == 0) {
+                      if (value != "ERROR" && jsonDecode(value)["code"] == 0) {
                         alertDialog(context);
                       } else {
                         ScaffoldMessenger.of(context)
                             .showSnackBar(const SnackBar(
                           content: Text(
-                            "Ocorreu um error. Verifique a sua conexão ou tente mais tarde",
+                            "Ocorreu um erro. \nVerifique a sua conexão ou tente mais tarde",
                             style: TextStyle(fontSize: 16),
                           ),
                         ));
@@ -463,7 +463,7 @@ Future alertDialog(BuildContext context) {
           textAlign: TextAlign.center,
         ),
         content: const Text(
-            "Está oficialmente associado a um instructor! \nPoderá interagir com este na sua página de instrutor"),
+            "Está oficialmente associado a um instrutor! \nPoderá interagir com este na sua página de instrutores"),
         actions: <Widget>[
           InkWell(
             child: Container(

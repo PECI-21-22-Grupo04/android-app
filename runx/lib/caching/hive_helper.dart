@@ -1,12 +1,13 @@
 // System Packages
 import 'package:hive/hive.dart';
-import 'package:runx/caching/models/plan.dart';
 
 // Models
 import 'package:runx/caching/models/user_profile.dart';
 import 'package:runx/caching/models/instructor_profile.dart';
 import 'package:runx/caching/models/payment.dart';
-import 'package:runx/caching/models/exercise.dart';
+import 'package:runx/caching/models/free_exercise.dart';
+import 'package:runx/caching/models/plan.dart';
+import 'package:runx/caching/models/plan_exercise.dart';
 
 class HiveHelper {
   // Register hive adapters
@@ -14,8 +15,9 @@ class HiveHelper {
     Hive.registerAdapter(UserProfileAdapter());
     Hive.registerAdapter(InstructorProfileAdapter());
     Hive.registerAdapter(PaymentAdapter());
-    Hive.registerAdapter(ExerciseAdapter());
+    Hive.registerAdapter(FreeExerciseAdapter());
     Hive.registerAdapter(PlanAdapter());
+    Hive.registerAdapter(PlanExerciseAdapter());
   }
 
   // Open boxes
@@ -26,6 +28,7 @@ class HiveHelper {
     await Hive.openBox("FreeExercises");
     await Hive.openBox("FreePlans");
     await Hive.openBox("PremiumPlans");
+    await Hive.openBox("PlanExercises");
   }
 
   // Add to box without key
@@ -48,6 +51,12 @@ class HiveHelper {
   Future<void> removeFromBox<T>(String boxName, String itemKey) async {
     final openBox = await Hive.openBox(boxName);
     await openBox.delete(itemKey);
+  }
+
+  // Clear Box
+  Future<void> clearBox(String boxName) async {
+    final box = await Hive.openBox(boxName);
+    await box.clear();
   }
 
   // Get all items in box

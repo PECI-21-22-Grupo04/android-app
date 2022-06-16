@@ -6,7 +6,8 @@ import 'package:runx/library/widgets/free_plan.dart';
 import 'package:runx/library/widgets/premium_plan.dart';
 
 class PlanLibrary extends StatefulWidget {
-  const PlanLibrary({Key? key}) : super(key: key);
+  final String accountState;
+  const PlanLibrary(this.accountState, {Key? key}) : super(key: key);
 
   @override
   State<PlanLibrary> createState() => _PlanLibraryState();
@@ -35,7 +36,7 @@ class _PlanLibraryState extends State<PlanLibrary> {
           body: TabBarView(
             children: [
               buildFreePlans(context),
-              buildPremiumPlans(context),
+              buildPremiumPlans(context, widget.accountState),
             ],
           ),
         ),

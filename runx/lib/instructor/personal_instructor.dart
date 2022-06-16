@@ -164,8 +164,7 @@ Future alertDialog(BuildContext context, String instEmail, String clientEmail) {
                         rating: _rating,
                         review: "")
                     .then((result) {
-                  if (result != "ERROR" && json.decode(result)["code"] == 0 ||
-                      json.decode(result)["code"] == 2) {
+                  if (result != "ERROR" && json.decode(result)["code"] != 1) {
                     Navigator.pop(context);
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       content: Text(
@@ -173,9 +172,10 @@ Future alertDialog(BuildContext context, String instEmail, String clientEmail) {
                           style: TextStyle(fontSize: 16)),
                     ));
                   } else {
+                    Navigator.pop(context);
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       content: Text(
-                          "Ocorreu um erro, verifique a sua conexão ou tente mais tarde",
+                          "Ocorreu um erro \nVerifique a sua conexão ou tente mais tarde",
                           style: TextStyle(fontSize: 16)),
                     ));
                   }
