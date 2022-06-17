@@ -9,9 +9,12 @@ The application connects to our API using GET/POST requests to obtain any necess
 
 ### Information Storage
 Credentials are stored in Firebase Authentication system. <br>
-Videos and Images are stored in Firestore Database system. <br>
+Videos and Images are stored in Fireabse Storage system. <br>
 Remaining data is stored in a remote MySQL database. <br>
 Caching on mobile uses shared preferences for key-value data and Hive package (NoSQL database) for more complex objects 
 
 ### Client Payment
 Payments are made using Paypal 
+
+### Client-Instructor Chat
+Chat is implemented using Firestore Database and allows for real-time exchange of messages and images
