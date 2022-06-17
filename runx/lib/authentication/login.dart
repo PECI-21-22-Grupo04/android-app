@@ -24,12 +24,12 @@ class Login extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(8.0),
         children: <Widget>[
-          const SizedBox(height: 20),
+          const SizedBox(height: 50),
           Column(
             children: [
               Image.asset(
                 'assets/images/logo.png',
-                height: 250,
+                height: 200,
               ),
               const SizedBox(height: 20),
               const Text(

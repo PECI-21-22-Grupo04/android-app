@@ -1,4 +1,6 @@
 // System Packages
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,11 +10,13 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 // Logic
 import 'package:runx/caching/hive_helper.dart';
+import 'package:runx/preferences/theme_data.dart';
+import 'package:runx/preferences/theme_model.dart';
+import 'package:runx/chat/providers/auth_provider.dart';
+import 'package:runx/chat/providers/chat_provider.dart';
 
 // Screens
 import 'package:runx/authentication/login.dart';
-import 'package:runx/preferences/theme_data.dart';
-import 'package:runx/preferences/theme_model.dart';
 import 'package:runx/presentation/bottom_nav.dart';
 
 Future<void> main() async {
@@ -21,11 +25,15 @@ Future<void> main() async {
   await Hive.initFlutter();
   HiveHelper().registerAdapters();
   await HiveHelper().openBoxes();
-  runApp(const MyApp());
+
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  final FirebaseStorage firebaseStorage = FirebaseStorage.instance;
+
+  MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,15 +41,28 @@ class MyApp extends StatelessWidget {
       create: (_) => ThemeModel(),
       child: Consumer<ThemeModel>(
           builder: (context, ThemeModel themeNotifier, child) {
-        return MaterialApp(
-          localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
-          supportedLocales: const [Locale('pt'), Locale('PT')],
-          theme: themeNotifier.isDark
-              ? CustomThemeDark.darkTheme
-              : CustomThemeLight.lightTheme,
-          debugShowCheckedModeBanner: false,
-          home: const Initial(title: 'RunX'),
-        );
+        return MultiProvider(
+            providers: [
+              ChangeNotifierProvider<AuthProvider>(
+                  create: (_) => AuthProvider(
+                      firebaseFirestore: firebaseFirestore,
+                      firebaseAuth: FirebaseAuth.instance)),
+              Provider<ChatProvider>(
+                  create: (_) => ChatProvider(
+                      firebaseStorage: firebaseStorage,
+                      firebaseFirestore: firebaseFirestore))
+            ],
+            child: MaterialApp(
+              localizationsDelegates: const [
+                GlobalMaterialLocalizations.delegate
+              ],
+              supportedLocales: const [Locale('pt'), Locale('PT')],
+              theme: themeNotifier.isDark
+                  ? CustomThemeDark.darkTheme
+                  : CustomThemeLight.lightTheme,
+              debugShowCheckedModeBanner: false,
+              home: const Initial(title: 'RunX'),
+            ));
       }),
     );
   }

@@ -11,12 +11,12 @@ import 'package:runx/caching/models/instructor_profile.dart';
 // Logic
 import 'package:runx/api.dart';
 import 'package:runx/caching/sharedpref_helper.dart';
+import 'package:runx/chat/chat.dart';
 
 // Widgets
 import 'package:runx/instructor/widgets/instructor_widgets.dart';
 
 // Screens
-import 'package:runx/chat/chat_page.dart';
 import 'package:runx/presentation/bottom_nav.dart';
 
 class PersonalInstructor extends StatefulWidget {
@@ -87,7 +87,12 @@ class _PersonalInstructorState extends State<PersonalInstructor> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ChatPage(instructor),
+                                builder: (context) => ChatPage(
+                                  peerId: instructor.firebaseID,
+                                  peerNickname: instructor.getFullName(),
+                                  peerAvatar: instructor.imagePath,
+                                  userAvatar: '',
+                                ),
                               ),
                             );
                           },
@@ -198,6 +203,7 @@ Future alertDialog(BuildContext context, String instEmail, String clientEmail) {
                   if (result != "ERROR" && json.decode(result)["code"] != 1) {
                     Navigator.pop(context);
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      duration: Duration(seconds: 2),
                       content: Text(
                           "A sua review foi enviada, obrigado pelo feedback!",
                           style: TextStyle(fontSize: 16)),

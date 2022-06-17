@@ -87,7 +87,7 @@ final List faqs = [
   {
     "quote":
         "Na página de login existe um link que o levará para a página de recuperação."
-            "\nNesta, introduza o email da sua conta e confirme, devendo depois receber na sua sua caixa de correio um email com link para a alteração da password.",
+            "\nNesta, introduza o email da sua conta e confirme, devendo depois receber na sua caixa de correio um email com link para a alteração da password.",
     "author": "Perdi/Quero alterar a password"
   },
   {
@@ -98,6 +98,6 @@ final List faqs = [
             "\n3-Encerre e volte a iniciar a aplicação"
             "\n4-Saia e volte a entrar na sua conta"
             "\n5-Contacte o apoio técnico",
-    "author": "Ocorreu um erro, e agora?"
+    "author": "Ocorreu um erro?"
   },
 ];

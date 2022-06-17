@@ -19,7 +19,7 @@ class Signup extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: <Widget>[
-          const SizedBox(height: 20),
+          const SizedBox(height: 40),
           Column(
             children: [
               Image.asset(
