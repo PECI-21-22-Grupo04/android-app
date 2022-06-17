@@ -19,6 +19,7 @@ import 'package:runx/caching/hive_helper.dart';
 import 'package:runx/authentication/login.dart';
 import 'package:runx/settings/settings.dart';
 import 'package:runx/payment/payment_history.dart';
+import 'package:runx/faq/faq.dart';
 
 class SideDrawer extends StatelessWidget {
   const SideDrawer({Key? key}) : super(key: key);
@@ -126,29 +127,37 @@ class SideDrawer extends StatelessWidget {
                 ),
               ),
               Align(
-                  alignment: FractionalOffset.bottomCenter,
-                  child: Column(
-                    children: <Widget>[
-                      // Settings Button
-                      const Divider(),
-                      ListTile(
-                        leading: const Icon(Icons.settings_rounded),
-                        title: const Text('Definições'),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Settings()),
-                          );
-                        },
-                      ),
-                      // Help and Feedback Button
-                      ListTile(
-                          leading: const Icon(Icons.help_rounded),
-                          title: const Text('Ajuda e Feedback'),
-                          onTap: () {/* IR PARA PAGINA DE AJUDA */}),
-                    ],
-                  ))
+                alignment: FractionalOffset.bottomCenter,
+                child: Column(
+                  children: <Widget>[
+                    // Settings Button
+                    const Divider(),
+                    ListTile(
+                      leading: const Icon(Icons.settings_rounded),
+                      title: const Text('Definições'),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const Settings(),
+                          ),
+                        );
+                      },
+                    ),
+                    // Help and Feedback Button
+                    ListTile(
+                      leading: const Icon(Icons.help_rounded),
+                      title: const Text('Ajuda e Feedback'),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const Faq()),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
         ),

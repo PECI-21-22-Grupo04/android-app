@@ -19,7 +19,7 @@ import 'package:runx/instructor/available_instructors.dart';
 import 'package:runx/homepage/homepage.dart';
 import 'package:runx/profile/profile.dart';
 import 'package:runx/library/main_library.dart';
-import 'package:runx/device/devices.dart';
+import 'package:runx/devices/devices.dart';
 
 class BottomNav extends StatefulWidget {
   const BottomNav({Key? key}) : super(key: key);

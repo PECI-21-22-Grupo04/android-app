@@ -22,6 +22,9 @@ class Devices extends StatefulWidget {
 
 class _DevicesState extends State<Devices> {
   String _accountState = "";
+  bool isSwitchedFitbit = false;
+  bool isSwitchedStrava = false;
+  bool isSwitchedGoogle = false;
 
   @override
   void initState() {
@@ -29,6 +32,42 @@ class _DevicesState extends State<Devices> {
           _accountState = result!;
         }));
     super.initState();
+  }
+
+  void toggleSwitchFitbit(bool value) {
+    if (isSwitchedFitbit == false) {
+      setState(() {
+        isSwitchedFitbit = true;
+      });
+    } else {
+      setState(() {
+        isSwitchedFitbit = false;
+      });
+    }
+  }
+
+  void toggleSwitchStrava(bool value) {
+    if (isSwitchedStrava == false) {
+      setState(() {
+        isSwitchedStrava = true;
+      });
+    } else {
+      setState(() {
+        isSwitchedStrava = false;
+      });
+    }
+  }
+
+  void toggleSwitchGoogle(bool value) {
+    if (isSwitchedGoogle == false) {
+      setState(() {
+        isSwitchedGoogle = true;
+      });
+    } else {
+      setState(() {
+        isSwitchedGoogle = false;
+      });
+    }
   }
 
   @override
@@ -95,135 +134,79 @@ class _DevicesState extends State<Devices> {
         ),
       );
     } else {
-      return SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: <Widget>[
-            const SizedBox(height: 50.0),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        height: 190,
-                        color: Colors.blue,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const <Widget>[
-                            ListTile(
-                              title: Text(
-                                "placeholder",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              trailing: Icon(
-                                Icons.directions_run_rounded,
-                                color: Colors.white,
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 16.0),
-                              child: Text(
-                                'Passos',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 10.0),
-                      Container(
-                        height: 120,
-                        color: Colors.green,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const <Widget>[
-                            ListTile(
-                              title: Text(
-                                "placeholder",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              trailing: Icon(
-                                Icons.monitor_heart_rounded,
-                                color: Colors.white,
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 16.0),
-                              child: Text(
-                                'Batimento cardíaco',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
+      return Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Center(
+                child: Text(
+                  "Dispositivos Aceites",
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                ),
+              ),
+              const SizedBox(height: 50),
+              Container(
+                padding: const EdgeInsets.only(left: 30),
+                child: ListTile(
+                  leading: Image.asset("assets/images/fitbit.png"),
+                  title: const Text(
+                    "Conectar Fitbit",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  trailing: Switch(
+                    onChanged: toggleSwitchFitbit,
+                    value: isSwitchedFitbit,
+                    activeColor: const Color.fromARGB(255, 224, 223, 223),
+                    activeTrackColor: Colors.green,
+                    inactiveThumbColor:
+                        const Color.fromARGB(255, 224, 223, 223),
+                    inactiveTrackColor: Colors.grey,
                   ),
                 ),
-                const SizedBox(width: 10.0),
-                Expanded(
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        height: 120,
-                        color: Colors.red,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const <Widget>[
-                            ListTile(
-                              title: Text(
-                                "placeholder",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              trailing: Icon(
-                                Icons.local_fire_department_rounded,
-                                color: Colors.white,
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 16.0),
-                              child: Text(
-                                'Calorias',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 10.0),
-                      Container(
-                        height: 190,
-                        color: Colors.orange,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const <Widget>[
-                            ListTile(
-                              title: Text(
-                                "placeholder",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              trailing: Icon(
-                                Icons.timer_rounded,
-                                color: Colors.white,
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 16.0),
-                              child: Text(
-                                'Tempo total',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
+              ),
+              const SizedBox(height: 50),
+              Container(
+                padding: const EdgeInsets.only(left: 30),
+                child: ListTile(
+                  leading: Image.asset("assets/images/strava.png"),
+                  title: const Text(
+                    "Conectar Strava",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                )
-              ],
-            )
-          ],
+                  trailing: Switch(
+                    onChanged: toggleSwitchStrava,
+                    value: isSwitchedStrava,
+                    activeColor: const Color.fromARGB(255, 224, 223, 223),
+                    activeTrackColor: Colors.green,
+                    inactiveThumbColor:
+                        const Color.fromARGB(255, 224, 223, 223),
+                    inactiveTrackColor: Colors.grey,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 50),
+              Container(
+                padding: const EdgeInsets.only(left: 30),
+                child: ListTile(
+                  leading: Image.asset("assets/images/googleFit.png"),
+                  title: const Text(
+                    "Conectar Google Fit",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  trailing: Switch(
+                    onChanged: toggleSwitchGoogle,
+                    value: isSwitchedGoogle,
+                    activeColor: const Color.fromARGB(255, 224, 223, 223),
+                    activeTrackColor: Colors.green,
+                    inactiveThumbColor:
+                        const Color.fromARGB(255, 224, 223, 223),
+                    inactiveTrackColor: Colors.grey,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       );
     }

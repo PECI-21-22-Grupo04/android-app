@@ -1,18 +1,23 @@
 // System Packages
 import 'dart:async';
+import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 // Models
 import 'package:runx/caching/models/plan.dart';
 import 'package:runx/caching/models/plan_exercise.dart';
-import 'package:runx/library/screens/plan_exercise_details.dart';
 
 // Logic
 import 'package:runx/preferences/colors.dart';
+import 'package:runx/api.dart';
 
 // Widgets
 import 'package:runx/library/widgets/timer_buttons.dart';
+
+// Screens
+import 'package:runx/library/screens/plan_exercise_details.dart';
 
 class PlanDetails extends StatefulWidget {
   final Plan plan;
@@ -339,6 +344,32 @@ class _PlanDetailsState extends State<PlanDetails> {
             color: Colors.white,
             backgroundColor: Colors.green,
             onClicked: () {
+              APICaller()
+                  .finishWorkout(
+                      email: FirebaseAuth.instance.currentUser!.email,
+                      progID: widget.plan.planID,
+                      timeTaken: duration.toString())
+                  .then((result) {
+                if (result != "ERROR" && json.decode(result)["code"] == 0) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                        "Completou o treino! \nOs dados foram guardados.",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                        "Não conseguimos guardar os dados desta sessão.\nVerifique a sua conexão ou tente mais tarde.",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  );
+                }
+              });
               stopTimer();
             },
           ),
@@ -386,30 +417,84 @@ class _PlanDetailsState extends State<PlanDetails> {
           context: context,
           builder: (context) => AlertDialog(
             title: const Text(
-              'Programa completado?',
+              'Prestes a sair',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            content: const Text(
-                'Deseja sair e marcar este programa como completado?'),
+            content: const Text('Deseja sair antes de acabar o seu treino?'),
             actions: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  SizedBox(
-                    width: 100,
-                    child: ElevatedButton(
-                      onPressed: () => Navigator.of(context).pop(false),
-                      child: const Text('Não', style: TextStyle(fontSize: 20)),
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 300,
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.red)),
+                        onPressed: () => Navigator.of(context).pop(false),
+                        child:
+                            const Text('Não', style: TextStyle(fontSize: 20)),
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 100,
-                    child: ElevatedButton(
-                      onPressed: () => Navigator.of(context).pop(true),
-                      child: const Text('Sim', style: TextStyle(fontSize: 20)),
+                    SizedBox(
+                      width: 300,
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.grey)),
+                        onPressed: () {
+                          Navigator.of(context).pop(true);
+                        },
+                        child: const Text('Sair sem acabar',
+                            style: TextStyle(fontSize: 20)),
+                      ),
                     ),
-                  ),
-                ],
+                    SizedBox(
+                      width: 300,
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.green)),
+                        onPressed: () {
+                          APICaller()
+                              .finishWorkout(
+                                  email:
+                                      FirebaseAuth.instance.currentUser!.email,
+                                  progID: widget.plan.planID,
+                                  timeTaken: duration.toString())
+                              .then((result) {
+                            if (result != "ERROR" &&
+                                json.decode(result)["code"] == 0) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                    "Completou o treino! \nOs dados foram guardados.",
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                ),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                    "Não conseguimos guardar os dados desta sessão.\nVerifique a sua conexão ou tente mais tarde.",
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                ),
+                              );
+                            }
+                          });
+                          Navigator.of(context).pop(true);
+                        },
+                        child: const Text(
+                          'Acabar e sair',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

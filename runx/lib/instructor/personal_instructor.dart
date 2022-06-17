@@ -1,6 +1,5 @@
 // System Packages
 import 'dart:convert';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -11,12 +10,14 @@ import 'package:runx/caching/models/instructor_profile.dart';
 
 // Logic
 import 'package:runx/api.dart';
+import 'package:runx/caching/sharedpref_helper.dart';
 
 // Widgets
 import 'package:runx/instructor/widgets/instructor_widgets.dart';
 
 // Screens
 import 'package:runx/chat/chat_page.dart';
+import 'package:runx/presentation/bottom_nav.dart';
 
 class PersonalInstructor extends StatefulWidget {
   final String instEmail;
@@ -28,6 +29,16 @@ class PersonalInstructor extends StatefulWidget {
 }
 
 class _PersonalInstructorState extends State<PersonalInstructor> {
+  var _associatedSince = "";
+
+  @override
+  void initState() {
+    getAssociatedDate().then((value) => setState(() {
+          _associatedSince = value!;
+        }));
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) => Scaffold(
         body: ValueListenableBuilder<Box>(
@@ -103,6 +114,26 @@ class _PersonalInstructorState extends State<PersonalInstructor> {
                       alertDialog(context, instructor.getEmail(),
                           FirebaseAuth.instance.currentUser!.email!);
                     },
+                  ),
+                  Visibility(
+                    visible: (daysBetween(DateTime.parse(_associatedSince),
+                                DateTime.now())) >
+                            7
+                        ? true
+                        : false,
+                    child: ElevatedButton(
+                      child: const Text(
+                        "Desassociar de instrutor",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                      onPressed: () {
+                        confirmDialog(
+                            context, FirebaseAuth.instance.currentUser!.email!);
+                      },
+                    ),
                   )
                 ],
               ),
@@ -182,9 +213,94 @@ Future alertDialog(BuildContext context, String instEmail, String clientEmail) {
                 });
               },
             ),
-          )
+          ),
         ],
       );
     },
   );
+}
+
+Future<void> confirmDialog(BuildContext context, String clientEmail) {
+  return showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text(
+        'Desassociar de instrutor?',
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      content: const Text(
+          'Ao realizar esta ação perderá o contacto com o seu instrutor e terá de voltar a escolher um.\nDeseja continuar?'),
+      actions: <Widget>[
+        Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 300,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.red)),
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('Cancelar', style: TextStyle(fontSize: 20)),
+                ),
+              ),
+              SizedBox(
+                width: 300,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.green)),
+                  onPressed: () {
+                    APICaller()
+                        .removeInstructorAssociation(
+                            email: FirebaseAuth.instance.currentUser!.email!)
+                        .then((result) {
+                      if (result != "ERROR" &&
+                          json.decode(result)["code"] == 0) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const BottomNav()),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              "Associação removida com sucesso!",
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              "Ocorreu um erro ao remover a associação.\nVerifique a sua conexão ou tente mais tarde",
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ),
+                        );
+                      }
+                    });
+                  },
+                  child: const Text(
+                    'Confirmar',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Future<String?> getAssociatedDate() async {
+  return await SharedPreferencesHelper().getStringValuesSF("associatedDate");
+}
+
+int daysBetween(DateTime from, DateTime to) {
+  from = DateTime(from.year, from.month, from.day);
+  to = DateTime(to.year, to.month, to.day);
+  return (to.difference(from).inHours / 24).round();
 }

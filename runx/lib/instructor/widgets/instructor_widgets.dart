@@ -159,23 +159,10 @@ Widget buildButtons(
             onTap: () {
               (accountStatus == "free")
                   ? openAlertBox(context)
-                  : APICaller()
-                      .associateInstructor(
-                          FirebaseAuth.instance.currentUser!.email!,
-                          instructorEmail)
-                      .then((value) {
-                      if (value != "ERROR" && jsonDecode(value)["code"] == 0) {
-                        alertDialog(context);
-                      } else {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(const SnackBar(
-                          content: Text(
-                            "Ocorreu um erro. \nVerifique a sua conexão ou tente mais tarde",
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ));
-                      }
-                    });
+                  : confirmDialog(
+                      context,
+                      FirebaseAuth.instance.currentUser!.email!,
+                      instructorEmail);
             },
           ),
         ),
@@ -493,5 +480,73 @@ Future alertDialog(BuildContext context) {
         ],
       );
     },
+  );
+}
+
+Future<void> confirmDialog(
+    BuildContext context, String clientEmail, String instructorEmail) {
+  return showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text(
+        'Associar este instrutor?',
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      content: const Text(
+          'Ao realizar esta ação poderá ter contacto direto e pedir planos personalizados.\nTerá de esperar 7 dias se quiser trocar de instrutor'),
+      actions: <Widget>[
+        Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 300,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.red)),
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('Cancelar', style: TextStyle(fontSize: 20)),
+                ),
+              ),
+              SizedBox(
+                width: 300,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.green)),
+                  onPressed: () {
+                    APICaller()
+                        .associateInstructor(
+                            FirebaseAuth.instance.currentUser!.email!,
+                            instructorEmail)
+                        .then(
+                      (value) {
+                        if (value != "ERROR" &&
+                            jsonDecode(value)["code"] == 0) {
+                          alertDialog(context);
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                "Ocorreu um erro. \nVerifique a sua conexão ou tente mais tarde",
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                    );
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text(
+                    'Confirmar',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
   );
 }

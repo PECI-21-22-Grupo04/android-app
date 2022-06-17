@@ -8,7 +8,7 @@ import 'package:settings_ui/settings_ui.dart';
 import 'package:runx/preferences/theme_model.dart';
 
 // Screen
-import 'package:runx/settings/languagescreen.dart';
+import 'package:runx/settings/screens/languagescreen.dart';
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);

@@ -123,6 +123,9 @@ class APICaller {
     }
   }
 
+  ///**************** CLIENT ACTIONS *************///
+  /// API calls needed for client actions         ///
+  ///*********************************************///
   Future<String> addClientInfo(
       {String? email,
       String? height,
@@ -145,6 +148,34 @@ class APICaller {
           "pathologies": pathologies.toString(),
         }),
       );
+      if (response.ok) {
+        return response.body;
+      } else {
+        return "ERROR";
+      }
+    } on Exception {
+      return "ERROR";
+    }
+  }
+
+  Future<String> finishWorkout(
+      {String? email, String? progID, String? timeTaken}) async {
+    try {
+      final response = await http
+          .post(
+            Uri.parse(host + port + '/finishWorkout'),
+            headers: <String, String>{
+              'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            body: (<String, String>{
+              "email": email.toString(),
+              "progID": progID.toString(),
+              "timeTaken": timeTaken.toString(),
+              "caloriesBurnt": 0.toString(),
+              "heartRate": 0.toString(),
+            }),
+          )
+          .timeout(const Duration(milliseconds: 1200));
       if (response.ok) {
         return response.body;
       } else {
@@ -329,6 +360,37 @@ class APICaller {
     }
   }
 
+  Future<String> removeInstructorAssociation({String? email}) async {
+    try {
+      final response = await http
+          .post(
+            Uri.parse(host + port + '/removeInstructorAssociation'),
+            headers: <String, String>{
+              'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            body: (<String, String>{
+              "email": email.toString(),
+            }),
+          )
+          .timeout(const Duration(seconds: 2));
+      if (jsonDecode((response.body))["code"] == 0) {
+        SharedPreferencesHelper().saveStringToSF(
+            "isAssociated", jsonDecode((response.body))["isAssociated"]);
+        SharedPreferencesHelper().saveStringToSF(
+            "associatedDate", jsonDecode((response.body))["associatedDate"]);
+        SharedPreferencesHelper().saveStringToSF("associatedInstructor",
+            jsonDecode((response.body))["associatedInstructor"]);
+      }
+      if (response.ok) {
+        return response.body;
+      } else {
+        return "ERROR";
+      }
+    } on Exception {
+      return "ERROR";
+    }
+  }
+
   ///********************* FREE CONTENT *******************///
   /// API calls needed for free content related operations ///
   ///******************************************************///
@@ -339,7 +401,7 @@ class APICaller {
         headers: <String, String>{
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
         },
-      );
+      ).timeout(const Duration(seconds: 2));
       if (response.ok) {
         return response.body;
       } else {
@@ -357,7 +419,7 @@ class APICaller {
         headers: <String, String>{
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
         },
-      );
+      ).timeout(const Duration(seconds: 2));
       if (response.ok) {
         return response.body;
       } else {
@@ -373,15 +435,17 @@ class APICaller {
   ///******************************************************///
   Future<String> selectClientPrograms({String? email}) async {
     try {
-      final response = await http.post(
-        Uri.parse(host + port + '/selectClientPrograms'),
-        headers: <String, String>{
-          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        },
-        body: (<String, String>{
-          "email": email.toString(),
-        }),
-      );
+      final response = await http
+          .post(
+            Uri.parse(host + port + '/selectClientPrograms'),
+            headers: <String, String>{
+              'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            body: (<String, String>{
+              "email": email.toString(),
+            }),
+          )
+          .timeout(const Duration(seconds: 2));
       if (response.ok) {
         return response.body;
       } else {
@@ -399,7 +463,7 @@ class APICaller {
         headers: <String, String>{
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
         },
-      );
+      ).timeout(const Duration(seconds: 2));
       if (response.ok) {
         return response.body;
       } else {
