@@ -8,6 +8,8 @@ import 'package:runx/caching/models/payment.dart';
 import 'package:runx/caching/models/free_exercise.dart';
 import 'package:runx/caching/models/plan.dart';
 import 'package:runx/caching/models/plan_exercise.dart';
+import 'package:runx/caching/models/history_instructor.dart';
+import 'package:runx/caching/models/history_workout.dart';
 
 class HiveHelper {
   // Register hive adapters
@@ -18,6 +20,8 @@ class HiveHelper {
     Hive.registerAdapter(FreeExerciseAdapter());
     Hive.registerAdapter(PlanAdapter());
     Hive.registerAdapter(PlanExerciseAdapter());
+    Hive.registerAdapter(HistoryInstructorAdapter());
+    Hive.registerAdapter(HistoryWorkoutAdapter());
   }
 
   // Open boxes
@@ -29,6 +33,8 @@ class HiveHelper {
     await Hive.openBox("FreePlans");
     await Hive.openBox("PremiumPlans");
     await Hive.openBox("PlanExercises");
+    await Hive.openBox("HistoryInstructor");
+    await Hive.openBox("WorkoutHistory");
   }
 
   // Add to box without key

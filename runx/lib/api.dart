@@ -11,7 +11,7 @@ class APICaller {
   final String host = 'http://localhost:';
   final String port = '8080';
 
-  ///***************** REGISTER/LOGIN ******************///
+  ///***************** AUTHENTICATION ******************///
   /// API calls needed for authentication operations    ///
   ///***************************************************///
   Future<String> selectClient({String? email}) async {
@@ -173,6 +173,29 @@ class APICaller {
               "timeTaken": timeTaken.toString(),
               "caloriesBurnt": 0.toString(),
               "heartRate": 0.toString(),
+            }),
+          )
+          .timeout(const Duration(milliseconds: 1200));
+      if (response.ok) {
+        return response.body;
+      } else {
+        return "ERROR";
+      }
+    } on Exception {
+      return "ERROR";
+    }
+  }
+
+  Future<String> selectClientWorkoutHistory({String? email}) async {
+    try {
+      final response = await http
+          .post(
+            Uri.parse(host + port + '/selectClientWorkoutHistory'),
+            headers: <String, String>{
+              'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            body: (<String, String>{
+              "email": email.toString(),
             }),
           )
           .timeout(const Duration(milliseconds: 1200));
@@ -381,6 +404,29 @@ class APICaller {
         SharedPreferencesHelper().saveStringToSF("associatedInstructor",
             jsonDecode((response.body))["associatedInstructor"]);
       }
+      if (response.ok) {
+        return response.body;
+      } else {
+        return "ERROR";
+      }
+    } on Exception {
+      return "ERROR";
+    }
+  }
+
+  Future<String> selectClientInstructorHistory({String? email}) async {
+    try {
+      final response = await http
+          .post(
+            Uri.parse(host + port + '/selectClientInstructorHistory'),
+            headers: <String, String>{
+              'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            body: (<String, String>{
+              "email": email.toString(),
+            }),
+          )
+          .timeout(const Duration(seconds: 2));
       if (response.ok) {
         return response.body;
       } else {

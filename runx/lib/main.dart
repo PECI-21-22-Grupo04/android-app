@@ -25,7 +25,6 @@ Future<void> main() async {
   await Hive.initFlutter();
   HiveHelper().registerAdapters();
   await HiveHelper().openBoxes();
-
   runApp(MyApp());
 }
 

@@ -39,8 +39,8 @@ uploadPic() async {
 
       String url = (await ref.getDownloadURL()).toString();
 
-      // refreshing the UI when photo updated
       print("URL UPLOADED AT: $url");
     });
+    // ignore: empty_catches
   } catch (e) {}
 }

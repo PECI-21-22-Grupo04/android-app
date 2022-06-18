@@ -1,12 +1,24 @@
 // System Packages
+import 'dart:convert';
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
+// Models
+import 'package:runx/caching/models/history_instructor.dart';
+import 'package:runx/caching/models/history_workout.dart';
+
 // Logic
 import 'package:runx/preferences/theme_model.dart';
 import 'package:runx/caching/sharedpref_helper.dart';
+import 'package:runx/caching/hive_helper.dart';
+import 'package:runx/api.dart';
+
+// Screens
+import 'package:runx/history/instructor/instructor_history.dart';
+import 'package:runx/history/workout/workout_history.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -57,8 +69,8 @@ Widget buildGraphs(BuildContext context, Box user, String state) {
                       borderRadius: BorderRadius.circular(20),
                       gradient:
                           LinearGradient(begin: Alignment.bottomRight, colors: [
-                        Color.fromARGB(255, 11, 117, 223).withOpacity(.5),
-                        Color.fromARGB(255, 11, 117, 223).withOpacity(.5),
+                        const Color.fromARGB(255, 14, 66, 223).withOpacity(.5),
+                        const Color.fromARGB(255, 14, 66, 223).withOpacity(.5),
                       ]),
                     ),
                     child: Column(
@@ -89,7 +101,38 @@ Widget buildGraphs(BuildContext context, Box user, String state) {
               ),
               const SizedBox(height: 50),
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  APICaller()
+                      .selectClientInstructorHistory(
+                          email: FirebaseAuth.instance.currentUser!.email)
+                      .then(
+                    (history) async {
+                      if (history != "ERROR" &&
+                          json.decode(history)["code"] == 0 &&
+                          json.decode(history)["data"] != null) {
+                        List<HistoryInstructor> itemsList =
+                            List<HistoryInstructor>.from(
+                          json
+                              .decode(history)["data"][0]
+                              .map((i) => HistoryInstructor.fromJson(i)),
+                        );
+
+                        // 3º - Remove old cached items
+                        await HiveHelper().clearBox("HistoryInstructor");
+
+                        // 4º Cache the new database items
+                        for (HistoryInstructor ip in List.from(itemsList)) {
+                          HiveHelper().addToBox(ip, "HistoryInstructor");
+                        }
+                      }
+                    },
+                  );
+                  sleep(const Duration(milliseconds: 200));
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) => const InstructorHistory()),
+                  );
+                },
                 child: Container(
                   width: double.infinity,
                   height: 125,
@@ -126,7 +169,38 @@ Widget buildGraphs(BuildContext context, Box user, String state) {
               ),
               const SizedBox(height: 25),
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  APICaller()
+                      .selectClientWorkoutHistory(
+                          email: FirebaseAuth.instance.currentUser!.email)
+                      .then(
+                    (history) async {
+                      if (history != "ERROR" &&
+                          json.decode(history)["code"] == 0 &&
+                          json.decode(history)["data"] != null) {
+                        List<HistoryWorkout> itemsList =
+                            List<HistoryWorkout>.from(
+                          json
+                              .decode(history)["data"][0]
+                              .map((i) => HistoryWorkout.fromJson(i)),
+                        );
+
+                        // 3º - Remove old cached items
+                        await HiveHelper().clearBox("WorkoutHistory");
+
+                        // 4º Cache the new database items
+                        for (HistoryWorkout ip in List.from(itemsList)) {
+                          HiveHelper().addToBox(ip, "WorkoutHistory");
+                        }
+                      }
+                    },
+                  );
+                  sleep(const Duration(milliseconds: 200));
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) => const WorkoutHistory()),
+                  );
+                },
                 child: Container(
                   width: double.infinity,
                   height: 125,
