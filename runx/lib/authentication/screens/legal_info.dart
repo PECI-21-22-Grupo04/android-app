@@ -1,5 +1,7 @@
 // System Packages
 import 'dart:convert';
+import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:country_picker/country_picker.dart';
@@ -312,6 +314,10 @@ class _SignupFormState extends State<SignupForm> {
                           .signUp(email: email!, password: pass!)
                           .then((result2) {
                         if (result2 == null) {
+                          APICaller().updateFirebaseID(
+                              email: email,
+                              firebaseID:
+                                  FirebaseAuth.instance.currentUser!.email);
                           APICaller()
                               .selectClient(email: email)
                               .then((userInfo) {

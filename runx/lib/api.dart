@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:retry/retry.dart';
 
 // Logic
 import 'package:runx/caching/sharedpref_helper.dart';
@@ -16,27 +17,32 @@ class APICaller {
   ///***************************************************///
   Future<String> selectClient({String? email}) async {
     try {
-      final response = await http.post(
-        Uri.parse(host + port + '/selectClient'),
-        headers: <String, String>{
-          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        },
-        body: (<String, String>{
-          "email": email.toString(),
-        }),
-      );
-
-      if (jsonDecode((response.body))["code"] == 0) {
-        try {
-          final response2 = await http.post(
-            Uri.parse(host + port + '/selectLatestClientPayment'),
+      final response = await http
+          .post(
+            Uri.parse(host + port + '/selectClient'),
             headers: <String, String>{
               'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
             body: (<String, String>{
               "email": email.toString(),
             }),
-          );
+          )
+          .timeout(const Duration(seconds: 2));
+
+      if (jsonDecode((response.body))["code"] == 0) {
+        try {
+          final response2 = await http
+              .post(
+                Uri.parse(host + port + '/selectLatestClientPayment'),
+                headers: <String, String>{
+                  'Content-Type':
+                      'application/x-www-form-urlencoded; charset=UTF-8'
+                },
+                body: (<String, String>{
+                  "email": email.toString(),
+                }),
+              )
+              .timeout(const Duration(seconds: 2));
 
           if (jsonDecode((response2.body))["code"] == 0 ||
               jsonDecode((response2.body))["code"] == 2) {
@@ -75,23 +81,25 @@ class APICaller {
       String? city,
       String? country}) async {
     try {
-      final response = await http.post(
-        Uri.parse(host + port + '/createClient'),
-        headers: <String, String>{
-          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        },
-        body: (<String, String>{
-          "email": email.toString(),
-          "fname": fname.toString(),
-          "lname": lname.toString(),
-          "birthdate": birthdate.toString(),
-          "sex": sex.toString(),
-          "street": street.toString(),
-          "postCode": postCode.toString(),
-          "city": city.toString(),
-          "country": country.toString(),
-        }),
-      );
+      final response = await http
+          .post(
+            Uri.parse(host + port + '/createClient'),
+            headers: <String, String>{
+              'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            body: (<String, String>{
+              "email": email.toString(),
+              "fname": fname.toString(),
+              "lname": lname.toString(),
+              "birthdate": birthdate.toString(),
+              "sex": sex.toString(),
+              "street": street.toString(),
+              "postCode": postCode.toString(),
+              "city": city.toString(),
+              "country": country.toString(),
+            }),
+          )
+          .timeout(const Duration(seconds: 2));
       if (response.ok) {
         return response.body;
       } else {
@@ -103,15 +111,49 @@ class APICaller {
   }
 
   Future<String> deleteClient({String? email}) async {
+    const r = RetryOptions(maxAttempts: 3);
     try {
-      final response = await http.post(
-        Uri.parse(host + port + '/deleteClient'),
-        headers: <String, String>{
-          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        },
-        body: (<String, String>{
-          "email": email.toString(),
-        }),
+      final response = await r.retry(
+        () => http
+            .post(Uri.parse(host + port + '/deleteClient'),
+                headers: <String, String>{
+                  'Content-Type':
+                      'application/x-www-form-urlencoded; charset=UTF-8'
+                },
+                body: (<String, String>{
+                  "email": email.toString(),
+                }))
+            .timeout(const Duration(milliseconds: 800)),
+        retryIf: (e) => e is TimeoutException,
+      );
+      if (response.ok) {
+        return response.body;
+      } else {
+        return "ERROR";
+      }
+    } on Exception {
+      return "ERROR";
+    }
+  }
+
+  Future<String> updateFirebaseID({String? email, String? firebaseID}) async {
+    const r = RetryOptions(maxAttempts: 3);
+    try {
+      final response = await r.retry(
+        () => http
+            .post(
+              Uri.parse(host + port + '/updateFirebaseID'),
+              headers: <String, String>{
+                'Content-Type':
+                    'application/x-www-form-urlencoded; charset=UTF-8'
+              },
+              body: (<String, String>{
+                "email": email.toString(),
+                "firebaseID": firebaseID.toString(),
+              }),
+            )
+            .timeout(const Duration(milliseconds: 800)),
+        retryIf: (e) => e is TimeoutException,
       );
       if (response.ok) {
         return response.body;
@@ -134,20 +176,22 @@ class APICaller {
       String? bmi,
       String? pathologies}) async {
     try {
-      final response = await http.post(
-        Uri.parse(host + port + '/addClientInfo'),
-        headers: <String, String>{
-          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        },
-        body: (<String, String>{
-          "email": email.toString(),
-          "height": height.toString(),
-          "weight": weight.toString(),
-          "fitness": fitness.toString(),
-          "bmi": bmi.toString(),
-          "pathologies": pathologies.toString(),
-        }),
-      );
+      final response = await http
+          .post(
+            Uri.parse(host + port + '/addClientInfo'),
+            headers: <String, String>{
+              'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            body: (<String, String>{
+              "email": email.toString(),
+              "height": height.toString(),
+              "weight": weight.toString(),
+              "fitness": fitness.toString(),
+              "bmi": bmi.toString(),
+              "pathologies": pathologies.toString(),
+            }),
+          )
+          .timeout(const Duration(seconds: 2));
       if (response.ok) {
         return response.body;
       } else {
@@ -175,7 +219,7 @@ class APICaller {
               "heartRate": 0.toString(),
             }),
           )
-          .timeout(const Duration(milliseconds: 1200));
+          .timeout(const Duration(seconds: 2));
       if (response.ok) {
         return response.body;
       } else {
@@ -198,7 +242,7 @@ class APICaller {
               "email": email.toString(),
             }),
           )
-          .timeout(const Duration(milliseconds: 1200));
+          .timeout(const Duration(seconds: 2));
       if (response.ok) {
         return response.body;
       } else {
@@ -214,13 +258,15 @@ class APICaller {
   ///*************************************************///
   Future<String> selectClientPaymentHistory({String? email}) async {
     try {
-      final response = await http.post(
-        Uri.parse(host + port + '/selectClientPaymentHistory'),
-        headers: <String, String>{
-          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        },
-        body: (<String, String>{"email": email.toString()}),
-      );
+      final response = await http
+          .post(
+            Uri.parse(host + port + '/selectClientPaymentHistory'),
+            headers: <String, String>{
+              'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            body: (<String, String>{"email": email.toString()}),
+          )
+          .timeout(const Duration(seconds: 2));
       if (response.ok) {
         return response.body;
       } else {
@@ -234,18 +280,20 @@ class APICaller {
   Future<String> finalizeClientPayment(
       String? email, String? modality, String? amount, String? transID) async {
     try {
-      final response = await http.post(
-        Uri.parse(host + port + '/finalizeClientPayment'),
-        headers: <String, String>{
-          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        },
-        body: (<String, String>{
-          "email": email.toString(),
-          "modality": modality.toString(),
-          "amount": amount.toString(),
-          "transID": transID.toString(),
-        }),
-      );
+      final response = await http
+          .post(
+            Uri.parse(host + port + '/finalizeClientPayment'),
+            headers: <String, String>{
+              'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            body: (<String, String>{
+              "email": email.toString(),
+              "modality": modality.toString(),
+              "amount": amount.toString(),
+              "transID": transID.toString(),
+            }),
+          )
+          .timeout(const Duration(seconds: 2));
       return response.body;
     } on Exception {
       return "ERROR";
@@ -262,7 +310,7 @@ class APICaller {
         headers: <String, String>{
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
         },
-      );
+      ).timeout(const Duration(seconds: 2));
       if (response.ok) {
         return response.body;
       } else {
@@ -276,16 +324,18 @@ class APICaller {
   Future<String> associateInstructor(
       String? clientEmail, String? instructorEmail) async {
     try {
-      final response = await http.post(
-        Uri.parse(host + port + '/associateInstructor'),
-        headers: <String, String>{
-          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        },
-        body: (<String, String>{
-          "clientEmail": clientEmail.toString(),
-          "instructorEmail": instructorEmail.toString(),
-        }),
-      );
+      final response = await http
+          .post(
+            Uri.parse(host + port + '/associateInstructor'),
+            headers: <String, String>{
+              'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            body: (<String, String>{
+              "clientEmail": clientEmail.toString(),
+              "instructorEmail": instructorEmail.toString(),
+            }),
+          )
+          .timeout(const Duration(seconds: 2));
       if (jsonDecode((response.body))["code"] == 0) {
         var formatter = DateFormat('yyyy-MM-dd');
         String formattedDate = formatter.format(DateTime.now());
@@ -307,15 +357,17 @@ class APICaller {
 
   Future<String> isClientAssociated({String? email}) async {
     try {
-      final response = await http.post(
-        Uri.parse(host + port + '/isClientAssociated'),
-        headers: <String, String>{
-          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        },
-        body: (<String, String>{
-          "email": email.toString(),
-        }),
-      );
+      final response = await http
+          .post(
+            Uri.parse(host + port + '/isClientAssociated'),
+            headers: <String, String>{
+              'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            body: (<String, String>{
+              "email": email.toString(),
+            }),
+          )
+          .timeout(const Duration(seconds: 2));
       if (jsonDecode((response.body))["code"] != 1) {
         SharedPreferencesHelper().saveStringToSF(
             "isAssociated", jsonDecode((response.body))["isAssociated"]);
@@ -336,15 +388,17 @@ class APICaller {
 
   Future<String> selectAssociatedInstructor({String? email}) async {
     try {
-      final response = await http.post(
-        Uri.parse(host + port + '/selectAssociatedInstructor'),
-        headers: <String, String>{
-          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        },
-        body: (<String, String>{
-          "email": email.toString(),
-        }),
-      );
+      final response = await http
+          .post(
+            Uri.parse(host + port + '/selectAssociatedInstructor'),
+            headers: <String, String>{
+              'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            body: (<String, String>{
+              "email": email.toString(),
+            }),
+          )
+          .timeout(const Duration(seconds: 2));
       if (response.ok) {
         return response.body;
       } else {
@@ -361,18 +415,20 @@ class APICaller {
       num? rating,
       String? review}) async {
     try {
-      final response = await http.post(
-        Uri.parse(host + port + '/clientReviewInstructor'),
-        headers: <String, String>{
-          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        },
-        body: (<String, String>{
-          "clientEmail": clientEmail.toString(),
-          "instructorEmail": instructorEmail.toString(),
-          "rating": rating.toString(),
-          "review": review.toString(),
-        }),
-      );
+      final response = await http
+          .post(
+            Uri.parse(host + port + '/clientReviewInstructor'),
+            headers: <String, String>{
+              'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            body: (<String, String>{
+              "clientEmail": clientEmail.toString(),
+              "instructorEmail": instructorEmail.toString(),
+              "rating": rating.toString(),
+              "review": review.toString(),
+            }),
+          )
+          .timeout(const Duration(seconds: 2));
       if (response.ok) {
         return response.body;
       } else {
