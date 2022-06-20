@@ -47,7 +47,7 @@ class _AssociateInstructorState extends State<AssociateInstructor> {
               child: Column(
                 children: <Widget>[
                   SizedBox(height: screenSize.height / 9.5),
-                  buildProfileImage(),
+                  buildProfileImage(widget.instProfile),
                   buildFullName(widget.instProfile.getFullName()),
                   buildStatus(context, widget.instProfile.getRegisterDate()),
                   buildStatContainer(

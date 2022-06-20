@@ -60,7 +60,9 @@ class _InstructorHistoryState extends State<InstructorHistory> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    availIns.length.toString() + " instrutores no total",
+                    (availIns.length == 1)
+                        ? "1 instrutor no total"
+                        : availIns.length.toString() + " instrutores no total",
                     style: const TextStyle(
                       color: Colors.black,
                       fontSize: 25,

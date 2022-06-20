@@ -56,7 +56,9 @@ class FirebaseAuthenticationCaller {
   Future<String?> signIn(
       {required String email, required String password}) async {
     try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      await _auth
+          .signInWithEmailAndPassword(email: email, password: password)
+          .timeout(const Duration(seconds: 2));
       return null;
     } on FirebaseAuthException catch (e) {
       if (e.code == "network-request-failed") {
@@ -97,4 +99,16 @@ class FirebaseAuthenticationCaller {
 
   // SIGN OUT
   Future<void> signOut() async => await _auth.signOut();
+
+  // ALTER PASSWORD
+  Future resetPassword(String email) async {
+    try {
+      await FirebaseAuth.instance
+          .sendPasswordResetEmail(email: email)
+          .timeout(const Duration(seconds: 2));
+      return null;
+    } on Exception {
+      return "ERROR";
+    }
+  }
 }

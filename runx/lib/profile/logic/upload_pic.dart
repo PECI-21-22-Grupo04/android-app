@@ -35,11 +35,8 @@ uploadPic() async {
               'date': DateTime.now().toString(),
             }))
         .whenComplete(() async {
-      print("Pic Uploaded Successfully!");
-
+      // ignore: unused_local_variable
       String url = (await ref.getDownloadURL()).toString();
-
-      print("URL UPLOADED AT: $url");
     });
     // ignore: empty_catches
   } catch (e) {}

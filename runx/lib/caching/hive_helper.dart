@@ -10,6 +10,7 @@ import 'package:runx/caching/models/plan.dart';
 import 'package:runx/caching/models/plan_exercise.dart';
 import 'package:runx/caching/models/history_instructor.dart';
 import 'package:runx/caching/models/history_workout.dart';
+import 'package:runx/caching/models/physical_data.dart';
 
 class HiveHelper {
   // Register hive adapters
@@ -22,6 +23,7 @@ class HiveHelper {
     Hive.registerAdapter(PlanExerciseAdapter());
     Hive.registerAdapter(HistoryInstructorAdapter());
     Hive.registerAdapter(HistoryWorkoutAdapter());
+    Hive.registerAdapter(PhysicalDataAdapter());
   }
 
   // Open boxes
@@ -35,6 +37,7 @@ class HiveHelper {
     await Hive.openBox("PlanExercises");
     await Hive.openBox("HistoryInstructor");
     await Hive.openBox("WorkoutHistory");
+    await Hive.openBox("PhysicalHistory");
   }
 
   // Add to box without key

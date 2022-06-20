@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 // Models
 import 'package:runx/caching/models/history_instructor.dart';
 import 'package:runx/caching/models/history_workout.dart';
+import 'package:runx/caching/models/physical_data.dart';
 
 // Logic
 import 'package:runx/preferences/theme_model.dart';
@@ -19,6 +20,7 @@ import 'package:runx/api.dart';
 // Screens
 import 'package:runx/history/instructor/instructor_history.dart';
 import 'package:runx/history/workout/workout_history.dart';
+import 'package:runx/history/physical/physical_history.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -226,6 +228,69 @@ Widget buildGraphs(BuildContext context, Box user, String state) {
                       children: const <Widget>[
                         Text(
                           "Historico de Treino",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 25),
+              InkWell(
+                onTap: () {
+                  // 1º - Fetch data from DB,
+                  APICaller()
+                      .selectClientInfo(email: userEmail)
+                      .then((clientInfo) {
+                    if (clientInfo != "ERROR" &&
+                        json.decode(clientInfo)["code"] == 0 &&
+                        json.decode(clientInfo)["data"] != null) {
+                      // 2º - Convert json received to objects
+                      List<PhysicalData> itemsList = List<PhysicalData>.from(
+                          json
+                              .decode(clientInfo)["data"][0]
+                              .map((i) => PhysicalData.fromJson(i)));
+                      // 3º - Save in Hive for caching
+                      for (PhysicalData p in List.from(itemsList)) {
+                        HiveHelper().addToBox(
+                            p, "PhysicalHistory", p.dataID.toString());
+                      }
+                    }
+                  });
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const PhysicalHistory()),
+                  );
+                },
+                child: Container(
+                  width: double.infinity,
+                  height: 125,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      image: const DecorationImage(
+                          image: AssetImage("assets/images/health_icon.png"),
+                          fit: BoxFit.fill)),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      gradient: LinearGradient(
+                        begin: Alignment.bottomRight,
+                        colors: [
+                          Colors.black.withOpacity(.5),
+                          Colors.black.withOpacity(.3),
+                        ],
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const <Widget>[
+                        Text(
+                          "Historico Físico",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 30,

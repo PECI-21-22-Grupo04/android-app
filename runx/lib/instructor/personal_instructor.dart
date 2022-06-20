@@ -63,7 +63,7 @@ class _PersonalInstructorState extends State<PersonalInstructor> {
               child: Column(
                 children: <Widget>[
                   SizedBox(height: screenSize.height / 9.5),
-                  buildProfileImage(),
+                  buildProfileImage(instructor),
                   buildFullName(instructor.getFullName()),
                   buildStatus(context, instructor.getRegisterDate()),
                   Container(

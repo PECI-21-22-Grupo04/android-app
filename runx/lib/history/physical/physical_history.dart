@@ -3,37 +3,46 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 // Models
-import 'package:runx/caching/models/history_workout.dart';
+import 'package:runx/caching/models/physical_data.dart';
 
 // Logic
 import 'package:runx/preferences/colors.dart';
 
-class WorkoutHistory extends StatefulWidget {
-  const WorkoutHistory({Key? key}) : super(key: key);
+// Widgets
+import 'package:runx/history/physical/widgets/info_widgets.dart';
+
+// Screens
+import 'package:runx/history/physical/screens/add_info.dart';
+
+class PhysicalHistory extends StatefulWidget {
+  const PhysicalHistory({Key? key}) : super(key: key);
 
   @override
-  _WorkoutHistoryState createState() => _WorkoutHistoryState();
+  _PhysicalHistoryState createState() => _PhysicalHistoryState();
 }
 
-class _WorkoutHistoryState extends State<WorkoutHistory> {
+class _PhysicalHistoryState extends State<PhysicalHistory> {
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(title: const Text('Histórico de Treino')),
+        appBar: AppBar(title: const Text('Histórico Físico')),
         body: ValueListenableBuilder<Box>(
-          valueListenable: Hive.box("WorkoutHistory").listenable(),
+          valueListenable: Hive.box("PhysicalHistory").listenable(),
           builder: (context, box, _) {
-            final workoutLog = box.values.toList().cast<HistoryWorkout>();
-            return buildContent(workoutLog);
+            final physicalData = box.values.toList().cast<PhysicalData>();
+            physicalData.sort(
+              (a, b) => b.dataID.compareTo(a.dataID),
+            );
+            return buildContent(physicalData);
           },
         ),
       );
 
-  Widget buildContent(List<HistoryWorkout> workoutLog) {
-    if (workoutLog.isEmpty) {
+  Widget buildContent(List<PhysicalData> physicalData) {
+    if (physicalData.isEmpty) {
       return const Center(
         child: Center(
           child: Text(
-            'O seu histórico de treino está vazio!',
+            'Não conseguimos encontrar os seus dados fisicos',
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 23),
           ),
@@ -58,17 +67,20 @@ class _WorkoutHistoryState extends State<WorkoutHistory> {
                   ],
                 ),
               ),
-              child: Column(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    (workoutLog.length == 1)
-                        ? "1 treino realizado"
-                        : workoutLog.length.toString() + " treinos realizados",
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Text(
+                      "   Última Medição: " +
+                          physicalData.elementAt(0).measuredDate.toString(),
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ],
@@ -76,12 +88,60 @@ class _WorkoutHistoryState extends State<WorkoutHistory> {
             ),
           ),
         ),
+        const SizedBox(height: 25),
+        InkWell(
+          child: SizedBox(
+            width: double.infinity,
+            height: 60,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                gradient: LinearGradient(
+                  begin: Alignment.bottomRight,
+                  colors: [
+                    const Color.fromARGB(255, 220, 210, 210).withOpacity(.5),
+                    const Color.fromARGB(255, 220, 210, 210).withOpacity(.5),
+                  ],
+                ),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: getWidgetWeight(physicalData),
+                  ),
+                  Expanded(
+                    child: getWidgetIMC(physicalData),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 15),
+        ElevatedButton(
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.green)),
+          child: const Text(
+            'Atualizar Dados',
+            style: TextStyle(fontSize: 20),
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      AddInfoHealth(latestData: physicalData.elementAt(0))),
+            );
+          },
+        ),
+        const SizedBox(height: 10),
         Expanded(
           child: ListView.builder(
             padding: const EdgeInsets.all(8),
-            itemCount: workoutLog.length,
+            itemCount: physicalData.length,
             itemBuilder: (BuildContext context, int index) {
-              final log = workoutLog[index];
+              final log = physicalData[index];
               return buildInstructorList(context, log);
             },
           ),
@@ -90,7 +150,7 @@ class _WorkoutHistoryState extends State<WorkoutHistory> {
     );
   }
 
-  Widget buildInstructorList(BuildContext context, HistoryWorkout workoutLog) {
+  Widget buildInstructorList(BuildContext context, PhysicalData physicalData) {
     return GestureDetector(
       child: Card(
         shape: RoundedRectangleBorder(
@@ -105,7 +165,7 @@ class _WorkoutHistoryState extends State<WorkoutHistory> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    workoutLog.pName,
+                    physicalData.measuredDate,
                     style: const TextStyle(
                       color: themeColorLight,
                       fontWeight: FontWeight.bold,
@@ -116,13 +176,31 @@ class _WorkoutHistoryState extends State<WorkoutHistory> {
                   Row(
                     children: <Widget>[
                       const Icon(
-                        Icons.info_outline_rounded,
+                        Icons.man_rounded,
                         color: themeColorLight,
                         size: 20,
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        "Realizado: " + workoutLog.doneDate,
+                        "Altura: " + physicalData.height.toString(),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          letterSpacing: .3,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 6),
+                  Row(
+                    children: <Widget>[
+                      const Icon(
+                        Icons.monitor_weight_rounded,
+                        color: themeColorLight,
+                        size: 20,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        "Peso: " + physicalData.weight.toString(),
                         style: const TextStyle(
                           fontSize: 16,
                           letterSpacing: .3,
@@ -140,64 +218,30 @@ class _WorkoutHistoryState extends State<WorkoutHistory> {
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        "Demorou: " + workoutLog.timeTaken + "s",
+                        "IMC: " + physicalData.bmi.toString(),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          letterSpacing: .3,
+                        ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 6),
+                  Row(
+                    children: <Widget>[
+                      const Icon(
+                        Icons.show_chart_rounded,
+                        color: themeColorLight,
+                        size: 20,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        "Nível Físico: " + physicalData.fitness,
                         style: const TextStyle(
                           fontSize: 16,
                           letterSpacing: .3,
                         ),
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 6),
-                  Row(
-                    children: <Widget>[
-                      const Icon(
-                        Icons.info_outline_rounded,
-                        color: themeColorLight,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 8),
-                      (workoutLog.heartRate != "0")
-                          ? Text(
-                              "Calorias Queimadas: " + workoutLog.caloriesBurnt,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                letterSpacing: .3,
-                              ),
-                            )
-                          : const Text(
-                              "Calorias Queimadas: -",
-                              style: TextStyle(
-                                fontSize: 16,
-                                letterSpacing: .3,
-                              ),
-                            )
-                    ],
-                  ),
-                  const SizedBox(height: 6),
-                  Row(
-                    children: <Widget>[
-                      const Icon(
-                        Icons.info_outline_rounded,
-                        color: themeColorLight,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 8),
-                      (workoutLog.heartRate != "0")
-                          ? Text(
-                              "Média Cardíaca: " + workoutLog.heartRate,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                letterSpacing: .3,
-                              ),
-                            )
-                          : const Text(
-                              "Média Cardíaca: -",
-                              style: TextStyle(
-                                fontSize: 16,
-                                letterSpacing: .3,
-                              ),
-                            )
                     ],
                   ),
                 ],

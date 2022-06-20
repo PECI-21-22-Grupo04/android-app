@@ -1,5 +1,6 @@
 // System Packages
 import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -7,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 // Logic
 import 'package:runx/api.dart';
+import 'package:runx/caching/models/instructor_profile.dart';
 import 'package:runx/payment/logic/paypal_webview.dart';
 import 'package:runx/preferences/theme_model.dart';
 import 'package:runx/preferences/colors.dart';
@@ -26,21 +28,29 @@ Widget buildCoverImage(Size screenSize) {
   );
 }
 
-Widget buildProfileImage() {
+Widget buildProfileImage([InstructorProfile? instructor]) {
   return Center(
-    child: Container(
-      width: 140.0,
-      height: 140.0,
-      decoration: BoxDecoration(
-        image: const DecorationImage(
-          image: AssetImage('assets/images/profile_icon.png'),
-          fit: BoxFit.cover,
+    child: SizedBox(
+      width: 175.0,
+      height: 175.0,
+      child: CachedNetworkImage(
+        imageUrl: instructor!.imagePath,
+        imageBuilder: (context, imageProvider) => Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(150.0),
+            border: Border.all(
+              color: Colors.white,
+              width: 8,
+            ),
+            image: DecorationImage(
+              image: imageProvider,
+              fit: BoxFit.cover,
+            ),
+          ),
         ),
-        borderRadius: BorderRadius.circular(150.0),
-        border: Border.all(
-          color: Colors.white,
-          width: 8,
-        ),
+        placeholder: (context, url) => const CircularProgressIndicator(),
+        errorWidget: (context, url, error) =>
+            Image.asset('assets/images/profile_icon.png'),
       ),
     ),
   );

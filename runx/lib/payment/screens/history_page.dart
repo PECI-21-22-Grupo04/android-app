@@ -70,7 +70,7 @@ class _TransactionPageState extends State<TransactionPage> {
               "\n",
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
-        subtitle: Text("Realizado: " + payments.getPaymentDate()),
+        subtitle: Text("Realizado: " + payments.paymentDate),
         trailing: Text(
           amount,
           style: const TextStyle(

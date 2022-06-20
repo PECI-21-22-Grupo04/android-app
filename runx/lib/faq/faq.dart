@@ -93,8 +93,8 @@ final List faqs = [
   {
     "quote":
         "Se eventualmente se deparar com um erro, siga os passos seguintes até este estar resolvido:"
-            "\n1-Verifique a sua conexão á internet"
-            "\n2-Volte atrás da página onde dá erro e volte a abrir"
+            "\n1-Verifique a sua conexão à internet"
+            "\n2-Volte atrás da página onde há erro e volte a abrir"
             "\n3-Encerre e volte a iniciar a aplicação"
             "\n4-Saia e volte a entrar na sua conta"
             "\n5-Contacte o apoio técnico",

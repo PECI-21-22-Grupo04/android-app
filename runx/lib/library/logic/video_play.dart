@@ -29,7 +29,7 @@ class _ChewieListItemState extends State<ChewieListItem> {
       errorBuilder: (context, errorMessage) {
         return const Center(
           child: Text(
-            "Ocorreu um erro a processar este video!",
+            "Ocorreu um erro a processar este video.\nVerifique a sua conexão á internet",
             style: TextStyle(color: Colors.white),
           ),
         );
@@ -48,9 +48,9 @@ class _ChewieListItemState extends State<ChewieListItem> {
 
   @override
   void dispose() {
-    super.dispose();
     widget.videoPlayerController.dispose();
     _chewieController.dispose();
+    super.dispose();
   }
 }
 

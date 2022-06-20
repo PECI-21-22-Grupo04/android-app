@@ -12,8 +12,9 @@ import 'package:runx/api.dart';
 import 'package:runx/caching/hive_helper.dart';
 
 // Screens
-import 'package:runx/authentication/sign_up.dart';
 import 'package:runx/presentation/bottom_nav.dart';
+import 'package:runx/authentication/sign_up.dart';
+import 'package:runx/authentication/alter_password.dart';
 
 class Login extends StatelessWidget {
   const Login({Key? key}) : super(key: key);
@@ -55,6 +56,24 @@ class Login extends StatelessWidget {
                       MaterialPageRoute(builder: (context) => const Signup()));
                 },
                 child: const Text('Registar',
+                    style: TextStyle(fontSize: 18, color: Colors.blue)),
+              )
+            ],
+          ),
+          const SizedBox(height: 35),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Text('Esqueceu a password? ',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const AlterPassword()));
+                },
+                child: const Text('Alterar',
                     style: TextStyle(fontSize: 18, color: Colors.blue)),
               )
             ],

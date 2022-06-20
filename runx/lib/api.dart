@@ -27,7 +27,7 @@ class APICaller {
               "email": email.toString(),
             }),
           )
-          .timeout(const Duration(seconds: 2));
+          .timeout(const Duration(seconds: 4));
 
       if (jsonDecode((response.body))["code"] == 0) {
         try {
@@ -46,15 +46,26 @@ class APICaller {
 
           if (jsonDecode((response2.body))["code"] == 0 ||
               jsonDecode((response2.body))["code"] == 2) {
+            // Check status of user account
             SharedPreferencesHelper().saveStringToSF(
                 "paidDate",
                 jsonDecode((response2.body))["paidDate"]
                     .toString()
                     .split(" ")[0]);
-            SharedPreferencesHelper().saveStringToSF(
-                "accountStatus", jsonDecode((response2.body))["accountStatus"]);
-            SharedPreferencesHelper()
-                .saveStringToSF("plan", jsonDecode((response2.body))["plan"]);
+            if (daysBetween(
+                    jsonDecode((response2.body))["paidDate"]
+                        .toString()
+                        .split(" ")[0],
+                    jsonDecode((response2.body))["plan"]) >
+                0) {
+              SharedPreferencesHelper().saveStringToSF("accountStatus",
+                  jsonDecode((response2.body))["accountStatus"]);
+              SharedPreferencesHelper()
+                  .saveStringToSF("plan", jsonDecode((response2.body))["plan"]);
+            } else {
+              SharedPreferencesHelper().saveStringToSF("accountStatus", "free");
+              SharedPreferencesHelper().saveStringToSF("plan", "");
+            }
           }
         } on Exception {
           return "ERROR";
@@ -253,6 +264,29 @@ class APICaller {
     }
   }
 
+  Future<String> selectClientInfo({String? email}) async {
+    try {
+      final response = await http
+          .post(
+            Uri.parse(host + port + '/selectClientInfo'),
+            headers: <String, String>{
+              'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            body: (<String, String>{
+              "email": email.toString(),
+            }),
+          )
+          .timeout(const Duration(seconds: 2));
+      if (response.ok) {
+        return response.body;
+      } else {
+        return "ERROR";
+      }
+    } on Exception {
+      return "ERROR";
+    }
+  }
+
   ///******************** PAYMENTS *******************///
   /// API calls needed for payment related operations ///
   ///*************************************************///
@@ -277,8 +311,8 @@ class APICaller {
     }
   }
 
-  Future<String> finalizeClientPayment(
-      String? email, String? modality, String? amount, String? transID) async {
+  Future<String> finalizeClientPayment(String? email, String? modality,
+      String? amount, String? transID, String? doneDate) async {
     try {
       final response = await http
           .post(
@@ -291,6 +325,7 @@ class APICaller {
               "modality": modality.toString(),
               "amount": amount.toString(),
               "transID": transID.toString(),
+              "doneDate": doneDate.toString(),
             }),
           )
           .timeout(const Duration(seconds: 2));
@@ -581,5 +616,25 @@ class APICaller {
 extension IsOk on http.Response {
   bool get ok {
     return (statusCode ~/ 100) == 2;
+  }
+}
+
+/* Calculate days difference between two dates */
+int daysBetween(String paid, String plan) {
+  if (plan == "" || paid == "") {
+    return 0;
+  } else {
+    var formattedString = DateTime.parse(paid);
+    var from = DateTime(
+        formattedString.year, formattedString.month, formattedString.day);
+    DateTime to;
+    if (plan == "Monthly" || plan == "monthly") {
+      to = DateTime(
+          formattedString.year, formattedString.month + 1, formattedString.day);
+    } else {
+      to = DateTime(
+          formattedString.year + 1, formattedString.month, formattedString.day);
+    }
+    return (to.difference(from).inHours / 24).round();
   }
 }

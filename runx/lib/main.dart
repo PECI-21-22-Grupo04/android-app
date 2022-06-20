@@ -18,6 +18,7 @@ import 'package:runx/chat/providers/chat_provider.dart';
 // Screens
 import 'package:runx/authentication/login.dart';
 import 'package:runx/presentation/bottom_nav.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,6 +26,7 @@ Future<void> main() async {
   await Hive.initFlutter();
   HiveHelper().registerAdapters();
   await HiveHelper().openBoxes();
+  await SharedPreferences.getInstance();
   runApp(MyApp());
 }
 

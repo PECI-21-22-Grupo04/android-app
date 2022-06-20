@@ -10,6 +10,7 @@ import 'package:runx/caching/models/payment.dart';
 
 // Logic
 import 'package:runx/api.dart';
+import 'package:runx/caching/models/physical_data.dart';
 import 'package:runx/preferences/theme_model.dart';
 import 'package:runx/preferences/colors.dart';
 import 'package:runx/authentication/logic/firebase_services.dart';
@@ -20,6 +21,7 @@ import 'package:runx/authentication/login.dart';
 import 'package:runx/settings/settings.dart';
 import 'package:runx/payment/payment_history.dart';
 import 'package:runx/faq/faq.dart';
+import 'package:runx/history/physical/physical_history.dart';
 
 class SideDrawer extends StatelessWidget {
   const SideDrawer({Key? key}) : super(key: key);
@@ -63,8 +65,33 @@ class SideDrawer extends StatelessWidget {
                     ListTile(
                         leading:
                             const Icon(Icons.perm_device_information_rounded),
-                        title: const Text('Informação Pessoal'),
-                        onTap: () {/* IR PARA PAGINA DE INFORMAÇÃO */}),
+                        title: const Text('Dados Físicos'),
+                        onTap: () {
+                          // 1º - Fetch data from DB,
+                          APICaller()
+                              .selectClientInfo(email: userEmail)
+                              .then((clientInfo) async {
+                            if (clientInfo != "ERROR" &&
+                                json.decode(clientInfo)["code"] == 0 &&
+                                json.decode(clientInfo)["data"] != null) {
+                              // 2º - Convert json received to objects
+                              List<PhysicalData> itemsList =
+                                  List<PhysicalData>.from(json
+                                      .decode(clientInfo)["data"][0]
+                                      .map((i) => PhysicalData.fromJson(i)));
+                              // 3º - Save in Hive for caching
+                              for (PhysicalData p in List.from(itemsList)) {
+                                HiveHelper().addToBox(
+                                    p, "PhysicalHistory", p.dataID.toString());
+                              }
+                            }
+                          });
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const PhysicalHistory()),
+                          );
+                        }),
 
                     // Payments Button
                     const Divider(),

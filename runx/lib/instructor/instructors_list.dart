@@ -1,4 +1,5 @@
 // System Packages
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -63,12 +64,29 @@ class _InstructorsListState extends State<InstructorsList> {
       child: Card(
         elevation: 0,
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(1.0),
           child: ListTile(
-            leading: Image.asset(
-              'assets/images/profile_icon.png',
-              height: 60.0,
-              fit: BoxFit.cover,
+            leading: ClipRRect(
+              borderRadius: BorderRadius.circular(1.0),
+              child: SizedBox(
+                height: 125,
+                width: 110,
+                child: CachedNetworkImage(
+                  imageUrl: instProfile.imagePath,
+                  imageBuilder: (context, imageProvider) => Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: imageProvider,
+                        fit: BoxFit.fitHeight,
+                      ),
+                    ),
+                  ),
+                  placeholder: (context, url) =>
+                      const CircularProgressIndicator(),
+                  errorWidget: (context, url, error) =>
+                      Image.asset('assets/images/profile_icon.png'),
+                ),
+              ),
             ),
             title: Padding(
               padding: const EdgeInsets.all(8.0),

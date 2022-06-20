@@ -1,4 +1,5 @@
 // System Packages
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -109,13 +110,23 @@ class _ExerciseLibraryState extends State<ExerciseLibrary> {
           children: <Widget>[
             ClipRRect(
               borderRadius: BorderRadius.circular(20.0),
-              child: Container(
+              child: SizedBox(
                 height: 125,
                 width: 110,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('assets/images/exercise_icon.png'),
-                      fit: BoxFit.cover),
+                child: CachedNetworkImage(
+                  imageUrl: exercise.thumbnailPath,
+                  imageBuilder: (context, imageProvider) => Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: imageProvider,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  placeholder: (context, url) =>
+                      const CircularProgressIndicator(),
+                  errorWidget: (context, url, error) =>
+                      Image.asset('assets/images/exercise_icon.png'),
                 ),
               ),
             ),

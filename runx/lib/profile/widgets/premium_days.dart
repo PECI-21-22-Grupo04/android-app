@@ -17,7 +17,7 @@ Widget buildPremiumCountdown(String paidDate, String plan) {
 int daysBetween(DateTime paid, String plan) {
   var from = DateTime(paid.year, paid.month, paid.day);
   DateTime to;
-  if (plan == "monthly") {
+  if (plan == "Monthly" || plan == "monthly") {
     to = DateTime(paid.year, paid.month + 1, paid.day);
   } else {
     to = DateTime(paid.year + 1, paid.month, paid.day);

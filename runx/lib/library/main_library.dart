@@ -135,15 +135,8 @@ class _LibraryState extends State<Library> {
                                     .map((i) => Plan.fromJson(i)),
                               );
                               // 3º - Remove old cached items
-                              for (Plan cachedIp
-                                  in await HiveHelper().getAll("FreePlans")) {
-                                if (!itemsList
-                                    .map((item) => item.planID)
-                                    .contains(cachedIp.planID)) {
-                                  HiveHelper().removeFromBox(
-                                      "FreePlans", cachedIp.planID);
-                                }
-                              }
+                              await HiveHelper().clearBox("FreePlans");
+
                               // 4º Cache the new database items
                               for (Plan ip in List.from(itemsList)) {
                                 HiveHelper()

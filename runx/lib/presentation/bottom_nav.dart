@@ -1,5 +1,6 @@
 // System Packages
 import 'dart:convert';
+import 'package:cron/cron.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -56,6 +57,14 @@ class _BottomNavState extends State<BottomNav> {
 
   @override
   Widget build(BuildContext context) {
+    final cron = Cron();
+    cron.schedule(Schedule.parse('*/30 * * * *'), () async {
+      getPaidDate().then((value) {
+        getPlan().then((value2) {
+          checkAccountStatus(context, value, value2);
+        });
+      });
+    });
     return Consumer(builder: (context, ThemeModel themeNotifier, child) {
       return Scaffold(
         appBar: AppBar(
@@ -195,6 +204,75 @@ class _BottomNavState extends State<BottomNav> {
       },
     );
   }
+}
+
+/* This function is inside a cronjob like function that runs every 30min and checks if the
+users premium account is still valid */
+Future<void>? checkAccountStatus(BuildContext context, paid, plan) {
+  if (plan == "") {
+  } else {
+    var parsedDate = DateTime.parse(paid);
+    var from = DateTime(parsedDate.year, parsedDate.month, parsedDate.day);
+    DateTime to;
+    if (plan == "Monthly" || plan == "monthly") {
+      to = DateTime(parsedDate.year, parsedDate.month + 1, parsedDate.day);
+    } else {
+      to = DateTime(parsedDate.year + 1, parsedDate.month, parsedDate.day);
+    }
+
+    if ((to.difference(from).inHours / 24).round() <= 0) {
+      return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text(
+            'Subscrição acabou!',
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+          ),
+          content: const Text(
+              'A sua conta deixou de ser premium.\nPara voltar a usufruir desta, volte a fazer um pagamento'),
+          actions: <Widget>[
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 300,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              const Color.fromARGB(255, 21, 87, 192))),
+                      onPressed: () {
+                        SharedPreferencesHelper()
+                            .saveStringToSF("accountStatus", "free");
+                        SharedPreferencesHelper().saveStringToSF("plan", "");
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) => const BottomNav()),
+                            (Route<dynamic> route) => false);
+                      },
+                      child: const Text(
+                        'Entendido',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+  return null;
+}
+
+Future<String?> getPaidDate() async {
+  return await SharedPreferencesHelper().getStringValuesSF("paidDate");
+}
+
+Future<String?> getPlan() async {
+  return await SharedPreferencesHelper().getStringValuesSF("plan");
 }
 
 Future<String?> getAccountStatus() async {

@@ -91,11 +91,13 @@ class PaypalServices {
 
       final body = jsonDecode(response.body);
       if (response.statusCode == 200 && body["state"] == "approved") {
+        var now = DateTime.now();
+        var formatter = DateFormat('yyyy-MM-dd');
+        String formattedDate = formatter.format(now);
         // Save payment in database
-        APICaller().finalizeClientPayment(email, modality, amount, body["id"]);
+        APICaller().finalizeClientPayment(
+            email, modality, amount, body["id"], formattedDate);
         // Change account status to premium
-        var formatter = DateFormat('dd-MM-yyyy');
-        String formattedDate = formatter.format(DateTime.now());
         SharedPreferencesHelper().saveStringToSF("paidDate", formattedDate);
         SharedPreferencesHelper().saveStringToSF("accountStatus", "premium");
         SharedPreferencesHelper().saveStringToSF("plan", modality.toString());

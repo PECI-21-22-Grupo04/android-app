@@ -80,11 +80,7 @@ class _ChatPageState extends State<ChatPage> {
     if (authProvider.getFirebaseUserId()?.isNotEmpty == true) {
       currentUserId = authProvider.getFirebaseUserId()!;
     }
-    if (currentUserId.compareTo(widget.peerId) > 0) {
-      groupChatId = '$currentUserId-${widget.peerId}';
-    } else {
-      groupChatId = '${widget.peerId}-$currentUserId';
-    }
+    groupChatId = '$currentUserId-${widget.peerId}';
     chatProvider.updateFirestoreData(FirestoreConstants.pathUserCollection,
         currentUserId, {FirestoreConstants.chattingWith: widget.peerId});
   }
@@ -117,7 +113,7 @@ class _ChatPageState extends State<ChatPage> {
       child: Row(
         children: [
           Container(
-            margin: const EdgeInsets.only(right: 10),
+            margin: const EdgeInsets.only(right: 8, left: 8),
             decoration: BoxDecoration(
               color: Colors.red,
               borderRadius: BorderRadius.circular(30),
@@ -284,7 +280,7 @@ class _ChatPageState extends State<ChatPage> {
                           errorBuilder: (context, object, stackTrace) {
                             return const Icon(
                               Icons.account_circle,
-                              size: 35,
+                              size: 40,
                               color: Colors.grey,
                             );
                           },
@@ -295,14 +291,14 @@ class _ChatPageState extends State<ChatPage> {
                       ),
                 chatMessages.type == MessageType.text
                     ? messageBubble(
+                        chatContent: chatMessages.content,
                         color: const Color.fromARGB(255, 107, 106, 106),
                         textColor: Colors.white,
-                        chatContent: chatMessages.content,
-                        margin: const EdgeInsets.only(left: 10),
+                        margin: const EdgeInsets.only(left: 15, top: 10),
                       )
                     : chatMessages.type == MessageType.image
                         ? Container(
-                            margin: const EdgeInsets.only(left: 10, top: 10),
+                            margin: const EdgeInsets.only(right: 15, top: 10),
                             child: chatImage(
                                 imageSrc: chatMessages.content, onTap: () {}),
                           )
@@ -311,8 +307,7 @@ class _ChatPageState extends State<ChatPage> {
             ),
             isMessageReceived(index)
                 ? Container(
-                    margin:
-                        const EdgeInsets.only(left: 20, top: 20, bottom: 20),
+                    margin: const EdgeInsets.only(left: 50, top: 8, bottom: 10),
                     child: Text(
                       DateFormat('dd MMM yyyy, hh:mm a').format(
                         DateTime.fromMillisecondsSinceEpoch(
@@ -321,7 +316,7 @@ class _ChatPageState extends State<ChatPage> {
                       ),
                       style: const TextStyle(
                           color: Colors.grey,
-                          fontSize: 20,
+                          fontSize: 12,
                           fontStyle: FontStyle.italic),
                     ),
                   )

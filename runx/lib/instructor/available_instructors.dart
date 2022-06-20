@@ -17,18 +17,23 @@ class InstructorList extends StatefulWidget {
 
 class _InstructorListState extends State<InstructorList> {
   var _associatedInstructorEmail = "";
+  var _accountStatus = "";
 
   @override
   void initState() {
-    getAssociatedInstructorEmail().then((value) => setState(() {
-          _associatedInstructorEmail = value!;
-        }));
+    getAssociatedInstructorEmail().then((value) {
+      getAccountStatus().then((value2) => setState(() {
+            _associatedInstructorEmail = value!;
+            _accountStatus = value2!;
+          }));
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_associatedInstructorEmail.toString() == "") {
+    if (_associatedInstructorEmail.toString() == "" ||
+        _accountStatus.toString() == "free") {
       return const Scaffold(
         body: InstructorsList(),
       );
@@ -43,4 +48,8 @@ class _InstructorListState extends State<InstructorList> {
 Future<String?> getAssociatedInstructorEmail() async {
   return await SharedPreferencesHelper()
       .getStringValuesSF("associatedInstructor");
+}
+
+Future<String?> getAccountStatus() async {
+  return await SharedPreferencesHelper().getStringValuesSF("accountStatus");
 }
