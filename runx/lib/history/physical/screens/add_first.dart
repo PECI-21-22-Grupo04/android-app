@@ -1,29 +1,32 @@
 // System Packages
 import 'dart:convert';
+import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+// Models
+import 'package:runx/caching/models/physical_data.dart';
 
 // Logic
 import 'package:runx/api.dart';
+import 'package:runx/caching/hive_helper.dart';
 
 // Screens
-import 'package:runx/presentation/bottom_nav.dart';
+import 'package:runx/history/physical/physical_history.dart';
 
-class HealthInfoForm extends StatelessWidget {
-  final String? emailP;
-  final String? fnameP;
-  final String? lnameP;
-
-  const HealthInfoForm(
-      {Key? key,
-      required this.emailP,
-      required this.fnameP,
-      required this.lnameP})
-      : super(key: key);
+class AddInfoFirst extends StatelessWidget {
+  const AddInfoFirst({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Informação Física'),
+        toolbarHeight: 55,
+        leading: Builder(builder: (context) => const BackButton()),
+      ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: <Widget>[
@@ -31,24 +34,16 @@ class HealthInfoForm extends StatelessWidget {
           Column(
             children: const [
               SizedBox(height: 20),
-              Text('Informação fisica adicional',
+              Text('Atualize a sua informação fisica',
                   style: TextStyle(fontSize: 24), textAlign: TextAlign.center),
             ],
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: SignupForm(
-              emailC: emailP,
-              fnameC: fnameP,
-              lnameC: lnameP,
+              emailC: FirebaseAuth.instance.currentUser!.email,
             ),
           ),
-          const SizedBox(height: 30),
-          const Expanded(
-              child: Text(
-                  'Poderá alterar esta informação mais tarde no seu perfil',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                  textAlign: TextAlign.center)),
         ],
       ),
     );
@@ -56,33 +51,25 @@ class HealthInfoForm extends StatelessWidget {
 }
 
 class SignupForm extends StatefulWidget {
-  final String? fnameC;
-  final String? lnameC;
   final String? emailC;
 
-  const SignupForm(
-      {Key? key,
-      required this.emailC,
-      required this.fnameC,
-      required this.lnameC})
-      : super(key: key);
+  const SignupForm({Key? key, required this.emailC}) : super(key: key);
 
   @override
   _SignupFormState createState() => _SignupFormState();
 }
 
 class _SignupFormState extends State<SignupForm> {
+  Box userInfo = Hive.box("UserProfile");
   final _formKey = GlobalKey<FormState>();
 
   String? heightC;
   String? weightC;
-  String? pathologiesC;
+  String pathologiesC = "";
   late String fitnesslevelC;
 
   List<String> listOfLevels = ['Elementar', 'Intermédio', 'Avançado'];
 
-  get fname => widget.fnameC;
-  get lname => widget.lnameC;
   get email => widget.emailC;
 
   @override
@@ -176,6 +163,9 @@ class _SignupFormState extends State<SignupForm> {
 
           // Pathologies
           TextFormField(
+            initialValue: userInfo
+                .get(FirebaseAuth.instance.currentUser!.email)
+                .getPathologies(),
             decoration: const InputDecoration(
                 labelText: 'Patologias',
                 icon: Icon(Icons.local_hospital_rounded),
@@ -212,36 +202,69 @@ class _SignupFormState extends State<SignupForm> {
                           bmi: (formulaVal1 / formulaVal2)
                               .toString(), // BMI formula is weight(kg)/height(m)^2
                           pathologies: pathologiesC)
-                      .then((result) {
-                    // If result code is 0, the data has been successfully saved in the database
-                    if (result != "ERROR" && json.decode(result)["code"] == 0) {
-                      Navigator.pushAndRemoveUntil<void>(
+                      .then(
+                    (result) {
+                      // If result code is 0, the data has been successfully saved in the database
+                      if (result != "ERROR" &&
+                          json.decode(result)["code"] == 0) {
+                        APICaller()
+                            .selectClientInfo(
+                                email: FirebaseAuth.instance.currentUser!.email)
+                            .then((clientInfo) {
+                          if (clientInfo != "ERROR" &&
+                              json.decode(clientInfo)["code"] == 0 &&
+                              json.decode(clientInfo)["data"] != null) {
+                            // 2º - Convert json received to objects
+                            List<PhysicalData> itemsList =
+                                List<PhysicalData>.from(json
+                                    .decode(clientInfo)["data"][0]
+                                    .map((i) => PhysicalData.fromJson(i)));
+                            // 3º - Save in Hive for caching
+                            for (PhysicalData p in List.from(itemsList)) {
+                              HiveHelper().addToBox(
+                                  p, "PhysicalHistory", p.dataID.toString());
+                            }
+                          }
+                        });
+                        sleep(const Duration(milliseconds: 200));
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                        Navigator.push(
                           context,
-                          MaterialPageRoute<void>(
-                              builder: (BuildContext context) =>
-                                  const BottomNav()),
-                          (Route<dynamic> route) => false);
-                    }
-                    // Else show error message
-                    else {
-                      if (result == "ERROR") {
+                          MaterialPageRoute(
+                              builder: (context) => const PhysicalHistory()),
+                        );
                         ScaffoldMessenger.of(context)
                             .showSnackBar(const SnackBar(
-                          content: Text(
-                              ("Ocorreu um erro \nVerifique a sua conexão ou tente mais tarde"),
+                          duration: Duration(seconds: 3),
+                          content: Text(("Os seus dados foram guardados!"),
                               style: TextStyle(fontSize: 16)),
                         ));
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text((json.decode(result)["code"]),
-                              style: const TextStyle(fontSize: 16)),
-                        ));
                       }
-                    }
-                  });
+                      // Else show error message
+                      else {
+                        if (result == "ERROR") {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text(
+                                ("Ocorreu um erro \nVerifique a sua conexão ou tente mais tarde"),
+                                style: TextStyle(fontSize: 16)),
+                          ));
+                        } else {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text(
+                                ("Ocorreu um erro \nVerifique a sua conexão ou tente mais tarde"),
+                                style: TextStyle(fontSize: 16)),
+                          ));
+                        }
+                      }
+                    },
+                  );
                 }
               },
               style: ElevatedButton.styleFrom(
+                  primary: const Color.fromARGB(255, 8, 162, 54),
                   shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(25.0)))),
               child: const Text(
@@ -259,15 +282,14 @@ class _SignupFormState extends State<SignupForm> {
             width: 150,
             child: ElevatedButton(
               onPressed: () {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => const BottomNav()));
+                Navigator.pop(context);
               },
               style: ElevatedButton.styleFrom(
-                  primary: Colors.grey,
+                  primary: const Color.fromARGB(255, 209, 39, 39),
                   shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(25.0)))),
               child: const Text(
-                'Saltar',
+                'Cancelar',
                 style: TextStyle(fontSize: 20),
               ),
             ),

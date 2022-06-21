@@ -30,6 +30,17 @@ class _ProfileState extends State<Profile> {
   String _accountState = "";
   String _paidDate = "";
   String _plan = "";
+  String _sex = "";
+  String _firstName = "";
+  String _lastName = "";
+  String _birthdate = "";
+  String _address = "";
+  String _postCode = "";
+  String _city = "";
+  String _country = "";
+  String? userEmail = FirebaseAuth.instance.currentUser!.email;
+
+  Box userInfo = Hive.box("UserProfile");
 
   @override
   void initState() {
@@ -39,17 +50,36 @@ class _ProfileState extends State<Profile> {
               _accountState = state!;
               _paidDate = paidDate!;
               _plan = plan!;
+              _sex = userInfo.get(userEmail).getSex();
+              _birthdate = userInfo.get(userEmail).getBirthdate();
+              _address = userInfo.get(userEmail).getStreet();
+              _postCode = userInfo.get(userEmail).getPostCode();
+              _city = userInfo.get(userEmail).getCity();
+              _country = userInfo.get(userEmail).getCountry();
+              _firstName = userInfo.get(userEmail).getFirstName();
+              _lastName = userInfo.get(userEmail).getLastName();
             }));
       });
     });
     super.initState();
   }
 
+  void reset() {
+    setState(() {
+      Box userInfo = Hive.box("UserProfile");
+      _sex = userInfo.get(userEmail).getSex();
+      _birthdate = userInfo.get(userEmail).getBirthdate();
+      _address = userInfo.get(userEmail).getStreet();
+      _postCode = userInfo.get(userEmail).getPostCode();
+      _city = userInfo.get(userEmail).getCity();
+      _country = userInfo.get(userEmail).getCountry();
+      _firstName = userInfo.get(userEmail).getFirstName();
+      _lastName = userInfo.get(userEmail).getLastName();
+    });
+  }
+
   @override
   Consumer<ThemeModel> build(BuildContext context) {
-    Box userInfo = Hive.box("UserProfile");
-    String? userEmail = FirebaseAuth.instance.currentUser!.email;
-
     return Consumer(builder: (context, ThemeModel themeNotifier, child) {
       return Scaffold(
         backgroundColor:
@@ -107,9 +137,7 @@ class _ProfileState extends State<Profile> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      userInfo.get(userEmail).getFirstName() +
-                                          " " +
-                                          userInfo.get(userEmail).getLastName(),
+                                      _firstName + " " + _lastName,
                                       style:
                                           Theme.of(context).textTheme.headline6,
                                     ),
@@ -177,6 +205,15 @@ class _ProfileState extends State<Profile> {
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
+                                    trailing: IconButton(
+                                      onPressed: () {
+                                        reset();
+                                      },
+                                      icon: const Icon(Icons.refresh_rounded),
+                                      color: const Color.fromARGB(
+                                          255, 16, 198, 89),
+                                      iconSize: 40,
+                                    ),
                                   ),
                                   const Divider(),
                                   ListTile(
@@ -187,7 +224,7 @@ class _ProfileState extends State<Profile> {
                                       ),
                                     ),
                                     subtitle: Text(
-                                      userInfo.get(userEmail).getSex(),
+                                      _sex,
                                     ),
                                     leading: const Icon(
                                         Icons.account_circle_rounded),
@@ -200,7 +237,7 @@ class _ProfileState extends State<Profile> {
                                       ),
                                     ),
                                     subtitle: Text(
-                                      userInfo.get(userEmail).getBirthdate(),
+                                      _birthdate,
                                     ),
                                     leading: const Icon(
                                         Icons.calendar_today_outlined),
@@ -213,7 +250,7 @@ class _ProfileState extends State<Profile> {
                                       ),
                                     ),
                                     subtitle: Text(
-                                      userInfo.get(userEmail).getStreet(),
+                                      _address,
                                     ),
                                     leading: const Icon(Icons.house_rounded),
                                   ),
@@ -228,7 +265,7 @@ class _ProfileState extends State<Profile> {
                                           ),
                                         ),
                                         subtitle: Text(
-                                          userInfo.get(userEmail).getPostCode(),
+                                          _postCode,
                                         ),
                                         leading: const Icon(
                                             Icons.location_on_rounded),
@@ -242,7 +279,7 @@ class _ProfileState extends State<Profile> {
                                           ),
                                         ),
                                         subtitle: Text(
-                                          userInfo.get(userEmail).getCity(),
+                                          _city,
                                         ),
                                         leading: const Icon(
                                             Icons.location_city_rounded),
@@ -257,7 +294,7 @@ class _ProfileState extends State<Profile> {
                                       ),
                                     ),
                                     subtitle: Text(
-                                      userInfo.get(userEmail).getCountry(),
+                                      _country,
                                     ),
                                     leading: const Icon(Icons.flag_rounded),
                                   ),

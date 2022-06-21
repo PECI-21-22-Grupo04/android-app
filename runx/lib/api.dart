@@ -11,6 +11,7 @@ import 'package:runx/caching/sharedpref_helper.dart';
 class APICaller {
   final String host = 'http://localhost:';
   final String port = '8080';
+  final String deployedAPI = 'https://api-mobile.vercel.app';
 
   ///***************** AUTHENTICATION ******************///
   /// API calls needed for authentication operations    ///
@@ -287,6 +288,46 @@ class APICaller {
     }
   }
 
+  Future<String> updateClient(
+      {String? email,
+      String? fname,
+      String? lname,
+      String? birthdate,
+      String? sex,
+      String? street,
+      String? postCode,
+      String? city,
+      String? country}) async {
+    try {
+      final response = await http
+          .post(
+            Uri.parse(host + port + '/updateClient'),
+            headers: <String, String>{
+              'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            body: (<String, String>{
+              "email": email.toString(),
+              "fname": fname.toString(),
+              "lname": lname.toString(),
+              "birthdate": birthdate.toString(),
+              "sex": sex.toString(),
+              "street": street.toString(),
+              "postCode": postCode.toString(),
+              "city": city.toString(),
+              "country": country.toString(),
+            }),
+          )
+          .timeout(const Duration(seconds: 2));
+      if (response.ok) {
+        return response.body;
+      } else {
+        return "ERROR";
+      }
+    } on Exception {
+      return "ERROR";
+    }
+  }
+
   ///******************** PAYMENTS *******************///
   /// API calls needed for payment related operations ///
   ///*************************************************///
@@ -346,6 +387,7 @@ class APICaller {
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
         },
       ).timeout(const Duration(seconds: 2));
+
       if (response.ok) {
         return response.body;
       } else {

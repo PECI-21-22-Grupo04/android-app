@@ -7,7 +7,7 @@ import 'package:runx/caching/models/physical_data.dart';
 Widget getWidgetWeight(List<PhysicalData> physicalData) {
   if (physicalData.length == 1) {
     return Text(
-      "   IMC: " + physicalData.elementAt(0).weight.toString(),
+      "   Peso: " + physicalData.elementAt(0).weight.toString() + "kg",
       style: const TextStyle(
         color: Colors.black,
         fontSize: 25,
@@ -21,7 +21,9 @@ Widget getWidgetWeight(List<PhysicalData> physicalData) {
         text: TextSpan(
           children: [
             TextSpan(
-              text: "   Peso: " + physicalData.elementAt(0).weight.toString(),
+              text: "   Peso: " +
+                  physicalData.elementAt(0).weight.toString() +
+                  "kg",
               style: const TextStyle(
                 color: Colors.black,
                 fontSize: 25,
@@ -44,7 +46,9 @@ Widget getWidgetWeight(List<PhysicalData> physicalData) {
         text: TextSpan(
           children: [
             TextSpan(
-              text: "   Peso: " + physicalData.elementAt(0).weight.toString(),
+              text: "   Peso: " +
+                  physicalData.elementAt(0).weight.toString() +
+                  "kg",
               style: const TextStyle(
                 color: Colors.black,
                 fontSize: 25,

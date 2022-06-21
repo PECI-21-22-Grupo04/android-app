@@ -24,6 +24,11 @@ class AddInfoHealth extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Informação Física'),
+        toolbarHeight: 55,
+        leading: Builder(builder: (context) => const BackButton()),
+      ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: <Widget>[
@@ -121,8 +126,8 @@ class _SignupFormState extends State<SignupForm> {
                 if (value == null || value.isEmpty) {
                   return 'Por favor introduza o seu peso';
                 }
-                if (int.parse(value) > 200 || int.parse(value) < 25) {
-                  return "Por favor introduza um peso válido (25kg a 200kg)";
+                if (int.parse(value) > 350 || int.parse(value) < 25) {
+                  return "Por favor introduza um peso válido (25kg a 350kg)";
                 }
                 return null;
               },
@@ -266,6 +271,7 @@ class _SignupFormState extends State<SignupForm> {
                 }
               },
               style: ElevatedButton.styleFrom(
+                  primary: const Color.fromARGB(255, 8, 162, 54),
                   shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(25.0)))),
               child: const Text(
@@ -286,7 +292,7 @@ class _SignupFormState extends State<SignupForm> {
                 Navigator.pop(context);
               },
               style: ElevatedButton.styleFrom(
-                  primary: Colors.grey,
+                  primary: const Color.fromARGB(255, 209, 39, 39),
                   shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(25.0)))),
               child: const Text(

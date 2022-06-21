@@ -13,6 +13,7 @@ import 'package:runx/history/physical/widgets/info_widgets.dart';
 
 // Screens
 import 'package:runx/history/physical/screens/add_info.dart';
+import 'package:runx/history/physical/screens/add_first.dart';
 
 class PhysicalHistory extends StatefulWidget {
   const PhysicalHistory({Key? key}) : super(key: key);
@@ -39,14 +40,104 @@ class _PhysicalHistoryState extends State<PhysicalHistory> {
 
   Widget buildContent(List<PhysicalData> physicalData) {
     if (physicalData.isEmpty) {
-      return const Center(
-        child: Center(
-          child: Text(
-            'Não conseguimos encontrar os seus dados fisicos',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 23),
+      return Column(
+        children: [
+          const SizedBox(height: 25),
+          InkWell(
+            child: SizedBox(
+              width: double.infinity,
+              height: 60,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomRight,
+                    colors: [
+                      const Color.fromARGB(255, 220, 210, 210).withOpacity(.5),
+                      const Color.fromARGB(255, 220, 210, 210).withOpacity(.5),
+                    ],
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: const [
+                    Expanded(
+                      child: Text(
+                        "   Última Medição: Nunca",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
-        ),
+          const SizedBox(height: 25),
+          InkWell(
+            child: SizedBox(
+              width: double.infinity,
+              height: 60,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomRight,
+                    colors: [
+                      const Color.fromARGB(255, 220, 210, 210).withOpacity(.5),
+                      const Color.fromARGB(255, 220, 210, 210).withOpacity(.5),
+                    ],
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: const [
+                    Expanded(
+                      child: Text(
+                        "   Peso: -",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Text(
+                      "   IMC: -      ",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 15),
+          ElevatedButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.green)),
+            child: const Text(
+              'Atualizar Dados',
+              style: TextStyle(fontSize: 20),
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AddInfoFirst()),
+              );
+            },
+          ),
+        ],
       );
     }
     return Column(
