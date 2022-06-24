@@ -170,6 +170,13 @@ class _SignupFormState extends State<SignupForm> {
               if (value == null || value.isEmpty) {
                 return 'Por favor introduza a sua password';
               }
+              if (value.length < 6) {
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text(
+                      ("Password fraca \nPor favor escolha uma com pelo menos 6 caracteres"),
+                      style: TextStyle(fontSize: 16)),
+                ));
+              }
               return null;
             },
           ),
@@ -188,13 +195,6 @@ class _SignupFormState extends State<SignupForm> {
               }
               if (value == null || value.isEmpty) {
                 return 'Por favor confirme a sua password';
-              }
-              if (value.length < 6) {
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text(
-                      ("Password fraca \nPor favor escolha uma com pelo menos 6 caracteres"),
-                      style: TextStyle(fontSize: 16)),
-                ));
               }
               return null;
             },

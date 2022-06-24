@@ -163,6 +163,7 @@ class _LoginFormState extends State<LoginForm> {
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
+                  buildShowDialog(context);
                   // Call Firebase to authenticate user
                   FirebaseAuthenticationCaller()
                       .signIn(email: email!, password: password!)
@@ -218,25 +219,26 @@ class _LoginFormState extends State<LoginForm> {
                                           HiveHelper().addToBox(ip,
                                               "InstructorProfile", ip.email);
                                         }
-                                        Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const BottomNav(),
-                                          ),
-                                        );
+                                        Navigator.pushAndRemoveUntil<void>(
+                                            context,
+                                            MaterialPageRoute<void>(
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        const BottomNav()),
+                                            (Route<dynamic> route) => false);
                                       } else if (instr != "ERROR" &&
                                           json.decode(instr)["code"] == 2) {
-                                        Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const BottomNav(),
-                                          ),
-                                        );
+                                        Navigator.pushAndRemoveUntil<void>(
+                                            context,
+                                            MaterialPageRoute<void>(
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        const BottomNav()),
+                                            (Route<dynamic> route) => false);
                                       } else {
                                         FirebaseAuthenticationCaller()
                                             .signOut();
+                                        Navigator.pop(context);
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
                                           const SnackBar(
@@ -251,6 +253,7 @@ class _LoginFormState extends State<LoginForm> {
                                   );
                                 } else {
                                   FirebaseAuthenticationCaller().signOut();
+                                  Navigator.pop(context);
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                       content: Text(
@@ -264,6 +267,7 @@ class _LoginFormState extends State<LoginForm> {
                             });
                           } else {
                             FirebaseAuthenticationCaller().signOut();
+                            Navigator.pop(context);
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text(
@@ -276,6 +280,7 @@ class _LoginFormState extends State<LoginForm> {
                         },
                       );
                     } else {
+                      Navigator.pop(context);
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text(
                           result,
@@ -299,4 +304,15 @@ class _LoginFormState extends State<LoginForm> {
       ),
     );
   }
+}
+
+buildShowDialog(BuildContext context) {
+  return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      });
 }
