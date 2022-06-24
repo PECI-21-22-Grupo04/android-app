@@ -9,9 +9,9 @@ import 'package:retry/retry.dart';
 import 'package:runx/caching/sharedpref_helper.dart';
 
 class APICaller {
-  final String host = 'http://localhost:';
-  final String port = '8080';
-  final String deployedAPI = 'https://api-mobile.vercel.app';
+  //final String host = 'http://localhost:';
+  //final String port = '8080';
+  final String deployedAPI = 'https://runx2022.herokuapp.com';
 
   ///***************** AUTHENTICATION ******************///
   /// API calls needed for authentication operations    ///
@@ -20,7 +20,7 @@ class APICaller {
     try {
       final response = await http
           .post(
-            Uri.parse(host + port + '/selectClient'),
+            Uri.parse(deployedAPI + '/selectClient'),
             headers: <String, String>{
               'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
@@ -34,7 +34,7 @@ class APICaller {
         try {
           final response2 = await http
               .post(
-                Uri.parse(host + port + '/selectLatestClientPayment'),
+                Uri.parse(deployedAPI + '/selectLatestClientPayment'),
                 headers: <String, String>{
                   'Content-Type':
                       'application/x-www-form-urlencoded; charset=UTF-8'
@@ -95,7 +95,7 @@ class APICaller {
     try {
       final response = await http
           .post(
-            Uri.parse(host + port + '/createClient'),
+            Uri.parse(deployedAPI + '/createClient'),
             headers: <String, String>{
               'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
@@ -127,7 +127,7 @@ class APICaller {
     try {
       final response = await r.retry(
         () => http
-            .post(Uri.parse(host + port + '/deleteClient'),
+            .post(Uri.parse(deployedAPI + '/deleteClient'),
                 headers: <String, String>{
                   'Content-Type':
                       'application/x-www-form-urlencoded; charset=UTF-8'
@@ -154,7 +154,7 @@ class APICaller {
       final response = await r.retry(
         () => http
             .post(
-              Uri.parse(host + port + '/updateFirebaseID'),
+              Uri.parse(deployedAPI + '/updateFirebaseID'),
               headers: <String, String>{
                 'Content-Type':
                     'application/x-www-form-urlencoded; charset=UTF-8'
@@ -190,7 +190,7 @@ class APICaller {
     try {
       final response = await http
           .post(
-            Uri.parse(host + port + '/addClientInfo'),
+            Uri.parse(deployedAPI + '/addClientInfo'),
             headers: <String, String>{
               'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
@@ -219,7 +219,7 @@ class APICaller {
     try {
       final response = await http
           .post(
-            Uri.parse(host + port + '/finishWorkout'),
+            Uri.parse(deployedAPI + '/finishWorkout'),
             headers: <String, String>{
               'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
@@ -246,7 +246,7 @@ class APICaller {
     try {
       final response = await http
           .post(
-            Uri.parse(host + port + '/selectClientWorkoutHistory'),
+            Uri.parse(deployedAPI + '/selectClientWorkoutHistory'),
             headers: <String, String>{
               'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
@@ -269,7 +269,7 @@ class APICaller {
     try {
       final response = await http
           .post(
-            Uri.parse(host + port + '/selectClientInfo'),
+            Uri.parse(deployedAPI + '/selectClientInfo'),
             headers: <String, String>{
               'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
@@ -301,7 +301,7 @@ class APICaller {
     try {
       final response = await http
           .post(
-            Uri.parse(host + port + '/updateClient'),
+            Uri.parse(deployedAPI + '/updateClient'),
             headers: <String, String>{
               'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
@@ -335,7 +335,7 @@ class APICaller {
     try {
       final response = await http
           .post(
-            Uri.parse(host + port + '/selectClientPaymentHistory'),
+            Uri.parse(deployedAPI + '/selectClientPaymentHistory'),
             headers: <String, String>{
               'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
@@ -357,7 +357,7 @@ class APICaller {
     try {
       final response = await http
           .post(
-            Uri.parse(host + port + '/finalizeClientPayment'),
+            Uri.parse(deployedAPI + '/finalizeClientPayment'),
             headers: <String, String>{
               'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
@@ -382,7 +382,7 @@ class APICaller {
   Future<String> selectAvailableInstructors() async {
     try {
       final response = await http.post(
-        Uri.parse(host + port + '/selectAvailableInstructors'),
+        Uri.parse(deployedAPI + '/selectAvailableInstructors'),
         headers: <String, String>{
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
         },
@@ -403,7 +403,7 @@ class APICaller {
     try {
       final response = await http
           .post(
-            Uri.parse(host + port + '/associateInstructor'),
+            Uri.parse(deployedAPI + '/associateInstructor'),
             headers: <String, String>{
               'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
@@ -436,7 +436,7 @@ class APICaller {
     try {
       final response = await http
           .post(
-            Uri.parse(host + port + '/isClientAssociated'),
+            Uri.parse(deployedAPI + '/isClientAssociated'),
             headers: <String, String>{
               'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
@@ -467,7 +467,7 @@ class APICaller {
     try {
       final response = await http
           .post(
-            Uri.parse(host + port + '/selectAssociatedInstructor'),
+            Uri.parse(deployedAPI + '/selectAssociatedInstructor'),
             headers: <String, String>{
               'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
@@ -494,7 +494,7 @@ class APICaller {
     try {
       final response = await http
           .post(
-            Uri.parse(host + port + '/clientReviewInstructor'),
+            Uri.parse(deployedAPI + '/clientReviewInstructor'),
             headers: <String, String>{
               'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
@@ -520,7 +520,7 @@ class APICaller {
     try {
       final response = await http
           .post(
-            Uri.parse(host + port + '/removeInstructorAssociation'),
+            Uri.parse(deployedAPI + '/removeInstructorAssociation'),
             headers: <String, String>{
               'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
@@ -551,7 +551,7 @@ class APICaller {
     try {
       final response = await http
           .post(
-            Uri.parse(host + port + '/selectClientInstructorHistory'),
+            Uri.parse(deployedAPI + '/selectClientInstructorHistory'),
             headers: <String, String>{
               'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
@@ -576,7 +576,7 @@ class APICaller {
   Future<String> selectDefaultExercises() async {
     try {
       final response = await http.post(
-        Uri.parse(host + port + '/selectDefaultExercises'),
+        Uri.parse(deployedAPI + '/selectDefaultExercises'),
         headers: <String, String>{
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
         },
@@ -594,7 +594,7 @@ class APICaller {
   Future<String> selectDefaultPrograms() async {
     try {
       final response = await http.post(
-        Uri.parse(host + port + '/selectDefaultPrograms'),
+        Uri.parse(deployedAPI + '/selectDefaultPrograms'),
         headers: <String, String>{
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
         },
@@ -616,7 +616,7 @@ class APICaller {
     try {
       final response = await http
           .post(
-            Uri.parse(host + port + '/selectClientPrograms'),
+            Uri.parse(deployedAPI + '/selectClientPrograms'),
             headers: <String, String>{
               'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
@@ -638,7 +638,7 @@ class APICaller {
   Future<String> selectAllProgramExercises() async {
     try {
       final response = await http.post(
-        Uri.parse(host + port + '/selectAllProgramExercises'),
+        Uri.parse(deployedAPI + '/selectAllProgramExercises'),
         headers: <String, String>{
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
         },

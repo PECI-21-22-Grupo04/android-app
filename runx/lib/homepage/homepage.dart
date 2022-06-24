@@ -245,7 +245,7 @@ Widget buildGraphs(BuildContext context, Box user, String state) {
                   // 1º - Fetch data from DB,
                   APICaller()
                       .selectClientInfo(email: userEmail)
-                      .then((clientInfo) {
+                      .then((clientInfo) async {
                     if (clientInfo != "ERROR" &&
                         json.decode(clientInfo)["code"] == 0 &&
                         json.decode(clientInfo)["data"] != null) {
@@ -254,6 +254,8 @@ Widget buildGraphs(BuildContext context, Box user, String state) {
                           json
                               .decode(clientInfo)["data"][0]
                               .map((i) => PhysicalData.fromJson(i)));
+
+                      await HiveHelper().clearBox("PhysicalHistory");
                       // 3º - Save in Hive for caching
                       for (PhysicalData p in List.from(itemsList)) {
                         HiveHelper().addToBox(

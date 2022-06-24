@@ -339,6 +339,10 @@ class _SignupFormState extends State<SignupForm> {
                             SharedPreferencesHelper()
                                 .saveStringToSF("associatedInstructor", "");
                           });
+                          HiveHelper().clearBox("PhysicalHistory");
+                          HiveHelper().clearBox("WorkoutHistory");
+                          HiveHelper().clearBox("HistoryInstructor");
+
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(

@@ -97,7 +97,8 @@ final List faqs = [
             "\n2-Volte atrás da página onde há erro e volte a abrir"
             "\n3-Encerre e volte a iniciar a aplicação"
             "\n4-Saia e volte a entrar na sua conta"
-            "\n5-Contacte o apoio técnico",
+            "\n5-Apague todos os dados de utilizador da app e volte a entrar"
+            "\n6-Contacte o apoio técnico",
     "author": "Ocorreu um erro?"
   },
 ];

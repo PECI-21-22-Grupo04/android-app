@@ -1,6 +1,7 @@
 // System Packages
 import 'dart:async';
 import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -168,10 +169,20 @@ class _PlanDetailsState extends State<PlanDetails> {
               child: SizedBox(
                 height: 125,
                 width: 110,
-                child: FadeInImage(
-                  image: NetworkImage(exercise.thumbnailPath),
-                  placeholder:
-                      const AssetImage("assets/images/exercise_icon.png"),
+                child: CachedNetworkImage(
+                  imageUrl: exercise.thumbnailPath,
+                  imageBuilder: (context, imageProvider) => Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: imageProvider,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  placeholder: (context, url) =>
+                      const CircularProgressIndicator(),
+                  errorWidget: (context, url, error) =>
+                      Image.asset('assets/images/exercise_icon.png'),
                 ),
               ),
             ),

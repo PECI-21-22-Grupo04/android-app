@@ -235,6 +235,8 @@ class _LoginFormState extends State<LoginForm> {
                                           ),
                                         );
                                       } else {
+                                        FirebaseAuthenticationCaller()
+                                            .signOut();
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
                                           const SnackBar(
@@ -248,6 +250,7 @@ class _LoginFormState extends State<LoginForm> {
                                     },
                                   );
                                 } else {
+                                  FirebaseAuthenticationCaller().signOut();
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                       content: Text(
@@ -260,6 +263,7 @@ class _LoginFormState extends State<LoginForm> {
                               });
                             });
                           } else {
+                            FirebaseAuthenticationCaller().signOut();
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text(
